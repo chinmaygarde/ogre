@@ -7,3 +7,4 @@ build/
 *.ini
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+.claude/settings.local.json

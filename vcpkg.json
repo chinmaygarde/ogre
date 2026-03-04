@@ -1,8 +1,12 @@
 {
   "builtin-baseline": "66c0373dc7fca549e5803087b9487edfe3aca0a1",
   "dependencies": [
+    "glm",
     "gtest",
     "onnxruntime",
-    "shader-slang"
+    "shader-slang",
+    "vulkan-headers",
+    "vulkan-memory-allocator-hpp",
+    "abseil"
   ]
 }
