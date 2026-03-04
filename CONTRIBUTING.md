@@ -54,6 +54,10 @@ A dev container configuration is provided for reproducible environments:
 just docker_dev
 ```
 
+## Code Style
+
+This project follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+
 ## Dependencies
 
 Dependencies are managed via vcpkg and declared in `vcpkg.json`. To add a dependency, add it there and re-run `just setup`.
