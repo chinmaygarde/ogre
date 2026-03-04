@@ -1,7 +1,9 @@
 # Library
 add_library(onnx_sandbox
-  project.h
-  project.cc
+  vk_connection.h
+  vk.h
+  vk_connection.cc
+  vk.cc
 )
 
 # Configure Fixtures Location
