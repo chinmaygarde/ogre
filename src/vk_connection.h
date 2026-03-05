@@ -4,15 +4,15 @@
 
 namespace ep {
 
-class VulkanConnection {
+class VKConnection {
  public:
-  VulkanConnection();
+  VKConnection();
 
-  ~VulkanConnection();
+  ~VKConnection();
 
-  VulkanConnection(const VulkanConnection&) = delete;
+  VKConnection(const VKConnection&) = delete;
 
-  VulkanConnection& operator=(const VulkanConnection&) = delete;
+  VKConnection& operator=(const VKConnection&) = delete;
 };
 
 }  // namespace ep

@@ -4,10 +4,10 @@ VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
 namespace ep {
 
-VulkanConnection::VulkanConnection() {
+VKConnection::VKConnection() {
   [[maybe_unused]] auto& dispatcher = VULKAN_HPP_DEFAULT_DISPATCHER;
 }
 
-VulkanConnection::~VulkanConnection() {}
+VKConnection::~VKConnection() {}
 
 }  // namespace ep
