@@ -70,7 +70,6 @@ add_library(renderer
   backend/vulkan/formats_vk.h
   backend/vulkan/gpu_tracer_vk.cc
   backend/vulkan/gpu_tracer_vk.h
-  backend/vulkan/limits_vk.h
   backend/vulkan/pipeline_cache_data_vk.cc
   backend/vulkan/pipeline_cache_data_vk.h
   backend/vulkan/pipeline_cache_vk.cc
