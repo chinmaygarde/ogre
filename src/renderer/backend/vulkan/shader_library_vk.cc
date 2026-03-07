@@ -10,77 +10,14 @@
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/shader_function_vk.h"
-#include "shader_archive/shader_archive.h"
 
 namespace impeller {
-
-static ShaderStage ToShaderStage(ArchiveShaderType type) {
-  switch (type) {
-    case ArchiveShaderType::kVertex:
-      return ShaderStage::kVertex;
-    case ArchiveShaderType::kFragment:
-      return ShaderStage::kFragment;
-    case ArchiveShaderType::kCompute:
-      return ShaderStage::kCompute;
-  }
-  FML_UNREACHABLE();
-}
-
-static std::string VKShaderNameToShaderKeyName(const std::string& name,
-                                               ShaderStage stage) {
-  std::stringstream stream;
-  stream << name;
-  switch (stage) {
-    case ShaderStage::kUnknown:
-      stream << "_unknown_";
-      break;
-    case ShaderStage::kVertex:
-      stream << "_vertex_";
-      break;
-    case ShaderStage::kFragment:
-      stream << "_fragment_";
-      break;
-    case ShaderStage::kCompute:
-      stream << "_compute_";
-      break;
-  }
-  stream << "main";
-  return stream.str();
-}
 
 ShaderLibraryVK::ShaderLibraryVK(
     std::weak_ptr<DeviceHolderVK> device_holder,
     const std::vector<std::shared_ptr<fml::Mapping>>& shader_libraries_data)
     : device_holder_(std::move(device_holder)) {
   TRACE_EVENT0("impeller", "CreateShaderLibrary");
-  bool success = true;
-  auto iterator = [&](auto type,         //
-                      const auto& name,  //
-                      const auto& code   //
-                      ) -> bool {
-    const auto stage = ToShaderStage(type);
-    if (!RegisterFunction(VKShaderNameToShaderKeyName(name, stage), stage,
-                          code)) {
-      success = false;
-      return false;
-    }
-    return true;
-  };
-  for (const auto& library_data : shader_libraries_data) {
-    auto blob_library = ShaderArchive::Create(library_data);
-    if (!blob_library.ok()) {
-      VALIDATION_LOG << "Could not construct shader blob library: "
-                     << blob_library.status().ToString();
-      return;
-    }
-    blob_library->IterateAllShaders(iterator);
-  }
-
-  if (!success) {
-    VALIDATION_LOG << "Could not create shader modules for all shader blobs.";
-    return;
-  }
-  is_valid_ = true;
 }
 
 ShaderLibraryVK::~ShaderLibraryVK() = default;

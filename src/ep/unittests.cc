@@ -7,20 +7,28 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include "renderer/backend/vulkan/context_vk.h"
 
 namespace ep::testing {
 
-TEST(HelloOnnx, CreateEnvironment) {
-  Ort::Env env(ORT_LOGGING_LEVEL_WARNING, "hello_onnx");
-  SUCCEED();
-}
-
-TEST(HelloOnnx, MustFindCPUExecutionProvider) {
+TEST(ExecutionProviderTest, MustFindCPUExecutionProvider) {
   std::vector<std::string> providers = Ort::GetAvailableProviders();
   ASSERT_FALSE(providers.empty());
   auto found =
       std::find(providers.begin(), providers.end(), "CPUExecutionProvider");
   EXPECT_NE(found, providers.end());
+}
+
+TEST(ExecutionProviderTest, CanCreateVulkanContext) {
+  auto vulkan_dylib = fml::NativeLibrary::Create("libvulkan.so");
+  auto instance_proc_addr =
+      vulkan_dylib->ResolveFunction<PFN_vkGetInstanceProcAddr>(
+          "vkGetInstanceProcAddr");
+  ASSERT_TRUE(instance_proc_addr.has_value());
+  impeller::ContextVK::Settings settings;
+  settings.proc_address_callback = instance_proc_addr.value();
+  auto context = impeller::ContextVK::Create(std::move(settings));
+  ASSERT_TRUE(!!context);
 }
 
 }  // namespace ep::testing

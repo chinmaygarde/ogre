@@ -1,4 +1,4 @@
-add_library(fml OBJECT
+add_library(fml
   ascii_trie.cc
   ascii_trie.h
   backtrace.h
@@ -85,6 +85,30 @@ add_library(fml OBJECT
   unique_fd.h
   unique_object.h
   wakeable.h
+  platform/posix/command_line_posix.cc
+  platform/posix/file_posix.cc
+  platform/posix/mapping_posix.cc
+  platform/posix/native_library_posix.cc
+  platform/posix/paths_posix.cc
+  platform/posix/posix_wrappers_posix.cc
+  platform/posix/process_posix.cc
 )
+
+if (APPLE)
+target_sources(fml PUBLIC
+  platform/darwin/cf_utils.cc
+  platform/darwin/cf_utils.h
+  platform/darwin/concurrent_message_loop_factory.mm
+  platform/darwin/message_loop_darwin.h
+  platform/darwin/message_loop_darwin.mm
+  platform/darwin/paths_darwin.mm
+  platform/darwin/platform_version.h
+  platform/darwin/platform_version.mm
+  platform/darwin/scoped_nsautorelease_pool.cc
+  platform/darwin/scoped_nsautorelease_pool.h
+  platform/darwin/string_range_sanitization.h
+  platform/darwin/string_range_sanitization.mm
+)
+endif(APPLE)
 
 target_include_directories(fml PUBLIC ..)

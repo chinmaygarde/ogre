@@ -4,8 +4,8 @@
 
 #include "renderer/backend/vulkan/device_buffer_vk.h"
 
-#include "flutter/flutter_vma/flutter_vma.h"
 #include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/vma.h"
 
 namespace impeller {
 

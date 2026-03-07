@@ -12,7 +12,6 @@
 #include "base/comparable.h"
 #include "core/formats.h"
 #include "core/shader_types.h"
-#include "tessellator/tessellator.h"
 
 namespace impeller {
 

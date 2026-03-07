@@ -1,4 +1,4 @@
-add_library(base OBJECT
+add_library(base
   allocation.cc
   allocation.h
   allocation_size.cc

@@ -1,4 +1,4 @@
-add_library(geometry OBJECT
+add_library(geometry
   arc.cc
   arc.h
   color.cc

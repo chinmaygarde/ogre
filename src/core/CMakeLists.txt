@@ -1,4 +1,4 @@
-add_library(core OBJECT
+add_library(core
   allocator.cc
   allocator.h
   buffer_view.cc
@@ -34,6 +34,6 @@ add_library(core OBJECT
   vertex_buffer.h
 )
 
-target_link_libraries(core PUBLIC base)
+target_link_libraries(core PUBLIC base geometry)
 
 target_include_directories(core PUBLIC ..)

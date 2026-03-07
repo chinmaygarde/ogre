@@ -1,24 +1,14 @@
 # Library
 add_library(onnx_sandbox
-  vk.cc
-  vk.h
-  vk_connection.cc
-  vk_connection.h
+  provider.cc
+  provider.h
 )
 
-target_link_libraries(onnx_sandbox PUBLIC fml)
+target_link_libraries(onnx_sandbox PUBLIC renderer)
 
 # Configure Fixtures Location
 get_filename_component(TEST_ASSETS_LOCATION ../assets ABSOLUTE)
 configure_file(fixtures_location.h.in fixtures_location.h @ONLY)
-
-# Vulkan
-find_package(VulkanHeaders CONFIG)
-target_link_libraries(onnx_sandbox PUBLIC Vulkan::Headers)
-
-# VMA
-find_package(unofficial-vulkan-memory-allocator-hpp CONFIG REQUIRED)
-target_link_libraries(onnx_sandbox PUBLIC unofficial::VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
 
 # GLM
 find_package(glm CONFIG REQUIRED)
