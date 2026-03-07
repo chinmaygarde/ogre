@@ -28,8 +28,8 @@ class ShaderLibraryVK final
 
   bool IsValid() const;
 
-  std::shared_ptr<const ShaderFunctionVK> GetFunction(std::string_view name,
-                                                      ShaderStage stage);
+  std::shared_ptr<const ShaderFunction> GetFunction(std::string_view name,
+                                                    ShaderStage stage);
 
   using RegistrationCallback = std::function<void(bool)>;
   void RegisterFunction(std::string name,

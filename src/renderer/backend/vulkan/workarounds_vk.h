@@ -10,7 +10,7 @@
 namespace ogre {
 
 /// A non-exhaustive set of driver specific workarounds.
-struct WorkaroundsVK {
+struct Workarounds {
   // Adreno GPUs exhibit terrible performance when primitive
   // restart is used. This was confirmed up to Adreno 640 (Pixel 4).
   // Because this feature is fairly marginal, we disable it for _all_
@@ -38,7 +38,7 @@ struct WorkaroundsVK {
   bool broken_mipmap_generation = false;
 };
 
-WorkaroundsVK GetWorkaroundsFromDriverInfo(DriverInfoVK& driver_info);
+Workarounds GetWorkaroundsFromDriverInfo(DriverInfoVK& driver_info);
 
 }  // namespace ogre
 

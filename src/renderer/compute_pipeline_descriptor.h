@@ -13,7 +13,7 @@
 
 namespace ogre {
 
-class ShaderFunctionVK;
+class ShaderFunction;
 template <typename T>
 class Pipeline;
 
@@ -29,9 +29,9 @@ class ComputePipelineDescriptor final
   const std::string& GetLabel() const;
 
   ComputePipelineDescriptor& SetStageEntrypoint(
-      std::shared_ptr<const ShaderFunctionVK> function);
+      std::shared_ptr<const ShaderFunction> function);
 
-  std::shared_ptr<const ShaderFunctionVK> GetStageEntrypoint() const;
+  std::shared_ptr<const ShaderFunction> GetStageEntrypoint() const;
 
   // Comparable<ComputePipelineDescriptor>
   std::size_t GetHash() const override;
@@ -52,7 +52,7 @@ class ComputePipelineDescriptor final
 
  private:
   std::string label_;
-  std::shared_ptr<const ShaderFunctionVK> entrypoint_;
+  std::shared_ptr<const ShaderFunction> entrypoint_;
   std::vector<DescriptorSetLayout> descriptor_set_layouts_;
 };
 

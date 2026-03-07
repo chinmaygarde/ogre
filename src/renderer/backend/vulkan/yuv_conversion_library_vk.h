@@ -23,13 +23,13 @@ class DeviceHolderVK;
 ///             There can only be one conversion library (the constructor is
 ///             private to force this) and it found in the context.
 ///
-class YUVConversionLibraryVK {
+class YUVConversionLibrary {
  public:
-  ~YUVConversionLibraryVK();
+  ~YUVConversionLibrary();
 
-  YUVConversionLibraryVK(const YUVConversionLibraryVK&) = delete;
+  YUVConversionLibrary(const YUVConversionLibrary&) = delete;
 
-  YUVConversionLibraryVK& operator=(const YUVConversionLibraryVK&) = delete;
+  YUVConversionLibrary& operator=(const YUVConversionLibrary&) = delete;
 
   //----------------------------------------------------------------------------
   /// @brief      Get a conversion for the given descriptor. If there is already
@@ -57,7 +57,7 @@ class YUVConversionLibraryVK {
   Mutex conversions_mutex_;
   ConversionsMap conversions_ IPLR_GUARDED_BY(conversions_mutex_);
 
-  explicit YUVConversionLibraryVK(std::weak_ptr<DeviceHolderVK> device_holder);
+  explicit YUVConversionLibrary(std::weak_ptr<DeviceHolderVK> device_holder);
 };
 
 }  // namespace ogre

@@ -312,7 +312,7 @@ class Capabilities final {
 
   //----------------------------------------------------------------------------
   /// @brief      Update capabilities for the given set of workarounds.
-  void ApplyWorkarounds(const WorkaroundsVK& workarounds);
+  void ApplyWorkarounds(const Workarounds& workarounds);
 
  private:
   bool validations_enabled_ = false;

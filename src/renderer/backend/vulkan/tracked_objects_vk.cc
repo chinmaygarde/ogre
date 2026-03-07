@@ -9,11 +9,10 @@
 
 namespace ogre {
 
-TrackedObjectsVK::TrackedObjectsVK(
-    const std::weak_ptr<const ContextVK>& context,
-    const std::shared_ptr<CommandPool>& pool,
-    std::shared_ptr<DescriptorPool> descriptor_pool,
-    std::unique_ptr<GPUProbe> probe)
+TrackedObjects::TrackedObjects(const std::weak_ptr<const ContextVK>& context,
+                               const std::shared_ptr<CommandPool>& pool,
+                               std::shared_ptr<DescriptorPool> descriptor_pool,
+                               std::unique_ptr<GPUProbe> probe)
     : desc_pool_(std::move(descriptor_pool)), probe_(std::move(probe)) {
   if (!pool) {
     return;
@@ -32,18 +31,18 @@ TrackedObjectsVK::TrackedObjectsVK(
   tracked_textures_.reserve(5);
 }
 
-TrackedObjectsVK::~TrackedObjectsVK() {
+TrackedObjects::~TrackedObjects() {
   if (!buffer_) {
     return;
   }
   pool_->CollectCommandBuffer(std::move(buffer_));
 }
 
-bool TrackedObjectsVK::IsValid() const {
+bool TrackedObjects::IsValid() const {
   return is_valid_;
 }
 
-void TrackedObjectsVK::Track(const std::shared_ptr<SharedObjectVK>& object) {
+void TrackedObjects::Track(const std::shared_ptr<SharedObjectVK>& object) {
   if (!object || (!tracked_objects_.empty() &&
                   object.get() == tracked_objects_.back().get())) {
     return;
@@ -51,8 +50,7 @@ void TrackedObjectsVK::Track(const std::shared_ptr<SharedObjectVK>& object) {
   tracked_objects_.emplace_back(object);
 }
 
-void TrackedObjectsVK::Track(
-    const std::shared_ptr<const DeviceBuffer>& buffer) {
+void TrackedObjects::Track(const std::shared_ptr<const DeviceBuffer>& buffer) {
   if (!buffer || (!tracked_buffers_.empty() &&
                   buffer.get() == tracked_buffers_.back().get())) {
     return;
@@ -60,7 +58,7 @@ void TrackedObjectsVK::Track(
   tracked_buffers_.emplace_back(buffer);
 }
 
-void TrackedObjectsVK::Track(
+void TrackedObjects::Track(
     const std::shared_ptr<const TextureSource>& texture) {
   if (!texture || (!tracked_textures_.empty() &&
                    texture.get() == tracked_textures_.back().get())) {
@@ -69,15 +67,15 @@ void TrackedObjectsVK::Track(
   tracked_textures_.emplace_back(texture);
 }
 
-vk::CommandBuffer TrackedObjectsVK::GetCommandBuffer() const {
+vk::CommandBuffer TrackedObjects::GetCommandBuffer() const {
   return *buffer_;
 }
 
-DescriptorPool& TrackedObjectsVK::GetDescriptorPool() {
+DescriptorPool& TrackedObjects::GetDescriptorPool() {
   return *desc_pool_;
 }
 
-GPUProbe& TrackedObjectsVK::GetGPUProbe() const {
+GPUProbe& TrackedObjects::GetGPUProbe() const {
   return *probe_.get();
 }
 

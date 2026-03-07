@@ -33,7 +33,7 @@ fml::Status CommandQueue::Submit(
   });
 
   std::vector<vk::CommandBuffer> vk_buffers;
-  std::vector<std::shared_ptr<TrackedObjectsVK>> tracked_objects;
+  std::vector<std::shared_ptr<TrackedObjects>> tracked_objects;
   vk_buffers.reserve(buffers.size());
   tracked_objects.reserve(buffers.size());
   for (const std::shared_ptr<CommandBuffer>& buffer : buffers) {

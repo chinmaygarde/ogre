@@ -72,7 +72,7 @@ class PipelineLibraryVK final
   bool HasPipeline(const PipelineDescriptor& descriptor);
 
   void RemovePipelinesWithEntryPoint(
-      std::shared_ptr<const ShaderFunctionVK> function);
+      std::shared_ptr<const ShaderFunction> function);
 
   PipelineCompileQueue* GetPipelineCompileQueue() const;
 

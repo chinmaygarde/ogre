@@ -118,13 +118,12 @@ class ContextVK final : public Context,
   virtual bool SubmitOnscreen(
       std::shared_ptr<CommandBuffer> cmd_buffer) override;
 
-  const std::shared_ptr<YUVConversionLibraryVK>& GetYUVConversionLibrary()
-      const;
+  const std::shared_ptr<YUVConversionLibrary>& GetYUVConversionLibrary() const;
 
   // |Context|
   void Shutdown() override;
 
-  const WorkaroundsVK& GetWorkarounds() const;
+  const Workarounds& GetWorkarounds() const;
 
   void SetOffscreenFormat(PixelFormat pixel_format);
 
@@ -254,7 +253,7 @@ class ContextVK final : public Context,
   std::shared_ptr<ShaderLibraryVK> shader_library_;
   std::shared_ptr<SamplerLibraryVK> sampler_library_;
   std::shared_ptr<PipelineLibraryVK> pipeline_library_;
-  std::shared_ptr<YUVConversionLibraryVK> yuv_conversion_library_;
+  std::shared_ptr<YUVConversionLibrary> yuv_conversion_library_;
   QueuesVK queues_;
   std::shared_ptr<const Capabilities> device_capabilities_;
   std::shared_ptr<FenceWaiter> fence_waiter_;
@@ -266,7 +265,7 @@ class ContextVK final : public Context,
   std::shared_ptr<GPUTracer> gpu_tracer_;
   std::shared_ptr<CommandQueue> command_queue_vk_;
   std::shared_ptr<const IdleWaiterVK> idle_waiter_vk_;
-  WorkaroundsVK workarounds_;
+  Workarounds workarounds_;
 
   using DescriptorPoolMap =
       std::unordered_map<std::thread::id, std::shared_ptr<DescriptorPool>>;

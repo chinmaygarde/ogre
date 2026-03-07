@@ -67,10 +67,10 @@ class BlitPass final {
   FML_FRIEND_TEST(BlitPassTest, MipmapGenerationTransitionsAllLevelsCorrectly);
 
   std::shared_ptr<CommandBuffer> command_buffer_;
-  const WorkaroundsVK workarounds_;
+  const Workarounds workarounds_;
 
   explicit BlitPass(std::shared_ptr<CommandBuffer> command_buffer,
-                    const WorkaroundsVK& workarounds);
+                    const Workarounds& workarounds);
 
   void OnSetLabel(std::string_view label);
 

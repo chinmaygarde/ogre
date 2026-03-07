@@ -263,7 +263,7 @@ bool PipelineLibraryVK::HasPipeline(const PipelineDescriptor& descriptor) {
 
 // |PipelineLibrary|
 void PipelineLibraryVK::RemovePipelinesWithEntryPoint(
-    std::shared_ptr<const ShaderFunctionVK> function) {
+    std::shared_ptr<const ShaderFunction> function) {
   Lock lock(pipelines_mutex_);
 
   fml::erase_if(pipelines_, [&](auto item) {

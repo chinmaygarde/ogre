@@ -37,7 +37,7 @@ struct BufferView {
   /// This is a non-owned DeviceBuffer. Steps should be taken to make sure this
   /// lives for the duration of the BufferView's life. Usually this is done
   /// automatically by the graphics API or in the case of Vulkan the HostBuffer
-  /// or TrackedObjectsVK keeps it alive.
+  /// or TrackedObjects keeps it alive.
   const DeviceBuffer* raw_buffer_;
   Range range_;
 };

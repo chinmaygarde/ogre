@@ -8,7 +8,7 @@
 
 namespace ogre {
 
-ShaderFunctionVK::ShaderFunctionVK(
+ShaderFunction::ShaderFunction(
     const std::weak_ptr<DeviceHolderVK>& device_holder,
     UniqueID parent_library_id,
     std::string name,
@@ -20,7 +20,7 @@ ShaderFunctionVK::ShaderFunctionVK(
       module_(std::move(module)),
       device_holder_(device_holder) {}
 
-ShaderFunctionVK::~ShaderFunctionVK() {
+ShaderFunction::~ShaderFunction() {
   std::shared_ptr<DeviceHolderVK> device_holder = device_holder_.lock();
   if (device_holder) {
     module_.reset();
@@ -29,23 +29,23 @@ ShaderFunctionVK::~ShaderFunctionVK() {
   }
 }
 
-ShaderStage ShaderFunctionVK::GetStage() const {
+ShaderStage ShaderFunction::GetStage() const {
   return stage_;
 }
 
-const std::string& ShaderFunctionVK::GetName() const {
+const std::string& ShaderFunction::GetName() const {
   return name_;
 }
 
-const vk::ShaderModule& ShaderFunctionVK::GetModule() const {
+const vk::ShaderModule& ShaderFunction::GetModule() const {
   return module_.get();
 }
 
-std::size_t ShaderFunctionVK::GetHash() const {
+std::size_t ShaderFunction::GetHash() const {
   return fml::HashCombine(parent_library_id_, name_, stage_);
 }
 
-bool ShaderFunctionVK::IsEqual(const ShaderFunctionVK& other) const {
+bool ShaderFunction::IsEqual(const ShaderFunction& other) const {
   return parent_library_id_ == other.parent_library_id_ &&
          name_ == other.name_ && stage_ == other.stage_;
 }

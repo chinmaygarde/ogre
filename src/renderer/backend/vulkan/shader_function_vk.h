@@ -14,9 +14,9 @@
 
 namespace ogre {
 
-class ShaderFunctionVK final : public Comparable<ShaderFunctionVK> {
+class ShaderFunction final : public Comparable<ShaderFunction> {
  public:
-  ~ShaderFunctionVK();
+  ~ShaderFunction();
 
   ShaderStage GetStage() const;
 
@@ -24,11 +24,11 @@ class ShaderFunctionVK final : public Comparable<ShaderFunctionVK> {
 
   const vk::ShaderModule& GetModule() const;
 
-  // |Comparable<ShaderFunctionVK>|
+  // |Comparable<ShaderFunction>|
   std::size_t GetHash() const override;
 
-  // |Comparable<ShaderFunctionVK>|
-  bool IsEqual(const ShaderFunctionVK& other) const override;
+  // |Comparable<ShaderFunction>|
+  bool IsEqual(const ShaderFunction& other) const override;
 
  private:
   friend class ShaderLibraryVK;
@@ -39,15 +39,15 @@ class ShaderFunctionVK final : public Comparable<ShaderFunctionVK> {
   vk::UniqueShaderModule module_;
   std::weak_ptr<DeviceHolderVK> device_holder_;
 
-  ShaderFunctionVK(const std::weak_ptr<DeviceHolderVK>& device_holder,
-                   UniqueID parent_library_id,
-                   std::string name,
-                   ShaderStage stage,
-                   vk::UniqueShaderModule module);
+  ShaderFunction(const std::weak_ptr<DeviceHolderVK>& device_holder,
+                 UniqueID parent_library_id,
+                 std::string name,
+                 ShaderStage stage,
+                 vk::UniqueShaderModule module);
 
-  ShaderFunctionVK(const ShaderFunctionVK&) = delete;
+  ShaderFunction(const ShaderFunction&) = delete;
 
-  ShaderFunctionVK& operator=(const ShaderFunctionVK&) = delete;
+  ShaderFunction& operator=(const ShaderFunction&) = delete;
 };
 
 }  // namespace ogre

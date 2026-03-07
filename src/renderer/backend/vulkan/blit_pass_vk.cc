@@ -49,7 +49,7 @@ static void InsertImageMemoryBarrier(const vk::CommandBuffer& cmd,
 }
 
 BlitPass::BlitPass(std::shared_ptr<CommandBuffer> command_buffer,
-                   const WorkaroundsVK& workarounds)
+                   const Workarounds& workarounds)
     : command_buffer_(std::move(command_buffer)), workarounds_(workarounds) {}
 
 BlitPass::~BlitPass() = default;

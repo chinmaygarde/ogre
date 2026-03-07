@@ -38,7 +38,7 @@ ComputePipelineDescriptor& ComputePipelineDescriptor::SetLabel(
 }
 
 ComputePipelineDescriptor& ComputePipelineDescriptor::SetStageEntrypoint(
-    std::shared_ptr<const ShaderFunctionVK> function) {
+    std::shared_ptr<const ShaderFunction> function) {
   FML_DCHECK(!function || function->GetStage() == ShaderStage::kCompute);
   if (!function || function->GetStage() != ShaderStage::kCompute) {
     return *this;
@@ -53,7 +53,7 @@ ComputePipelineDescriptor& ComputePipelineDescriptor::SetStageEntrypoint(
   return *this;
 }
 
-std::shared_ptr<const ShaderFunctionVK>
+std::shared_ptr<const ShaderFunction>
 ComputePipelineDescriptor::GetStageEntrypoint() const {
   return entrypoint_;
 }

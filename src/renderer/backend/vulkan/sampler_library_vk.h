@@ -19,7 +19,7 @@ class SamplerLibraryVK final {
 
   explicit SamplerLibraryVK(const std::weak_ptr<DeviceHolderVK>& device_holder);
 
-  void ApplyWorkarounds(const WorkaroundsVK& workarounds);
+  void ApplyWorkarounds(const Workarounds& workarounds);
 
  private:
   friend class ContextVK;
@@ -28,8 +28,7 @@ class SamplerLibraryVK final {
   std::vector<std::pair<uint64_t, std::shared_ptr<const SamplerVK>>> samplers_;
   bool mips_disabled_workaround_ = false;
 
-  raw_ptr<const SamplerVK> GetSampler(
-      const SamplerDescriptor& descriptor);
+  raw_ptr<const SamplerVK> GetSampler(const SamplerDescriptor& descriptor);
 
   SamplerLibraryVK(const SamplerLibraryVK&) = delete;
 

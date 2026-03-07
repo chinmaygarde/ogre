@@ -26,7 +26,7 @@ bool ShaderLibraryVK::IsValid() const {
   return is_valid_;
 }
 
-std::shared_ptr<const ShaderFunctionVK> ShaderLibraryVK::GetFunction(
+std::shared_ptr<const ShaderFunction> ShaderLibraryVK::GetFunction(
     std::string_view name,
     ShaderStage stage) {
   ReaderLock lock(functions_mutex_);
@@ -98,13 +98,13 @@ bool ShaderLibraryVK::RegisterFunction(
                           "Shader " + name);
 
   WriterLock lock(functions_mutex_);
-  functions_[ShaderKey{name, stage}] = std::shared_ptr<ShaderFunctionVK>(
-      new ShaderFunctionVK(device_holder_,
-                           library_id_,              //
-                           name,                     //
-                           stage,                    //
-                           std::move(shader_module)  //
-                           ));
+  functions_[ShaderKey{name, stage}] = std::shared_ptr<ShaderFunction>(
+      new ShaderFunction(device_holder_,
+                         library_id_,              //
+                         name,                     //
+                         stage,                    //
+                         std::move(shader_module)  //
+                         ));
 
   return true;
 }

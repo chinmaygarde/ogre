@@ -29,7 +29,7 @@ using YUVConversionDescriptorVK =
 #endif  // FML_OS_ANDROID
                        >;
 
-class YUVConversionLibraryVK;
+class YUVConversionLibrary;
 
 //------------------------------------------------------------------------------
 /// @brief      It is sometimes necessary to deal with formats not native to
@@ -73,7 +73,7 @@ class YUVConversionVK final {
   vk::SamplerYcbcrConversion GetConversion() const;
 
  private:
-  friend class YUVConversionLibraryVK;
+  friend class YUVConversionLibrary;
 
   YUVConversionDescriptorVK chain_;
   vk::UniqueSamplerYcbcrConversion conversion_;

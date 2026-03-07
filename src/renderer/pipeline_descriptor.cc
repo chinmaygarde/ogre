@@ -79,7 +79,7 @@ PipelineDescriptor& PipelineDescriptor::SetSampleCount(SampleCount samples) {
 }
 
 PipelineDescriptor& PipelineDescriptor::AddStageEntrypoint(
-    std::shared_ptr<const ShaderFunctionVK> function) {
+    std::shared_ptr<const ShaderFunction> function) {
   if (!function) {
     return *this;
   }
@@ -218,12 +218,12 @@ PipelineDescriptor::GetVertexDescriptor() const {
   return vertex_descriptor_;
 }
 
-const std::map<ShaderStage, std::shared_ptr<const ShaderFunctionVK>>&
+const std::map<ShaderStage, std::shared_ptr<const ShaderFunction>>&
 PipelineDescriptor::GetStageEntrypoints() const {
   return entrypoints_;
 }
 
-std::shared_ptr<const ShaderFunctionVK> PipelineDescriptor::GetEntrypointForStage(
+std::shared_ptr<const ShaderFunction> PipelineDescriptor::GetEntrypointForStage(
     ShaderStage stage) const {
   if (auto found = entrypoints_.find(stage); found != entrypoints_.end()) {
     return found->second;

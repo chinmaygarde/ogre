@@ -26,7 +26,7 @@ class RenderTarget;
 class SharedObjectVK;
 class Texture;
 class TextureSource;
-class TrackedObjectsVK;
+class TrackedObjects;
 
 class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
  public:
@@ -112,11 +112,11 @@ class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
 
   std::weak_ptr<const ContextVK> context_;
   std::weak_ptr<const DeviceHolderVK> device_holder_;
-  std::shared_ptr<TrackedObjectsVK> tracked_objects_;
+  std::shared_ptr<TrackedObjects> tracked_objects_;
 
   CommandBuffer(std::weak_ptr<const ContextVK> context,
                 std::weak_ptr<const DeviceHolderVK> device_holder,
-                std::shared_ptr<TrackedObjectsVK> tracked_objects);
+                std::shared_ptr<TrackedObjects> tracked_objects);
 
   CommandBuffer(const CommandBuffer&) = delete;
 

@@ -16,14 +16,14 @@ namespace ogre {
 
 /// @brief A per-frame object used to track resource lifetimes and allocate
 ///        command buffers and descriptor sets.
-class TrackedObjectsVK {
+class TrackedObjects {
  public:
-  explicit TrackedObjectsVK(const std::weak_ptr<const ContextVK>& context,
-                            const std::shared_ptr<CommandPool>& pool,
-                            std::shared_ptr<DescriptorPool> descriptor_pool,
-                            std::unique_ptr<GPUProbe> probe);
+  explicit TrackedObjects(const std::weak_ptr<const ContextVK>& context,
+                          const std::shared_ptr<CommandPool>& pool,
+                          std::shared_ptr<DescriptorPool> descriptor_pool,
+                          std::unique_ptr<GPUProbe> probe);
 
-  ~TrackedObjectsVK();
+  ~TrackedObjects();
 
   bool IsValid() const;
 
@@ -50,9 +50,9 @@ class TrackedObjectsVK {
   std::unique_ptr<GPUProbe> probe_;
   bool is_valid_ = false;
 
-  TrackedObjectsVK(const TrackedObjectsVK&) = delete;
+  TrackedObjects(const TrackedObjects&) = delete;
 
-  TrackedObjectsVK& operator=(const TrackedObjectsVK&) = delete;
+  TrackedObjects& operator=(const TrackedObjects&) = delete;
 };
 
 }  // namespace ogre

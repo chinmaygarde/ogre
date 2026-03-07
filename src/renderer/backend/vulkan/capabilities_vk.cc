@@ -806,7 +806,7 @@ ISize Capabilities::GetMaximumRenderPassAttachmentSize() const {
   return max_render_pass_attachment_size_;
 }
 
-void Capabilities::ApplyWorkarounds(const WorkaroundsVK& workarounds) {
+void Capabilities::ApplyWorkarounds(const Workarounds& workarounds) {
   has_primitive_restart_ = !workarounds.slow_primitive_restart_performance;
   has_framebuffer_fetch_ = !workarounds.input_attachment_self_dependency_broken;
 }

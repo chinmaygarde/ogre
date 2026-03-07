@@ -479,8 +479,8 @@ void ContextVK::Setup(Settings settings) {
   shader_library_ = std::move(shader_library);
   sampler_library_ = std::move(sampler_library);
   pipeline_library_ = std::move(pipeline_library);
-  yuv_conversion_library_ = std::shared_ptr<YUVConversionLibraryVK>(
-      new YUVConversionLibraryVK(device_holder_));
+  yuv_conversion_library_ = std::shared_ptr<YUVConversionLibrary>(
+      new YUVConversionLibrary(device_holder_));
   queues_ = std::move(queues);
   device_capabilities_ = std::move(caps);
   fence_waiter_ = std::move(fence_waiter);
@@ -558,7 +558,7 @@ std::shared_ptr<CommandBuffer> ContextVK::CreateCommandBuffer() const {
     }
   }
 
-  auto tracked_objects = std::make_shared<TrackedObjectsVK>(
+  auto tracked_objects = std::make_shared<TrackedObjects>(
       weak_from_this(), std::move(tls_pool), std::move(descriptor_pool),
       GetGPUTracer()->CreateGPUProbe());
   auto queue = GetGraphicsQueue();
@@ -726,7 +726,7 @@ void ContextVK::DisposeThreadLocalCachedResources() {
   command_pool_recycler_->Dispose();
 }
 
-const std::shared_ptr<YUVConversionLibraryVK>&
+const std::shared_ptr<YUVConversionLibrary>&
 ContextVK::GetYUVConversionLibrary() const {
   return yuv_conversion_library_;
 }
@@ -748,7 +748,7 @@ bool ContextVK::SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) {
   return EnqueueCommandBuffer(std::move(cmd_buffer));
 }
 
-const WorkaroundsVK& ContextVK::GetWorkarounds() const {
+const Workarounds& ContextVK::GetWorkarounds() const {
   return workarounds_;
 }
 

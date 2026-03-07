@@ -9,13 +9,13 @@
 
 namespace ogre {
 
-YUVConversionLibraryVK::YUVConversionLibraryVK(
+YUVConversionLibrary::YUVConversionLibrary(
     std::weak_ptr<DeviceHolderVK> device_holder)
     : device_holder_(std::move(device_holder)) {}
 
-YUVConversionLibraryVK::~YUVConversionLibraryVK() = default;
+YUVConversionLibrary::~YUVConversionLibrary() = default;
 
-std::shared_ptr<YUVConversionVK> YUVConversionLibraryVK::GetConversion(
+std::shared_ptr<YUVConversionVK> YUVConversionLibrary::GetConversion(
     const YUVConversionDescriptorVK& desc) {
   Lock lock(conversions_mutex_);
   auto found = conversions_.find(desc);

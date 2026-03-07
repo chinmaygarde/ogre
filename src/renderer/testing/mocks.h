@@ -79,7 +79,7 @@ class MockPipelineLibrary : public PipelineLibrary {
               (override));
   MOCK_METHOD(void,
               RemovePipelinesWithEntryPoint,
-              (std::shared_ptr<const ShaderFunctionVK> function),
+              (std::shared_ptr<const ShaderFunction> function),
               (override));
 };
 
