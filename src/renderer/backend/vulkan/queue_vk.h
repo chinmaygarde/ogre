@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "base/thread.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

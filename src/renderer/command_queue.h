@@ -8,7 +8,7 @@
 #include <functional>
 
 #include "fml/status.h"
-#include "impeller/renderer/command_buffer.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 

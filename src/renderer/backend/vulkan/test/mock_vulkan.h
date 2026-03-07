@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
+#include "base/thread.h"
+#include "renderer/backend/vulkan/context_vk.h"
 #include "vulkan/vulkan_core.h"
 #include "vulkan/vulkan_enums.hpp"
 

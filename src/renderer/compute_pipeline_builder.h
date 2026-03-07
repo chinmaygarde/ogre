@@ -7,10 +7,10 @@
 
 #include <format>
 
-#include "impeller/base/validation.h"
-#include "impeller/renderer/compute_pipeline_descriptor.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/shader_library.h"
+#include "base/validation.h"
+#include "renderer/compute_pipeline_descriptor.h"
+#include "renderer/context.h"
+#include "renderer/shader_library.h"
 
 namespace impeller {
 

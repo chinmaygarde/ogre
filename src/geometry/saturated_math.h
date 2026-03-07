@@ -9,8 +9,8 @@
 #include <limits>
 #include <type_traits>
 
-#include "flutter/fml/logging.h"
-#include "impeller/geometry/scalar.h"
+#include "fml/logging.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

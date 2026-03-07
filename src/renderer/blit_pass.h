@@ -8,8 +8,8 @@
 #include <cstdint>
 #include <string>
 
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/texture.h"
+#include "core/device_buffer.h"
+#include "core/texture.h"
 
 namespace impeller {
 

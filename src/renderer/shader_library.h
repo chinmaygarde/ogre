@@ -9,8 +9,8 @@
 #include <memory>
 #include <string_view>
 
+#include "core/shader_types.h"
 #include "fml/mapping.h"
-#include "impeller/core/shader_types.h"
 
 namespace impeller {
 

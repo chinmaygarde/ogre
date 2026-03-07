@@ -10,13 +10,13 @@
 #include <optional>
 #include <string>
 
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/sampler.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/core/texture.h"
-#include "impeller/geometry/rect.h"
-#include "impeller/renderer/pipeline.h"
+#include "core/buffer_view.h"
+#include "core/formats.h"
+#include "core/sampler.h"
+#include "core/shader_types.h"
+#include "core/texture.h"
+#include "geometry/rect.h"
+#include "renderer/pipeline.h"
 
 namespace impeller {
 

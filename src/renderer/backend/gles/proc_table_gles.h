@@ -10,11 +10,11 @@
 #include <string_view>
 
 #include "GLES3/gl3.h"
-#include "flutter/fml/logging.h"
-#include "flutter/fml/mapping.h"
-#include "impeller/renderer/backend/gles/capabilities_gles.h"
-#include "impeller/renderer/backend/gles/description_gles.h"
-#include "impeller/renderer/backend/gles/gles.h"
+#include "fml/logging.h"
+#include "fml/mapping.h"
+#include "renderer/backend/gles/capabilities_gles.h"
+#include "renderer/backend/gles/description_gles.h"
+#include "renderer/backend/gles/gles.h"
 
 /// Enable to allow GLES to push/pop labels for usage in GPU traces
 #define IP_ENABLE_GLES_LABELING false

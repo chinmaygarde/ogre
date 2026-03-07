@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_DASHED_LINE_PATH_SOURCE_H_
 #define FLUTTER_IMPELLER_GEOMETRY_DASHED_LINE_PATH_SOURCE_H_
 
-#include "flutter/impeller/geometry/path_source.h"
-#include "flutter/impeller/geometry/point.h"
-#include "flutter/impeller/geometry/scalar.h"
+#include "geometry/path_source.h"
+#include "geometry/point.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

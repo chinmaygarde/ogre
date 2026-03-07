@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/blit_pass_mtl.h"
+#include "renderer/backend/metal/blit_pass_mtl.h"
 
 #include <Metal/Metal.h>
 #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
@@ -11,20 +11,20 @@
 #include <utility>
 #include <variant>
 
-#include "flutter/fml/closure.h"
-#include "flutter/fml/logging.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/host_buffer.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/metal/device_buffer_mtl.h"
-#include "impeller/renderer/backend/metal/formats_mtl.h"
-#include "impeller/renderer/backend/metal/pipeline_mtl.h"
-#include "impeller/renderer/backend/metal/sampler_mtl.h"
-#include "impeller/renderer/backend/metal/texture_mtl.h"
+#include "base/backend_cast.h"
+#include "core/formats.h"
+#include "core/host_buffer.h"
+#include "core/shader_types.h"
+#include "fml/closure.h"
+#include "fml/logging.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/metal/device_buffer_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/pipeline_mtl.h"
+#include "renderer/backend/metal/sampler_mtl.h"
+#include "renderer/backend/metal/texture_mtl.h"
 
-#include "impeller/renderer/blit_command.h"
+#include "renderer/blit_command.h"
 
 namespace impeller {
 

@@ -6,8 +6,8 @@
 #define FLUTTER_IMPELLER_CORE_TEXTURE_DESCRIPTOR_H_
 
 #include <cstdint>
-#include "impeller/core/formats.h"
-#include "impeller/geometry/size.h"
+#include "core/formats.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

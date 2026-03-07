@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/command_buffer.h"
+#include "renderer/command_buffer.h"
 
-#include "impeller/renderer/compute_pass.h"
-#include "impeller/renderer/render_pass.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/compute_pass.h"
+#include "renderer/render_pass.h"
+#include "renderer/render_target.h"
 
 namespace impeller {
 

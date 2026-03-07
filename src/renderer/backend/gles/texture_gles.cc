@@ -2,21 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/texture_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
 
 #include <format>
 #include <optional>
 #include <utility>
 
-#include "flutter/fml/logging.h"
-#include "flutter/fml/mapping.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/allocation.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/renderer/backend/gles/formats_gles.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
+#include "base/allocation.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
+#include "fml/logging.h"
+#include "fml/mapping.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/gles/formats_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
 
 namespace impeller {
 

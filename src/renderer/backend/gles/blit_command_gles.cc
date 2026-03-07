@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/blit_command_gles.h"
+#include "renderer/backend/gles/blit_command_gles.h"
 
-#include "flutter/fml/closure.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/geometry/point.h"
-#include "impeller/renderer/backend/gles/device_buffer_gles.h"
-#include "impeller/renderer/backend/gles/formats_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/backend/gles/texture_gles.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "fml/closure.h"
+#include "geometry/point.h"
+#include "renderer/backend/gles/device_buffer_gles.h"
+#include "renderer/backend/gles/formats_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
 
 namespace impeller {
 

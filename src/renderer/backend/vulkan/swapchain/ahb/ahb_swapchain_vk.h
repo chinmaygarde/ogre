@@ -5,11 +5,11 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SWAPCHAIN_AHB_AHB_SWAPCHAIN_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SWAPCHAIN_AHB_AHB_SWAPCHAIN_VK_H_
 
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_impl_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/swapchain_vk.h"
-#include "impeller/toolkit/android/native_window.h"
-#include "impeller/toolkit/android/surface_control.h"
-#include "impeller/toolkit/android/surface_transaction.h"
+#include "renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_impl_vk.h"
+#include "renderer/backend/vulkan/swapchain/swapchain_vk.h"
+#include "toolkit/android/native_window.h"
+#include "toolkit/android/surface_control.h"
+#include "toolkit/android/surface_transaction.h"
 
 namespace impeller {
 

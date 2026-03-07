@@ -5,15 +5,15 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_COMMAND_BUFFER_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_COMMAND_BUFFER_VK_H_
 
+#include "base/backend_cast.h"
 #include "fml/status_or.h"
-#include "impeller/base/backend_cast.h"
-#include "impeller/renderer/backend/vulkan/command_queue_vk.h"
-#include "impeller/renderer/backend/vulkan/descriptor_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_source_vk.h"
-#include "impeller/renderer/backend/vulkan/tracked_objects_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/command_buffer.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
+#include "renderer/backend/vulkan/descriptor_pool_vk.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
+#include "renderer/backend/vulkan/tracked_objects_vk.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 

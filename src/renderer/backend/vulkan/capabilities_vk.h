@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
-#include "impeller/renderer/capabilities.h"
+#include "base/backend_cast.h"
+#include "core/texture_descriptor.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
+#include "renderer/capabilities.h"
 
 namespace impeller {
 

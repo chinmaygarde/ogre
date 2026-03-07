@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/render_pass.h"
+#include "renderer/render_pass.h"
 
 #include <utility>
+#include "base/validation.h"
+#include "core/vertex_buffer.h"
 #include "fml/status.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/vertex_buffer.h"
 
 namespace impeller {
 

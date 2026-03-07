@@ -2,24 +2,24 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/render_pass_gles.h"
+#include "renderer/backend/gles/render_pass_gles.h"
 
 #include <cstdint>
 
-#include "flutter/fml/trace_event.h"
+#include "base/validation.h"
+#include "core/buffer_view.h"
+#include "core/formats.h"
 #include "fml/closure.h"
 #include "fml/logging.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/gles/buffer_bindings_gles.h"
-#include "impeller/renderer/backend/gles/context_gles.h"
-#include "impeller/renderer/backend/gles/device_buffer_gles.h"
-#include "impeller/renderer/backend/gles/formats_gles.h"
-#include "impeller/renderer/backend/gles/gpu_tracer_gles.h"
-#include "impeller/renderer/backend/gles/pipeline_gles.h"
-#include "impeller/renderer/backend/gles/texture_gles.h"
-#include "impeller/renderer/command.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/gles/buffer_bindings_gles.h"
+#include "renderer/backend/gles/context_gles.h"
+#include "renderer/backend/gles/device_buffer_gles.h"
+#include "renderer/backend/gles/formats_gles.h"
+#include "renderer/backend/gles/gpu_tracer_gles.h"
+#include "renderer/backend/gles/pipeline_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
+#include "renderer/command.h"
 
 namespace impeller {
 

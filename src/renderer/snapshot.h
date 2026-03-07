@@ -9,11 +9,11 @@
 #include <memory>
 #include <vector>
 
-#include "impeller/core/formats.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/core/texture.h"
-#include "impeller/geometry/matrix.h"
-#include "impeller/geometry/rect.h"
+#include "core/formats.h"
+#include "core/sampler_descriptor.h"
+#include "core/texture.h"
+#include "geometry/matrix.h"
+#include "geometry/rect.h"
 
 namespace impeller {
 

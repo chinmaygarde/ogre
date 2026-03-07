@@ -9,7 +9,7 @@
 #include "fml/closure.h"
 #include "fml/synchronization/waitable_event.h"
 #include "gtest/gtest.h"
-#include "impeller/renderer/backend/vulkan/resource_manager_vk.h"
+#include "renderer/backend/vulkan/resource_manager_vk.h"
 
 namespace impeller {
 namespace testing {

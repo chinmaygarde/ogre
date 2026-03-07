@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/capabilities_gles.h"
+#include "renderer/backend/gles/capabilities_gles.h"
 
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
+#include "core/formats.h"
+#include "renderer/backend/gles/proc_table_gles.h"
 
 namespace impeller {
 

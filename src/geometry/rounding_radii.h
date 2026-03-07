@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_ROUNDING_RADII_H_
 #define FLUTTER_IMPELLER_GEOMETRY_ROUNDING_RADII_H_
 
-#include "flutter/impeller/geometry/point.h"
-#include "flutter/impeller/geometry/rect.h"
-#include "flutter/impeller/geometry/size.h"
+#include "geometry/point.h"
+#include "geometry/rect.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

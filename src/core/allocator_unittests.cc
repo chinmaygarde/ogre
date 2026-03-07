@@ -3,12 +3,12 @@
 // found in the LICENSE file.
 
 #include <memory>
+#include "core/allocator.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
 #include "flutter/testing/testing.h"
-#include "impeller/core/allocator.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/geometry/size.h"
-#include "impeller/renderer/testing/mocks.h"
+#include "geometry/size.h"
+#include "renderer/testing/mocks.h"
 
 namespace impeller {
 namespace testing {

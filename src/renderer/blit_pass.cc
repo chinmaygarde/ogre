@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/blit_pass.h"
+#include "renderer/blit_pass.h"
 
 #include <format>
 #include <memory>
 #include <utility>
 
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
+#include "base/validation.h"
+#include "core/formats.h"
 
 namespace impeller {
 

@@ -5,12 +5,12 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SHADER_LIBRARY_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SHADER_LIBRARY_VK_H_
 
-#include "impeller/base/comparable.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/shader_key.h"
-#include "impeller/renderer/shader_library.h"
+#include "base/comparable.h"
+#include "base/thread.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/shader_key.h"
+#include "renderer/shader_library.h"
 
 namespace impeller {
 

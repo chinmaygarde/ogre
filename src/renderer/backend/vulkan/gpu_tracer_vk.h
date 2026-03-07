@@ -8,8 +8,8 @@
 #include <memory>
 #include <thread>
 
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
 #include "vulkan/vulkan_handles.hpp"
 
 namespace impeller {

@@ -6,9 +6,9 @@
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "fml/synchronization/count_down_latch.h"
 #include "gtest/gtest.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/gpu_tracer_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/gpu_tracer_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 
 namespace impeller {
 namespace testing {

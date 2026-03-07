@@ -5,14 +5,14 @@
 #ifndef FLUTTER_FML_UNIQUE_FD_H_
 #define FLUTTER_FML_UNIQUE_FD_H_
 
-#include "flutter/fml/build_config.h"
-#include "flutter/fml/unique_object.h"
+#include "fml/build_config.h"
+#include "fml/unique_object.h"
 
 #if FML_OS_WIN
 #include <map>
 #include <mutex>
 #include <optional>
-#include "flutter/fml/platform/win/windows_shim.h"
+#include "fml/platform/win/windows_shim.h"
 #else  // FML_OS_WIN
 #include <dirent.h>
 #include <unistd.h>

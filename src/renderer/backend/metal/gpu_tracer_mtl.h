@@ -9,9 +9,9 @@
 
 #include <memory>
 #include <optional>
-#include "impeller/base/thread.h"
-#include "impeller/base/thread_safety.h"
-#include "impeller/geometry/scalar.h"
+#include "base/thread.h"
+#include "base/thread_safety.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

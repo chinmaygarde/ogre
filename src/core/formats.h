@@ -10,12 +10,12 @@
 #include <memory>
 #include <string>
 
-#include "flutter/fml/hash_combine.h"
-#include "flutter/fml/logging.h"
-#include "impeller/base/mask.h"
-#include "impeller/geometry/color.h"
-#include "impeller/geometry/rect.h"
-#include "impeller/geometry/scalar.h"
+#include "base/mask.h"
+#include "fml/hash_combine.h"
+#include "fml/logging.h"
+#include "geometry/color.h"
+#include "geometry/rect.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

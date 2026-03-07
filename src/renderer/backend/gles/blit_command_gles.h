@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_BLIT_COMMAND_GLES_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_BLIT_COMMAND_GLES_H_
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/blit_command.h"
+#include "base/backend_cast.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/blit_command.h"
 
 namespace impeller {
 

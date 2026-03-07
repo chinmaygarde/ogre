@@ -7,9 +7,9 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/renderer/backend/metal/compute_pass_bindings_cache_mtl.h"
-#include "impeller/renderer/compute_pass.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "renderer/backend/metal/compute_pass_bindings_cache_mtl.h"
+#include "renderer/compute_pass.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

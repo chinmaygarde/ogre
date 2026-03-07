@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_UNIQUE_HANDLE_GLES_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_UNIQUE_HANDLE_GLES_H_
 
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
 
 namespace impeller {
 

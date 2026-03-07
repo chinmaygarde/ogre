@@ -7,8 +7,8 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/renderer/compute_pass.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "renderer/compute_pass.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

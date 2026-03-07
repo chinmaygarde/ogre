@@ -5,19 +5,19 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_TESTING_MOCKS_H_
 #define FLUTTER_IMPELLER_RENDERER_TESTING_MOCKS_H_
 
+#include "core/allocator.h"
+#include "core/runtime_types.h"
+#include "core/sampler_descriptor.h"
+#include "core/texture.h"
 #include "gmock/gmock.h"
-#include "impeller/core/allocator.h"
-#include "impeller/core/runtime_types.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/core/texture.h"
-#include "impeller/renderer/command_buffer.h"
-#include "impeller/renderer/command_queue.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/pipeline.h"
-#include "impeller/renderer/pipeline_library.h"
-#include "impeller/renderer/render_pass.h"
-#include "impeller/renderer/render_target.h"
-#include "impeller/renderer/sampler_library.h"
+#include "renderer/command_buffer.h"
+#include "renderer/command_queue.h"
+#include "renderer/context.h"
+#include "renderer/pipeline.h"
+#include "renderer/pipeline_library.h"
+#include "renderer/render_pass.h"
+#include "renderer/render_target.h"
+#include "renderer/sampler_library.h"
 
 #define FLT_FORWARD(mock, real, method) \
   EXPECT_CALL(*mock, method())          \

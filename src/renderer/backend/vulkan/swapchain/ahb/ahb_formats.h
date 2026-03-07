@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SWAPCHAIN_AHB_AHB_FORMATS_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SWAPCHAIN_AHB_AHB_FORMATS_H_
 
-#include "impeller/core/formats.h"
-#include "impeller/toolkit/android/hardware_buffer.h"
+#include "core/formats.h"
+#include "toolkit/android/hardware_buffer.h"
 
 namespace impeller {
 

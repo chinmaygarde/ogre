@@ -4,14 +4,14 @@
 
 #include <algorithm>
 #include <memory>
-#include "flutter/fml/synchronization/waitable_event.h"
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
+#include "fml/synchronization/waitable_event.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/backend/gles/test/mock_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/test/mock_gles.h"
 
 namespace impeller {
 namespace testing {

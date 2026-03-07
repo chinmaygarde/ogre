@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/core/sampler_descriptor.h"
+#include "core/sampler_descriptor.h"
 
 namespace impeller {
 

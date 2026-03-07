@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/device_buffer_vk.h"
+#include "renderer/backend/vulkan/device_buffer_vk.h"
 
 #include "flutter/flutter_vma/flutter_vma.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
 
 namespace impeller {
 

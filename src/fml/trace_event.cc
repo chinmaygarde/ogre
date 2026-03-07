@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/fml/trace_event.h"
+#include "fml/trace_event.h"
 
 #include <algorithm>
 #include <atomic>
 #include <utility>
 
-#include "flutter/fml/ascii_trie.h"
-#include "flutter/fml/build_config.h"
-#include "flutter/fml/logging.h"
+#include "fml/ascii_trie.h"
+#include "fml/build_config.h"
+#include "fml/logging.h"
 
 namespace fml {
 namespace tracing {
@@ -370,8 +370,6 @@ void TraceEventFlowEnd0(TraceArg category_group, TraceArg name, TraceIDArg id) {
 
 void TraceSetAllowlist(const std::vector<std::string>& allowlist) {}
 
-void TraceSetTimelineEventHandler(TimelineEventHandler handler) {}
-
 bool TraceHasTimelineEventHandler() {
   return false;
 }
@@ -380,12 +378,14 @@ int64_t TraceGetTimelineMicros() {
   return -1;
 }
 
-void TraceSetTimelineMicrosSource(TimelineMicrosSource source) {}
-
 size_t TraceNonce() {
   return 0;
 }
 
+#if FLUTTER_TIMELINE_ENABLED
+void TraceSetTimelineEventHandler(TimelineEventHandler handler) {}
+
+void TraceSetTimelineMicrosSource(TimelineMicrosSource source) {}
 void TraceTimelineEvent(TraceArg category_group,
                         TraceArg name,
                         int64_t timestamp_micros,
@@ -404,6 +404,7 @@ void TraceTimelineEvent(TraceArg category_group,
                         Dart_Timeline_Event_Type type,
                         const std::vector<const char*>& c_names,
                         const std::vector<std::string>& values) {}
+#endif
 
 void TraceEvent0(TraceArg category_group,
                  TraceArg name,

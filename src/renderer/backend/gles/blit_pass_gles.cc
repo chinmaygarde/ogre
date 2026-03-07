@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/blit_pass_gles.h"
+#include "renderer/backend/gles/blit_pass_gles.h"
 
 #include <memory>
 
-#include "flutter/fml/trace_event.h"
+#include "core/formats.h"
 #include "fml/closure.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/gles/blit_command_gles.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/gles/blit_command_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
 
 namespace impeller {
 

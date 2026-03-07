@@ -8,9 +8,9 @@
 #include <functional>
 #include <memory>
 
-#include "impeller/renderer/backend/gles/gles.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/surface.h"
+#include "renderer/backend/gles/gles.h"
+#include "renderer/context.h"
+#include "renderer/surface.h"
 
 namespace impeller {
 

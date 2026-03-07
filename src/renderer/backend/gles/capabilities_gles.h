@@ -7,11 +7,11 @@
 
 #include <cstddef>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/geometry/size.h"
-#include "impeller/renderer/capabilities.h"
+#include "base/backend_cast.h"
+#include "core/formats.h"
+#include "core/shader_types.h"
+#include "geometry/size.h"
+#include "renderer/capabilities.h"
 
 namespace impeller {
 

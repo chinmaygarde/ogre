@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
 
 #include <format>
 #include <sstream>
 
 #include "GLES3/gl3.h"
-#include "impeller/base/allocation.h"
-#include "impeller/base/comparable.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/gles/capabilities_gles.h"
-#include "impeller/renderer/capabilities.h"
+#include "base/allocation.h"
+#include "base/comparable.h"
+#include "base/validation.h"
+#include "renderer/backend/gles/capabilities_gles.h"
+#include "renderer/capabilities.h"
 
 namespace impeller {
 

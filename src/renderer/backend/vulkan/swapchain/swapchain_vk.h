@@ -7,16 +7,16 @@
 
 #include <memory>
 
-#include "flutter/fml/build_config.h"
-#include "impeller/geometry/size.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/command_buffer.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/surface.h"
+#include "fml/build_config.h"
+#include "geometry/size.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/command_buffer.h"
+#include "renderer/context.h"
+#include "renderer/surface.h"
 
 #if FML_OS_ANDROID
-#include "impeller/toolkit/android/native_window.h"
-#include "impeller/toolkit/android/surface_transaction.h"
+#include "toolkit/android/native_window.h"
+#include "toolkit/android/surface_transaction.h"
 #endif  // FML_OS_ANDROID
 
 namespace impeller {

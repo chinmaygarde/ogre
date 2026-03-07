@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/device_buffer_gles.h"
+#include "renderer/backend/gles/device_buffer_gles.h"
 
 #include <cstring>
 #include <memory>
 
-#include "impeller/base/allocation.h"
-#include "impeller/base/config.h"
+#include "base/allocation.h"
+#include "base/config.h"
 
 namespace impeller {
 

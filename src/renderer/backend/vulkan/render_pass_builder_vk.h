@@ -8,9 +8,9 @@
 #include <map>
 #include <optional>
 
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "core/formats.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

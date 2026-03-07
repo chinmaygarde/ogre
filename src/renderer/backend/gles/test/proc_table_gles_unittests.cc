@@ -7,8 +7,8 @@
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
-#include "impeller/renderer/backend/gles/test/mock_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/test/mock_gles.h"
 
 namespace impeller {
 namespace testing {

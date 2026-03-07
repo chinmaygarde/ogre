@@ -7,11 +7,11 @@
 
 #include <memory>
 
-#include "impeller/geometry/size.h"
-#include "impeller/renderer/backend/vulkan/swapchain/swapchain_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/surface.h"
+#include "geometry/size.h"
+#include "renderer/backend/vulkan/swapchain/swapchain_vk.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/context.h"
+#include "renderer/surface.h"
 
 namespace impeller {
 

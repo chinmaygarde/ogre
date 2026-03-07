@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/texture_wrapper_mtl.h"
+#include "renderer/backend/metal/texture_wrapper_mtl.h"
 
 #include <Metal/Metal.h>
 
-#include "impeller/renderer/backend/metal/formats_mtl.h"
-#include "impeller/renderer/backend/metal/texture_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/texture_mtl.h"
 
 namespace impeller {
 

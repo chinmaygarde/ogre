@@ -8,7 +8,7 @@
 #include <functional>
 #include <vector>
 
-#include "flutter/impeller/geometry/point.h"
+#include "geometry/point.h"
 
 namespace impeller {
 

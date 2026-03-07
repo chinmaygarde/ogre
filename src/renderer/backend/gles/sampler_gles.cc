@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/sampler_gles.h"
+#include "renderer/backend/gles/sampler_gles.h"
 
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/backend/gles/formats_gles.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
-#include "impeller/renderer/backend/gles/texture_gles.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/sampler_descriptor.h"
+#include "renderer/backend/gles/formats_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
 
 namespace impeller {
 

@@ -12,10 +12,10 @@
 #include <string>
 #include <unordered_map>
 
-#include "impeller/base/comparable.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/shader_key.h"
-#include "impeller/renderer/shader_library.h"
+#include "base/comparable.h"
+#include "base/thread.h"
+#include "renderer/shader_key.h"
+#include "renderer/shader_library.h"
 
 namespace impeller {
 

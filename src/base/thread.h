@@ -13,7 +13,7 @@
 #include <shared_mutex>
 #include <thread>
 
-#include "impeller/base/thread_safety.h"
+#include "base/thread_safety.h"
 
 namespace impeller {
 

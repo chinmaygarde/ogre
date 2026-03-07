@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "gtest/gtest.h"  // IWYU pragma: keep
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
 
 namespace impeller {
 namespace testing {

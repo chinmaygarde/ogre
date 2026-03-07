@@ -7,7 +7,7 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/renderer/blit_pass.h"
+#include "renderer/blit_pass.h"
 
 namespace impeller {
 

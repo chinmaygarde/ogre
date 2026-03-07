@@ -10,7 +10,7 @@
 #include <type_traits>
 #include <valarray>
 
-#include "impeller/geometry/constants.h"
+#include "geometry/constants.h"
 
 namespace impeller {
 

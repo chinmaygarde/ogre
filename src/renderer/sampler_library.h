@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_SAMPLER_LIBRARY_H_
 #define FLUTTER_IMPELLER_RENDERER_SAMPLER_LIBRARY_H_
 
-#include "impeller/core/raw_ptr.h"
-#include "impeller/core/sampler.h"
-#include "impeller/core/sampler_descriptor.h"
+#include "core/raw_ptr.h"
+#include "core/sampler.h"
+#include "core/sampler_descriptor.h"
 
 namespace impeller {
 

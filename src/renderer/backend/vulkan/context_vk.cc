@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
 #include <thread>
 #include <unordered_map>
 
+#include "core/formats.h"
+#include "core/runtime_types.h"
 #include "fml/concurrent_message_loop.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/runtime_types.h"
-#include "impeller/renderer/backend/vulkan/command_queue_vk.h"
-#include "impeller/renderer/backend/vulkan/descriptor_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/render_pass_builder_vk.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
+#include "renderer/backend/vulkan/descriptor_pool_vk.h"
+#include "renderer/backend/vulkan/render_pass_builder_vk.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
+#include "renderer/render_target.h"
 
 #ifdef FML_OS_ANDROID
 #include <pthread.h>
@@ -27,22 +27,22 @@
 #include <string>
 #include <vector>
 
-#include "flutter/fml/cpu_affinity.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/allocator_vk.h"
-#include "impeller/renderer/backend/vulkan/capabilities_vk.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/command_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/command_queue_vk.h"
-#include "impeller/renderer/backend/vulkan/debug_report_vk.h"
-#include "impeller/renderer/backend/vulkan/descriptor_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/fence_waiter_vk.h"
-#include "impeller/renderer/backend/vulkan/gpu_tracer_vk.h"
-#include "impeller/renderer/backend/vulkan/resource_manager_vk.h"
-#include "impeller/renderer/backend/vulkan/surface_context_vk.h"
-#include "impeller/renderer/backend/vulkan/yuv_conversion_library_vk.h"
-#include "impeller/renderer/capabilities.h"
+#include "base/validation.h"
+#include "fml/cpu_affinity.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/command_pool_vk.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
+#include "renderer/backend/vulkan/debug_report_vk.h"
+#include "renderer/backend/vulkan/descriptor_pool_vk.h"
+#include "renderer/backend/vulkan/fence_waiter_vk.h"
+#include "renderer/backend/vulkan/gpu_tracer_vk.h"
+#include "renderer/backend/vulkan/resource_manager_vk.h"
+#include "renderer/backend/vulkan/surface_context_vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_library_vk.h"
+#include "renderer/capabilities.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 

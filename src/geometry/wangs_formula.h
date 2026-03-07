@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_WANGS_FORMULA_H_
 #define FLUTTER_IMPELLER_GEOMETRY_WANGS_FORMULA_H_
 
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/scalar.h"
+#include "geometry/point.h"
+#include "geometry/scalar.h"
 
 // Skia GPU Ports
 

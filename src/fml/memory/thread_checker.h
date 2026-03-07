@@ -8,12 +8,12 @@
 #ifndef FLUTTER_FML_MEMORY_THREAD_CHECKER_H_
 #define FLUTTER_FML_MEMORY_THREAD_CHECKER_H_
 
-#include "flutter/fml/build_config.h"
-#include "flutter/fml/logging.h"
-#include "flutter/fml/macros.h"
+#include "fml/build_config.h"
+#include "fml/logging.h"
+#include "fml/macros.h"
 
 #if defined(FML_OS_WIN)
-#include "flutter/fml/platform/win/windows_shim.h"
+#include "fml/platform/win/windows_shim.h"
 #else
 #include <pthread.h>
 #endif

@@ -2,28 +2,28 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/render_pass_vk.h"
+#include "renderer/backend/vulkan/render_pass_vk.h"
 
 #include <array>
 #include <cstdint>
 
+#include "base/validation.h"
+#include "core/buffer_view.h"
+#include "core/device_buffer.h"
+#include "core/formats.h"
+#include "core/texture.h"
+#include "core/vertex_buffer.h"
 #include "fml/status.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture.h"
-#include "impeller/core/vertex_buffer.h"
-#include "impeller/renderer/backend/vulkan/barrier_vk.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/device_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/pipeline_vk.h"
-#include "impeller/renderer/backend/vulkan/render_pass_builder_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
-#include "impeller/renderer/backend/vulkan/shared_object_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
+#include "renderer/backend/vulkan/barrier_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/device_buffer_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/pipeline_vk.h"
+#include "renderer/backend/vulkan/render_pass_builder_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/shared_object_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace impeller {
 

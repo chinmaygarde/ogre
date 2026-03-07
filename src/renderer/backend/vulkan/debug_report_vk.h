@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_DEBUG_REPORT_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_DEBUG_REPORT_VK_H_
 
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

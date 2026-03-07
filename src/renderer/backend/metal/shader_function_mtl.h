@@ -7,8 +7,8 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/renderer/shader_function.h"
+#include "base/backend_cast.h"
+#include "renderer/shader_function.h"
 
 namespace impeller {
 

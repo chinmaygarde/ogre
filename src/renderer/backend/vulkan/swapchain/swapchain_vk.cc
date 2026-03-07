@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/swapchain_vk.h"
+#include "renderer/backend/vulkan/swapchain/swapchain_vk.h"
 
-#include "flutter/fml/trace_event.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/khr/khr_swapchain_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 #if FML_OS_ANDROID
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_vk.h"
+#include "renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_vk.h"
 #endif  // FML_OS_ANDROID
 
 namespace impeller {

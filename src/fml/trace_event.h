@@ -7,7 +7,7 @@
 
 #include <functional>
 
-#include "flutter/fml/build_config.h"
+#include "fml/build_config.h"
 
 #if defined(OS_FUCHSIA)
 
@@ -59,15 +59,11 @@
 #include <type_traits>
 #include <vector>
 
-#include "flutter/fml/macros.h"
-#include "flutter/fml/time/time_point.h"
-#include "third_party/dart/runtime/include/dart_tools_api.h"
+#include "fml/macros.h"
+#include "fml/time/time_point.h"
+// #include "third_party/dart/runtime/include/dart_tools_api.h"
 
-#if (FLUTTER_RELEASE && !defined(OS_FUCHSIA) && !defined(FML_OS_ANDROID))
 #define FLUTTER_TIMELINE_ENABLED 0
-#else
-#define FLUTTER_TIMELINE_ENABLED 1
-#endif
 
 #if !defined(OS_FUCHSIA)
 #ifndef TRACE_EVENT_HIDE_MACROS
@@ -214,6 +210,8 @@ using TraceIDArg = int64_t;
 
 void TraceSetAllowlist(const std::vector<std::string>& allowlist);
 
+#if FLUTTER_TIMELINE_ENABLED
+
 typedef void (*TimelineEventHandler)(const char*,
                                      int64_t,
                                      int64_t,
@@ -252,6 +250,8 @@ void TraceTimelineEvent(TraceArg category_group,
                         Dart_Timeline_Event_Type type,
                         const std::vector<const char*>& names,
                         const std::vector<std::string>& values);
+
+#endif
 
 inline std::string TraceToString(const char* string) {
   return std::string{string};

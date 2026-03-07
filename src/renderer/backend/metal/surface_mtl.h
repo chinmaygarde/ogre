@@ -8,10 +8,10 @@
 #include <QuartzCore/CAMetalLayer.h>
 #include <memory>
 
-#include "impeller/geometry/rect.h"
-#include "impeller/renderer/backend/metal/swapchain_transients_mtl.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/surface.h"
+#include "geometry/rect.h"
+#include "renderer/backend/metal/swapchain_transients_mtl.h"
+#include "renderer/context.h"
+#include "renderer/surface.h"
 
 namespace impeller {
 

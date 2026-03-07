@@ -12,7 +12,7 @@
 #include <ostream>
 #include <string>
 
-#include "impeller/geometry/scalar.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

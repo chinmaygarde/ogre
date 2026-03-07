@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/pipeline_library_gles.h"
+#include "renderer/backend/gles/pipeline_library_gles.h"
 
 #include <sstream>
 #include <string>
 
-#include "flutter/fml/trace_event.h"
+#include "base/promise.h"
 #include "fml/closure.h"
-#include "impeller/base/promise.h"
-#include "impeller/renderer/backend/gles/pipeline_gles.h"
-#include "impeller/renderer/backend/gles/shader_function_gles.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/gles/pipeline_gles.h"
+#include "renderer/backend/gles/shader_function_gles.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

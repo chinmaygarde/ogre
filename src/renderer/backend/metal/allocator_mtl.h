@@ -8,8 +8,8 @@
 #include <Metal/Metal.h>
 #include <atomic>
 
-#include "impeller/base/thread.h"
-#include "impeller/core/allocator.h"
+#include "base/thread.h"
+#include "core/allocator.h"
 
 namespace impeller {
 

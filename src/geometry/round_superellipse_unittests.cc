@@ -4,10 +4,10 @@
 
 #include "gtest/gtest.h"
 
-#include "flutter/impeller/geometry/round_superellipse.h"
-#include "flutter/impeller/geometry/round_superellipse_param.h"
+#include "geometry/round_superellipse.h"
+#include "geometry/round_superellipse_param.h"
 
-#include "flutter/impeller/geometry/geometry_asserts.h"
+#include "geometry/geometry_asserts.h"
 
 #define CHECK_POINT_WITH_OFFSET(rr, p, outward_offset) \
   EXPECT_TRUE(rr.Contains(p));                         \

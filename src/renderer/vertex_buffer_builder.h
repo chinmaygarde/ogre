@@ -11,11 +11,11 @@
 #include <type_traits>
 #include <vector>
 
-#include "impeller/core/allocator.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/host_buffer.h"
-#include "impeller/core/vertex_buffer.h"
+#include "core/allocator.h"
+#include "core/device_buffer.h"
+#include "core/formats.h"
+#include "core/host_buffer.h"
+#include "core/vertex_buffer.h"
 
 namespace impeller {
 

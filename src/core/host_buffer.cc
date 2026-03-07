@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/core/host_buffer.h"
+#include "core/host_buffer.h"
 
 #include <cstring>
 #include <tuple>
 
-#include "impeller/base/validation.h"
-#include "impeller/core/allocator.h"
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/device_buffer_descriptor.h"
-#include "impeller/core/formats.h"
+#include "base/validation.h"
+#include "core/allocator.h"
+#include "core/buffer_view.h"
+#include "core/device_buffer.h"
+#include "core/device_buffer_descriptor.h"
+#include "core/formats.h"
 
 namespace impeller {
 

@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/pipeline.h"
+#include "renderer/pipeline.h"
 #include <optional>
 
+#include "base/promise.h"
 #include "compute_pipeline_descriptor.h"
-#include "impeller/base/promise.h"
-#include "impeller/renderer/compute_pipeline_descriptor.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/pipeline_library.h"
 #include "pipeline_descriptor.h"
+#include "renderer/compute_pipeline_descriptor.h"
+#include "renderer/context.h"
+#include "renderer/pipeline_library.h"
 
 namespace impeller {
 

@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "flutter/impeller/geometry/wangs_formula.h"
+#include "geometry/wangs_formula.h"
 
 namespace impeller {
 namespace testing {

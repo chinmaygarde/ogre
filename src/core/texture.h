@@ -7,10 +7,10 @@
 
 #include <string_view>
 
-#include "flutter/fml/mapping.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/geometry/size.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
+#include "fml/mapping.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

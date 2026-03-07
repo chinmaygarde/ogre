@@ -9,10 +9,10 @@
 #include <memory>
 #include <vector>
 
+#include "base/thread.h"
 #include "fml/closure.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace impeller {

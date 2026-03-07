@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/android/ahb_texture_source_vk.h"
+#include "renderer/backend/vulkan/android/ahb_texture_source_vk.h"
 
-#include "impeller/renderer/backend/vulkan/allocator_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_source_vk.h"
-#include "impeller/renderer/backend/vulkan/yuv_conversion_library_vk.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_library_vk.h"
 
 // vulkan.hpp generates some clang-tidy warnings.
 // NOLINTBEGIN(clang-analyzer-security.PointerSub)

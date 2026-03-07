@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_SAMPLER_LIBRARY_GLES_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_SAMPLER_LIBRARY_GLES_H_
 
-#include "impeller/core/sampler.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/backend/gles/sampler_gles.h"
-#include "impeller/renderer/sampler_library.h"
+#include "core/sampler.h"
+#include "core/sampler_descriptor.h"
+#include "renderer/backend/gles/sampler_gles.h"
+#include "renderer/sampler_library.h"
 
 namespace impeller {
 

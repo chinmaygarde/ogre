@@ -7,8 +7,8 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/core/allocator.h"
-#include "impeller/renderer/command_buffer.h"
+#include "core/allocator.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 

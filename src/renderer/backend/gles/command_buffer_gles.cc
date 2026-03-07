@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/command_buffer_gles.h"
+#include "renderer/backend/gles/command_buffer_gles.h"
 
-#include "impeller/base/config.h"
-#include "impeller/renderer/backend/gles/blit_pass_gles.h"
-#include "impeller/renderer/backend/gles/render_pass_gles.h"
+#include "base/config.h"
+#include "renderer/backend/gles/blit_pass_gles.h"
+#include "renderer/backend/gles/render_pass_gles.h"
 
 namespace impeller {
 

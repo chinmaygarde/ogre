@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/impeller/playground/playground_test.h"
-#include "flutter/impeller/renderer/backend/gles/context_gles.h"
-#include "flutter/impeller/renderer/backend/gles/texture_gles.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
 #include "flutter/testing/testing.h"
 #include "gtest/gtest.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
-#include "impeller/renderer/backend/gles/test/mock_gles.h"
+#include "playground/playground_test.h"
+#include "renderer/backend/gles/context_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/test/mock_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
 
 namespace impeller::testing {
 

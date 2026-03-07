@@ -7,9 +7,9 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/texture.h"
-#include "impeller/renderer/backend/metal/allocator_mtl.h"
+#include "base/backend_cast.h"
+#include "core/texture.h"
+#include "renderer/backend/metal/allocator_mtl.h"
 
 namespace impeller {
 

@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/queue_vk.h"
+#include "renderer/backend/vulkan/queue_vk.h"
 
 #include <utility>
 
-#include "impeller/renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
 
 namespace impeller {
 

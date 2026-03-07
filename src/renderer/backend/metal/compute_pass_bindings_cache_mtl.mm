@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/compute_pass_bindings_cache_mtl.h"
+#include "renderer/backend/metal/compute_pass_bindings_cache_mtl.h"
 
 namespace impeller {
 

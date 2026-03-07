@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SWAPCHAIN_SWAPCHAIN_TRANSIENTS_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SWAPCHAIN_SWAPCHAIN_TRANSIENTS_VK_H_
 
-#include "impeller/core/texture.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/renderer/context.h"
+#include "core/texture.h"
+#include "core/texture_descriptor.h"
+#include "renderer/context.h"
 
 namespace impeller {
 

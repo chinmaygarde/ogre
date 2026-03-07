@@ -6,6 +6,8 @@
 
 #include <memory>
 
+#include "fixtures/texture.frag.h"
+#include "fixtures/texture.vert.h"
 #include "flutter/common/settings.h"
 #include "flutter/common/task_runners.h"
 #include "flutter/lib/gpu/context.h"
@@ -18,12 +20,10 @@
 #include "flutter/testing/test_dart_native_resolver.h"
 #include "flutter/testing/testing.h"
 #include "fml/memory/ref_ptr.h"
-#include "impeller/fixtures/texture.frag.h"
-#include "impeller/fixtures/texture.vert.h"
-#include "impeller/playground/playground_test.h"
-#include "impeller/renderer/pipeline_library.h"
-#include "impeller/renderer/render_pass.h"
-#include "impeller/renderer/vertex_buffer_builder.h"
+#include "playground/playground_test.h"
+#include "renderer/pipeline_library.h"
+#include "renderer/render_pass.h"
+#include "renderer/vertex_buffer_builder.h"
 
 #include "gtest/gtest.h"
 #include "third_party/imgui/imgui.h"

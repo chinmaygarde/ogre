@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/compute_pass_vk.h"
+#include "renderer/backend/vulkan/compute_pass_vk.h"
 
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/compute_pipeline_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/compute_pipeline_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "vulkan/vulkan_structs.hpp"
 
 namespace impeller {

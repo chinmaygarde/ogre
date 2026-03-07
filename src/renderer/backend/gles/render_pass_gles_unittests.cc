@@ -3,19 +3,19 @@
 // found in the LICENSE file.
 
 #include <memory>
+#include "core/formats.h"
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/gles/command_buffer_gles.h"
-#include "impeller/renderer/backend/gles/context_gles.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/backend/gles/test/mock_gles.h"
-#include "impeller/renderer/backend/gles/texture_gles.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/render_pass.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/backend/gles/command_buffer_gles.h"
+#include "renderer/backend/gles/context_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/test/mock_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
+#include "renderer/context.h"
+#include "renderer/render_pass.h"
+#include "renderer/render_target.h"
 
 namespace impeller {
 namespace testing {

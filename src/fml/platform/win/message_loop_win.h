@@ -5,13 +5,13 @@
 #ifndef FLUTTER_FML_PLATFORM_WIN_MESSAGE_LOOP_WIN_H_
 #define FLUTTER_FML_PLATFORM_WIN_MESSAGE_LOOP_WIN_H_
 
-#include "flutter/fml/platform/win/windows_shim.h"
+#include "fml/platform/win/windows_shim.h"
 
 #include <atomic>
 
-#include "flutter/fml/macros.h"
-#include "flutter/fml/message_loop_impl.h"
-#include "flutter/fml/unique_object.h"
+#include "fml/macros.h"
+#include "fml/message_loop_impl.h"
+#include "fml/unique_object.h"
 
 namespace fml {
 

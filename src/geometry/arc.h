@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_ARC_H_
 #define FLUTTER_IMPELLER_GEOMETRY_ARC_H_
 
-#include "flutter/impeller/geometry/rect.h"
-#include "flutter/impeller/geometry/scalar.h"
+#include "geometry/rect.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

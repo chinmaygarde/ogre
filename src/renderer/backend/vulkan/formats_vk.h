@@ -8,11 +8,11 @@
 #include <cstdint>
 #include <ostream>
 
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/shader_types.h"
 #include "fml/logging.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/vk.h"
 #include "vulkan/vulkan_enums.hpp"
 
 namespace impeller {

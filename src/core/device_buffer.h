@@ -8,10 +8,10 @@
 #include <memory>
 #include <string>
 
-#include "impeller/core/allocator.h"
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/device_buffer_descriptor.h"
-#include "impeller/core/range.h"
+#include "core/allocator.h"
+#include "core/buffer_view.h"
+#include "core/device_buffer_descriptor.h"
+#include "core/range.h"
 
 namespace impeller {
 

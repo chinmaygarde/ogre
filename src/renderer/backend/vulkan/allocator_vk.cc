@@ -2,20 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 
 #include <memory>
 #include <utility>
 
-#include "flutter/fml/memory/ref_ptr.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/allocation_size.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/capabilities_vk.h"
-#include "impeller/renderer/backend/vulkan/device_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
+#include "base/allocation_size.h"
+#include "core/formats.h"
+#include "fml/memory/ref_ptr.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/device_buffer_vk.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "vulkan/vulkan_enums.hpp"
 
 namespace impeller {

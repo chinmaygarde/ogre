@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "flutter/impeller/geometry/size.h"
+#include "geometry/size.h"
 
 namespace impeller {
 namespace testing {

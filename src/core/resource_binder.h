@@ -7,12 +7,12 @@
 
 #include <memory>
 
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/raw_ptr.h"
-#include "impeller/core/sampler.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/core/texture.h"
+#include "core/buffer_view.h"
+#include "core/formats.h"
+#include "core/raw_ptr.h"
+#include "core/sampler.h"
+#include "core/shader_types.h"
+#include "core/texture.h"
 
 namespace impeller {
 

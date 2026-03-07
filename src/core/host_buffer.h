@@ -11,8 +11,8 @@
 #include <memory>
 #include <type_traits>
 
-#include "impeller/core/allocator.h"
-#include "impeller/core/buffer_view.h"
+#include "core/allocator.h"
+#include "core/buffer_view.h"
 
 namespace impeller {
 

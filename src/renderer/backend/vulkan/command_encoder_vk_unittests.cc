@@ -6,8 +6,8 @@
 
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "fml/synchronization/waitable_event.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
-#include "impeller/renderer/command_buffer.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 namespace testing {

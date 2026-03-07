@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_vk.h"
+#include "renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_vk.h"
 
-#include "flutter/fml/trace_event.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/ahb_formats.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/swapchain/ahb/ahb_formats.h"
 #include "third_party/vulkan-deps/vulkan-headers/src/include/vulkan/vulkan_enums.hpp"
 
 namespace impeller {

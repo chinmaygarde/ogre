@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/vertex_descriptor_mtl.h"
+#include "renderer/backend/metal/vertex_descriptor_mtl.h"
 
-#include "flutter/fml/logging.h"
-#include "impeller/base/validation.h"
+#include "base/validation.h"
+#include "fml/logging.h"
 
 namespace impeller {
 

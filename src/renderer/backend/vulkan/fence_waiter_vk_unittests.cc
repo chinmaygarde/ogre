@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 #include "fml/synchronization/waitable_event.h"
-#include "gtest/gtest.h"  // IWYU pragma: keep
-#include "impeller/renderer/backend/vulkan/fence_waiter_vk.h"  // IWYU pragma: keep
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
+#include "gtest/gtest.h"                              // IWYU pragma: keep
+#include "renderer/backend/vulkan/fence_waiter_vk.h"  // IWYU pragma: keep
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 
 namespace impeller {
 namespace testing {

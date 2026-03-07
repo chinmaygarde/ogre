@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "impeller/renderer/pool.h"
+#include "renderer/pool.h"
 
 namespace impeller {
 namespace testing {

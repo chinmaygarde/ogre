@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_STROKE_PARAMETERS_H_
 #define FLUTTER_IMPELLER_GEOMETRY_STROKE_PARAMETERS_H_
 
-#include "flutter/impeller/geometry/scalar.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

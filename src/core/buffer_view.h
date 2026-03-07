@@ -6,7 +6,7 @@
 #define FLUTTER_IMPELLER_CORE_BUFFER_VIEW_H_
 
 #include <memory>
-#include "impeller/core/range.h"
+#include "core/range.h"
 
 namespace impeller {
 

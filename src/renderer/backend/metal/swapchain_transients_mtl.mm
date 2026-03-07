@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/swapchain_transients_mtl.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
+#include "renderer/backend/metal/swapchain_transients_mtl.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
 
 namespace impeller {
 

@@ -8,12 +8,12 @@
 #include <unordered_map>
 #include <vector>
 
-#include "flutter/fml/hash_combine.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/backend/gles/unique_handle_gles.h"
-#include "impeller/renderer/pipeline_library.h"
-#include "impeller/renderer/shader_function.h"
+#include "base/thread.h"
+#include "fml/hash_combine.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/unique_handle_gles.h"
+#include "renderer/pipeline_library.h"
+#include "renderer/shader_function.h"
 
 namespace impeller {
 

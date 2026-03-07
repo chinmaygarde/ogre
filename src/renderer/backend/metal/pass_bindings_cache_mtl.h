@@ -7,8 +7,8 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/renderer/render_pass.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/render_pass.h"
+#include "renderer/render_target.h"
 
 namespace impeller {
 

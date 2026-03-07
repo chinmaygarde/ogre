@@ -7,11 +7,11 @@
 
 #include <bitset>
 
+#include "base/backend_cast.h"
+#include "core/texture.h"
 #include "fml/logging.h"
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/texture.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
 
 namespace impeller {
 

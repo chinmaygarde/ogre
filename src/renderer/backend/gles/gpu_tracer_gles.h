@@ -9,7 +9,7 @@
 #include <deque>
 #include <thread>
 
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
+#include "renderer/backend/gles/proc_table_gles.h"
 
 namespace impeller {
 

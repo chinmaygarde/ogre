@@ -8,8 +8,8 @@
 #include <memory>
 #include <string>
 
-#include "impeller/base/comparable.h"
-#include "impeller/core/shader_types.h"
+#include "base/comparable.h"
+#include "core/shader_types.h"
 
 namespace impeller {
 

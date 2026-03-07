@@ -7,10 +7,10 @@
 
 #include <string>
 
+#include "core/resource_binder.h"
 #include "fml/status.h"
-#include "impeller/core/resource_binder.h"
-#include "impeller/renderer/compute_pipeline_descriptor.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "renderer/compute_pipeline_descriptor.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

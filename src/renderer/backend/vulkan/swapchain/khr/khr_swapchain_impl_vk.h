@@ -8,9 +8,9 @@
 #include <cstdint>
 #include <memory>
 
-#include "impeller/geometry/size.h"
-#include "impeller/renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "geometry/size.h"
+#include "renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

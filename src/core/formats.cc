@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/core/formats.h"
+#include "core/formats.h"
 
 #include <format>
 #include <sstream>
 
-#include "impeller/base/validation.h"
-#include "impeller/core/texture.h"
+#include "base/validation.h"
+#include "core/texture.h"
 
 namespace impeller {
 

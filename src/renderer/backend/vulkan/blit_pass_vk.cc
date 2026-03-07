@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/blit_pass_vk.h"
+#include "renderer/backend/vulkan/blit_pass_vk.h"
 
-#include "impeller/renderer/backend/vulkan/barrier_vk.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
+#include "renderer/backend/vulkan/barrier_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "vulkan/vulkan_core.h"
 #include "vulkan/vulkan_enums.hpp"
 #include "vulkan/vulkan_structs.hpp"

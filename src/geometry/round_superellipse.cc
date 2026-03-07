@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/impeller/geometry/round_superellipse.h"
+#include "geometry/round_superellipse.h"
 
-#include "flutter/impeller/geometry/round_rect.h"
-#include "flutter/impeller/geometry/round_superellipse_param.h"
+#include "geometry/round_rect.h"
+#include "geometry/round_superellipse_param.h"
 
 namespace impeller {
 

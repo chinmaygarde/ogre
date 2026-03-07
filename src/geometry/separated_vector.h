@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_SEPARATED_VECTOR_H_
 #define FLUTTER_IMPELLER_GEOMETRY_SEPARATED_VECTOR_H_
 
-#include "impeller/geometry/point.h"
+#include "geometry/point.h"
 
-#include "impeller/geometry/scalar.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

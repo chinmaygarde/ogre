@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/impeller/playground/playground_test.h"
-#include "flutter/impeller/renderer/backend/gles/context_gles.h"
-#include "flutter/impeller/renderer/backend/gles/surface_gles.h"
-#include "flutter/impeller/renderer/backend/gles/texture_gles.h"
 #include "flutter/testing/testing.h"
+#include "playground/playground_test.h"
+#include "renderer/backend/gles/context_gles.h"
+#include "renderer/backend/gles/surface_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
 
 namespace impeller::testing {
 

@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
+#include "renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
 
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
+#include "base/validation.h"
+#include "renderer/backend/vulkan/context_vk.h"
 #include "vulkan/vulkan_handles.hpp"
 
 namespace impeller {

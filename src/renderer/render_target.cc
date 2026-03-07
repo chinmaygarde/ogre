@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/render_target.h"
+#include "renderer/render_target.h"
 
 #include <format>
 #include <sstream>
 
-#include "impeller/base/validation.h"
-#include "impeller/core/allocator.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/renderer/context.h"
+#include "base/validation.h"
+#include "core/allocator.h"
+#include "core/formats.h"
+#include "core/texture.h"
+#include "core/texture_descriptor.h"
+#include "renderer/context.h"
 
 namespace impeller {
 

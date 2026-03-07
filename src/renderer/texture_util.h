@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_TEXTURE_UTIL_H_
 #define FLUTTER_IMPELLER_RENDERER_TEXTURE_UTIL_H_
 
-#include "flutter/fml/status.h"
-#include "impeller/core/texture.h"
-#include "impeller/renderer/command_buffer.h"
-#include "impeller/renderer/context.h"
+#include "core/texture.h"
+#include "fml/status.h"
+#include "renderer/command_buffer.h"
+#include "renderer/context.h"
 
 namespace impeller {
 

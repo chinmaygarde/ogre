@@ -2,20 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
 
 #include <memory>
 #include <utility>
 
 #include "fml/logging.h"
-#include "impeller/renderer/backend/vulkan/blit_pass_vk.h"
-#include "impeller/renderer/backend/vulkan/compute_pass_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/gpu_tracer_vk.h"
-#include "impeller/renderer/backend/vulkan/render_pass_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
-#include "impeller/renderer/command_buffer.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/backend/vulkan/blit_pass_vk.h"
+#include "renderer/backend/vulkan/compute_pass_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/gpu_tracer_vk.h"
+#include "renderer/backend/vulkan/render_pass_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
+#include "renderer/command_buffer.h"
+#include "renderer/render_target.h"
 
 namespace impeller {
 

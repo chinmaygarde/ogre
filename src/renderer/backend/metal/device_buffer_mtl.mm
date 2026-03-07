@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/device_buffer_mtl.h"
+#include "renderer/backend/metal/device_buffer_mtl.h"
 
-#include "flutter/fml/logging.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/metal/formats_mtl.h"
-#include "impeller/renderer/backend/metal/texture_mtl.h"
+#include "base/validation.h"
+#include "fml/logging.h"
+#include "renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/texture_mtl.h"
 
 namespace impeller {
 

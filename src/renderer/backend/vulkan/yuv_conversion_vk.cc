@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/yuv_conversion_vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_vk.h"
 
-#include "flutter/fml/hash_combine.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
+#include "base/validation.h"
+#include "core/sampler_descriptor.h"
+#include "fml/hash_combine.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
 
 namespace impeller {
 

@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "impeller/geometry/saturated_math.h"
+#include "geometry/saturated_math.h"
 
 namespace impeller {
 namespace testing {

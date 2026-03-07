@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/command_pool_vk.h"
+#include "renderer/backend/vulkan/command_pool_vk.h"
 
 #include <memory>
 #include <optional>
 #include <utility>
 
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/resource_manager_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/resource_manager_vk.h"
 
-#include "impeller/renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
+#include "renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
 #include "vulkan/vulkan_enums.hpp"
 #include "vulkan/vulkan_handles.hpp"
 #include "vulkan/vulkan_structs.hpp"

@@ -4,14 +4,14 @@
 
 // FLUTTER_NOLINT: https://github.com/flutter/flutter/issues/123467
 
-#include "impeller/renderer/backend/vulkan/pipeline_cache_vk.h"
+#include "renderer/backend/vulkan/pipeline_cache_vk.h"
 
 #include <sstream>
 
-#include "flutter/fml/mapping.h"
-#include "impeller/base/allocation_size.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/pipeline_cache_data_vk.h"
+#include "base/allocation_size.h"
+#include "base/validation.h"
+#include "fml/mapping.h"
+#include "renderer/backend/vulkan/pipeline_cache_data_vk.h"
 
 namespace impeller {
 

@@ -5,18 +5,18 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_CONTEXT_GLES_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_CONTEXT_GLES_H_
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/runtime_types.h"
-#include "impeller/renderer/backend/gles/allocator_gles.h"
-#include "impeller/renderer/backend/gles/capabilities_gles.h"
-#include "impeller/renderer/backend/gles/gpu_tracer_gles.h"
-#include "impeller/renderer/backend/gles/pipeline_library_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/backend/gles/sampler_library_gles.h"
-#include "impeller/renderer/backend/gles/shader_library_gles.h"
-#include "impeller/renderer/capabilities.h"
-#include "impeller/renderer/command_queue.h"
-#include "impeller/renderer/context.h"
+#include "base/backend_cast.h"
+#include "core/runtime_types.h"
+#include "renderer/backend/gles/allocator_gles.h"
+#include "renderer/backend/gles/capabilities_gles.h"
+#include "renderer/backend/gles/gpu_tracer_gles.h"
+#include "renderer/backend/gles/pipeline_library_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/sampler_library_gles.h"
+#include "renderer/backend/gles/shader_library_gles.h"
+#include "renderer/capabilities.h"
+#include "renderer/command_queue.h"
+#include "renderer/context.h"
 
 namespace impeller {
 

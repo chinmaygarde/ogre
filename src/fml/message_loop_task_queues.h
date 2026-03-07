@@ -11,13 +11,13 @@
 #include <set>
 #include <vector>
 
-#include "flutter/fml/closure.h"
-#include "flutter/fml/delayed_task.h"
-#include "flutter/fml/macros.h"
-#include "flutter/fml/memory/ref_counted.h"
-#include "flutter/fml/task_queue_id.h"
-#include "flutter/fml/task_source.h"
-#include "flutter/fml/wakeable.h"
+#include "fml/closure.h"
+#include "fml/delayed_task.h"
+#include "fml/macros.h"
+#include "fml/memory/ref_counted.h"
+#include "fml/task_queue_id.h"
+#include "fml/task_source.h"
+#include "fml/wakeable.h"
 
 namespace fml {
 

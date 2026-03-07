@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "impeller/core/shader_types.h"
+#include "core/shader_types.h"
 
 namespace impeller {
 

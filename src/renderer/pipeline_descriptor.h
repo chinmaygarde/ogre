@@ -9,10 +9,10 @@
 #include <memory>
 #include <string>
 
-#include "impeller/base/comparable.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/tessellator/tessellator.h"
+#include "base/comparable.h"
+#include "core/formats.h"
+#include "core/shader_types.h"
+#include "tessellator/tessellator.h"
 
 namespace impeller {
 

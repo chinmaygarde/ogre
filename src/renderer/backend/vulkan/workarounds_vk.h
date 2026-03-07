@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_WORKAROUNDS_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_WORKAROUNDS_VK_H_
 
-#include "impeller/renderer/backend/vulkan/driver_info_vk.h"
+#include "renderer/backend/vulkan/driver_info_vk.h"
 
 namespace impeller {
 

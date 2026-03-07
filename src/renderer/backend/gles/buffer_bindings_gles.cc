@@ -2,20 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/buffer_bindings_gles.h"
+#include "renderer/backend/gles/buffer_bindings_gles.h"
 
 #include <cstring>
 #include <vector>
 
-#include "impeller/base/validation.h"
-#include "impeller/core/buffer_view.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/gles/device_buffer_gles.h"
-#include "impeller/renderer/backend/gles/formats_gles.h"
-#include "impeller/renderer/backend/gles/sampler_gles.h"
-#include "impeller/renderer/backend/gles/texture_gles.h"
-#include "impeller/renderer/command.h"
+#include "base/validation.h"
+#include "core/buffer_view.h"
+#include "core/device_buffer.h"
+#include "core/shader_types.h"
+#include "renderer/backend/gles/device_buffer_gles.h"
+#include "renderer/backend/gles/formats_gles.h"
+#include "renderer/backend/gles/sampler_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
+#include "renderer/command.h"
 
 namespace impeller {
 

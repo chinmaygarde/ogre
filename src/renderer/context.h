@@ -9,14 +9,14 @@
 #include <memory>
 #include <string>
 
+#include "base/flags.h"
+#include "base/thread_safety.h"
+#include "core/allocator.h"
+#include "core/formats.h"
 #include "fml/closure.h"
-#include "impeller/base/flags.h"
-#include "impeller/base/thread_safety.h"
-#include "impeller/core/allocator.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/capabilities.h"
-#include "impeller/renderer/command_queue.h"
-#include "impeller/renderer/sampler_library.h"
+#include "renderer/capabilities.h"
+#include "renderer/command_queue.h"
+#include "renderer/sampler_library.h"
 
 namespace impeller {
 

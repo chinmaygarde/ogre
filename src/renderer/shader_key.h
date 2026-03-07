@@ -9,8 +9,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "flutter/fml/hash_combine.h"
-#include "impeller/core/shader_types.h"
+#include "core/shader_types.h"
+#include "fml/hash_combine.h"
 
 namespace impeller {
 

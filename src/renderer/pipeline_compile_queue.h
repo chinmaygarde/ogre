@@ -7,10 +7,10 @@
 
 #include <unordered_map>
 
-#include "flutter/fml/closure.h"
-#include "flutter/fml/concurrent_message_loop.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "base/thread.h"
+#include "fml/closure.h"
+#include "fml/concurrent_message_loop.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

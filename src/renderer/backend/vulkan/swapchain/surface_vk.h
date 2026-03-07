@@ -7,10 +7,10 @@
 
 #include <memory>
 
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_source_vk.h"
-#include "impeller/renderer/surface.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
+#include "renderer/surface.h"
 
 namespace impeller {
 

@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_ANDROID_AHB_TEXTURE_SOURCE_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_ANDROID_AHB_TEXTURE_SOURCE_VK_H_
 
-#include "impeller/renderer/backend/vulkan/texture_source_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/backend/vulkan/yuv_conversion_vk.h"
-#include "impeller/toolkit/android/hardware_buffer.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_vk.h"
+#include "toolkit/android/hardware_buffer.h"
 
 #include <android/hardware_buffer.h>
 #include <android/hardware_buffer_jni.h>

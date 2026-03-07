@@ -8,8 +8,8 @@
 #include <functional>
 #include <memory>
 
-#include "impeller/renderer/blit_pass.h"
-#include "impeller/renderer/compute_pass.h"
+#include "renderer/blit_pass.h"
+#include "renderer/compute_pass.h"
 
 namespace impeller {
 

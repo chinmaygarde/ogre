@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "renderer/backend/vulkan/swapchain/surface_vk.h"
 
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
-#include "impeller/renderer/surface.h"
+#include "core/formats.h"
+#include "renderer/backend/vulkan/texture_vk.h"
+#include "renderer/surface.h"
 
 namespace impeller {
 

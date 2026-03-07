@@ -4,7 +4,7 @@
 
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "gtest/gtest.h"
-#include "impeller/renderer/backend/gles/formats_gles.h"
+#include "renderer/backend/gles/formats_gles.h"
 
 namespace impeller {
 namespace testing {

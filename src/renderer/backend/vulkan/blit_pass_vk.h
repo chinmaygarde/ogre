@@ -5,11 +5,11 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_BLIT_PASS_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_BLIT_PASS_VK_H_
 
-#include "flutter/fml/macros.h"
-#include "impeller/base/config.h"
-#include "impeller/geometry/rect.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
-#include "impeller/renderer/blit_pass.h"
+#include "base/config.h"
+#include "fml/macros.h"
+#include "geometry/rect.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
+#include "renderer/blit_pass.h"
 
 namespace impeller {
 

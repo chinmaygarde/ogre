@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/core/texture.h"
+#include "core/texture.h"
 
-#include "impeller/base/validation.h"
+#include "base/validation.h"
 
 namespace impeller {
 

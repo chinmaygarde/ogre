@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/pipeline_library_vk.h"
+#include "renderer/backend/vulkan/pipeline_library_vk.h"
 
 #include <cstdint>
 
-#include "flutter/fml/container.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/promise.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/pipeline_vk.h"
-#include "impeller/renderer/backend/vulkan/shader_function_vk.h"
+#include "base/promise.h"
+#include "base/validation.h"
+#include "fml/container.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/pipeline_vk.h"
+#include "renderer/backend/vulkan/shader_function_vk.h"
 
 namespace impeller {
 

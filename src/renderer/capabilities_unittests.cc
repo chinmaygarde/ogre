@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "flutter/testing/testing.h"
-#include "impeller/renderer/capabilities.h"
+#include "renderer/capabilities.h"
 
 #include "gtest/gtest.h"
 

@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/khr/khr_swapchain_impl_vk.h"
+#include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_impl_vk.h"
 
+#include "base/validation.h"
+#include "core/formats.h"
 #include "fml/synchronization/semaphore.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/gpu_tracer_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/khr/khr_swapchain_image_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/surface_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_vk.h"
-#include "impeller/renderer/context.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/gpu_tracer_vk.h"
+#include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_image_vk.h"
+#include "renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
+#include "renderer/context.h"
 
 namespace impeller {
 

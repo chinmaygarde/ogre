@@ -5,7 +5,7 @@
 #include <unordered_set>
 
 #include "flutter/testing/testing.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 namespace testing {

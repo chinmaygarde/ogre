@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "core/formats.h"
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "gtest/gtest.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/render_pass_builder_vk.h"
-#include "impeller/renderer/backend/vulkan/render_pass_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/backend/vulkan/render_pass_builder_vk.h"
+#include "renderer/backend/vulkan/render_pass_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/render_target.h"
 #include "vulkan/vulkan_enums.hpp"
 
 namespace impeller {

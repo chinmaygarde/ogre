@@ -7,9 +7,9 @@
 
 #include <string>
 
-#include "flutter/fml/mapping.h"
-#include "impeller/base/backend_cast.h"
-#include "impeller/renderer/shader_function.h"
+#include "base/backend_cast.h"
+#include "fml/mapping.h"
+#include "renderer/shader_function.h"
 
 namespace impeller {
 

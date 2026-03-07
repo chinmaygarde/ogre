@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/description_gles.h"
+#include "renderer/backend/gles/description_gles.h"
 
 #include <algorithm>
 #include <cctype>
@@ -12,9 +12,9 @@
 #include <utility>
 #include <vector>
 
-#include "impeller/base/strings.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/gles/proc_table_gles.h"
+#include "base/strings.h"
+#include "base/validation.h"
+#include "renderer/backend/gles/proc_table_gles.h"
 
 namespace impeller {
 

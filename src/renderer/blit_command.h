@@ -6,9 +6,9 @@
 #define FLUTTER_IMPELLER_RENDERER_BLIT_COMMAND_H_
 
 #include <cstdint>
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/texture.h"
-#include "impeller/geometry/rect.h"
+#include "core/device_buffer.h"
+#include "core/texture.h"
+#include "geometry/rect.h"
 
 namespace impeller {
 

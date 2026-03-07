@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_CORE_SAMPLER_H_
 #define FLUTTER_IMPELLER_CORE_SAMPLER_H_
 
-#include "impeller/core/sampler_descriptor.h"
+#include "core/sampler_descriptor.h"
 
 namespace impeller {
 

@@ -7,7 +7,7 @@
 #include "fml/logging.h"
 #include "gtest/gtest.h"
 
-#include "flutter/impeller/geometry/trig.h"
+#include "geometry/trig.h"
 
 namespace impeller {
 namespace testing {

@@ -5,9 +5,9 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_PIPELINE_CACHE_DATA_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_PIPELINE_CACHE_DATA_VK_H_
 
-#include "flutter/fml/mapping.h"
-#include "flutter/fml/unique_fd.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "fml/mapping.h"
+#include "fml/unique_fd.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

@@ -12,8 +12,8 @@
 #include <thread>
 #include <type_traits>
 
-#include "flutter/fml/hash_combine.h"
-#include "impeller/base/comparable.h"
+#include "base/comparable.h"
+#include "fml/hash_combine.h"
 
 namespace impeller {
 

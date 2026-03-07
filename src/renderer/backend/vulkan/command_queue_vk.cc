@@ -4,14 +4,14 @@
 
 #include "fml/status.h"
 
-#include "impeller/renderer/backend/vulkan/command_queue_vk.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
 
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/fence_waiter_vk.h"
-#include "impeller/renderer/backend/vulkan/tracked_objects_vk.h"
-#include "impeller/renderer/command_buffer.h"
+#include "base/validation.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/fence_waiter_vk.h"
+#include "renderer/backend/vulkan/tracked_objects_vk.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 

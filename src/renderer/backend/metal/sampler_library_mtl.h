@@ -9,10 +9,10 @@
 
 #include <memory>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/base/comparable.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/sampler_library.h"
+#include "base/backend_cast.h"
+#include "base/comparable.h"
+#include "core/sampler_descriptor.h"
+#include "renderer/sampler_library.h"
 
 namespace impeller {
 

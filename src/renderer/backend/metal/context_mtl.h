@@ -10,19 +10,19 @@
 #include <deque>
 #include <string>
 
-#include "flutter/fml/concurrent_message_loop.h"
-#include "flutter/fml/synchronization/sync_switch.h"
+#include "base/backend_cast.h"
+#include "core/sampler.h"
 #include "fml/closure.h"
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/sampler.h"
-#include "impeller/renderer/backend/metal/allocator_mtl.h"
-#include "impeller/renderer/backend/metal/command_buffer_mtl.h"
-#include "impeller/renderer/backend/metal/gpu_tracer_mtl.h"
-#include "impeller/renderer/backend/metal/pipeline_library_mtl.h"
-#include "impeller/renderer/backend/metal/shader_library_mtl.h"
-#include "impeller/renderer/capabilities.h"
-#include "impeller/renderer/command_queue.h"
-#include "impeller/renderer/context.h"
+#include "fml/concurrent_message_loop.h"
+#include "fml/synchronization/sync_switch.h"
+#include "renderer/backend/metal/allocator_mtl.h"
+#include "renderer/backend/metal/command_buffer_mtl.h"
+#include "renderer/backend/metal/gpu_tracer_mtl.h"
+#include "renderer/backend/metal/pipeline_library_mtl.h"
+#include "renderer/backend/metal/shader_library_mtl.h"
+#include "renderer/capabilities.h"
+#include "renderer/command_queue.h"
+#include "renderer/context.h"
 
 #if TARGET_OS_SIMULATOR
 #define IMPELLER_CA_METAL_LAYER_AVAILABLE API_AVAILABLE(macos(10.11), ios(13.0))

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/geometry/color.h"
+#include "geometry/color.h"
 
 #include <algorithm>
 #include <cmath>
@@ -11,9 +11,9 @@
 #include <sstream>
 #include <type_traits>
 
-#include "impeller/geometry/constants.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/vector.h"
+#include "geometry/constants.h"
+#include "geometry/scalar.h"
+#include "geometry/vector.h"
 
 namespace impeller {
 

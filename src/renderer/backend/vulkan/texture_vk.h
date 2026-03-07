@@ -5,15 +5,15 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_TEXTURE_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_TEXTURE_VK_H_
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/device_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_source_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "base/backend_cast.h"
+#include "core/formats.h"
+#include "core/texture.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/device_buffer_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

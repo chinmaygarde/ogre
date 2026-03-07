@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/impeller/geometry/point.h"
+#include "geometry/point.h"
 
-#include "flutter/impeller/geometry/geometry_asserts.h"
+#include "geometry/geometry_asserts.h"
 #include "gtest/gtest.h"
 
 namespace impeller {

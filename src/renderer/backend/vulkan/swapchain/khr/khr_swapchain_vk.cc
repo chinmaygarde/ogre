@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/khr/khr_swapchain_vk.h"
+#include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_vk.h"
 
-#include "flutter/fml/build_config.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/swapchain/khr/khr_swapchain_impl_vk.h"
+#include "base/validation.h"
+#include "fml/build_config.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_impl_vk.h"
 
 namespace impeller {
 

@@ -9,8 +9,8 @@
 #include <unordered_map>
 
 #include "fml/status_or.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/pipeline.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/pipeline.h"
 
 namespace impeller {
 

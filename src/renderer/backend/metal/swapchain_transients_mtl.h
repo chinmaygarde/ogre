@@ -7,11 +7,11 @@
 
 #include <memory>
 
-#include "impeller/core/formats.h"
-#include "impeller/geometry/rect.h"
-#include "impeller/geometry/size.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/surface.h"
+#include "core/formats.h"
+#include "geometry/rect.h"
+#include "geometry/size.h"
+#include "renderer/context.h"
+#include "renderer/surface.h"
 
 namespace impeller {
 

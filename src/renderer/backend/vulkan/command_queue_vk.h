@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_COMMAND_QUEUE_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_COMMAND_QUEUE_VK_H_
 
-#include "impeller/renderer/command_queue.h"
+#include "renderer/command_queue.h"
 
 namespace impeller {
 

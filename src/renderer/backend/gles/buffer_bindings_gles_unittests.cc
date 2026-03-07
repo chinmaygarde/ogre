@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "core/shader_types.h"
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "gtest/gtest.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/gles/buffer_bindings_gles.h"
-#include "impeller/renderer/backend/gles/device_buffer_gles.h"
-#include "impeller/renderer/backend/gles/test/mock_gles.h"
-#include "impeller/renderer/command.h"
+#include "renderer/backend/gles/buffer_bindings_gles.h"
+#include "renderer/backend/gles/device_buffer_gles.h"
+#include "renderer/backend/gles/test/mock_gles.h"
+#include "renderer/command.h"
 
 namespace impeller {
 namespace testing {

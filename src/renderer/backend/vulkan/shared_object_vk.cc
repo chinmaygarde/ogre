@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/shared_object_vk.h"
+#include "renderer/backend/vulkan/shared_object_vk.h"
 
 namespace impeller {
 

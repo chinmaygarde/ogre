@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/geometry/matrix.h"
+#include "geometry/matrix.h"
 
 #include <climits>
 #include <sstream>
 
-#include "flutter/fml/logging.h"
+#include "fml/logging.h"
 
 namespace impeller {
 

@@ -8,14 +8,14 @@
 #include <future>
 
 #include "compute_pipeline_descriptor.h"
-#include "impeller/core/raw_ptr.h"
-#include "impeller/renderer/compute_pipeline_builder.h"
-#include "impeller/renderer/compute_pipeline_descriptor.h"
-#include "impeller/renderer/context.h"
-#include "impeller/renderer/pipeline_builder.h"
-#include "impeller/renderer/pipeline_compile_queue.h"
-#include "impeller/renderer/pipeline_descriptor.h"
-#include "impeller/renderer/shader_stage_compatibility_checker.h"
+#include "core/raw_ptr.h"
+#include "renderer/compute_pipeline_builder.h"
+#include "renderer/compute_pipeline_descriptor.h"
+#include "renderer/context.h"
+#include "renderer/pipeline_builder.h"
+#include "renderer/pipeline_compile_queue.h"
+#include "renderer/pipeline_descriptor.h"
+#include "renderer/shader_stage_compatibility_checker.h"
 
 namespace impeller {
 

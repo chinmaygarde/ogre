@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_PATH_SOURCE_H_
 #define FLUTTER_IMPELLER_GEOMETRY_PATH_SOURCE_H_
 
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/rect.h"
+#include "geometry/point.h"
+#include "geometry/rect.h"
 
 namespace impeller {
 

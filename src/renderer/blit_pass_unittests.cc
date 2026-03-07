@@ -3,18 +3,18 @@
 // found in the LICENSE file.
 
 #include <cstdint>
+#include "base/validation.h"
+#include "core/device_buffer.h"
+#include "core/device_buffer_descriptor.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
+#include "display_list/aiks_unittests.h"
+#include "display_list/dl_image_impeller.h"
 #include "flutter/display_list/dl_builder.h"
-#include "flutter/impeller/display_list/aiks_unittests.h"
-#include "flutter/impeller/display_list/dl_image_impeller.h"
 #include "fml/mapping.h"
 #include "gtest/gtest.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/device_buffer_descriptor.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/playground/playground_test.h"
-#include "impeller/renderer/command_buffer.h"
+#include "playground/playground_test.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 namespace testing {

@@ -5,11 +5,11 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_PIPELINE_GLES_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_GLES_PIPELINE_GLES_H_
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/renderer/backend/gles/buffer_bindings_gles.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
-#include "impeller/renderer/backend/gles/unique_handle_gles.h"
-#include "impeller/renderer/pipeline.h"
+#include "base/backend_cast.h"
+#include "renderer/backend/gles/buffer_bindings_gles.h"
+#include "renderer/backend/gles/reactor_gles.h"
+#include "renderer/backend/gles/unique_handle_gles.h"
+#include "renderer/pipeline.h"
 
 namespace impeller {
 

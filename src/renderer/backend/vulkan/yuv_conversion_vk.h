@@ -7,13 +7,13 @@
 
 #include <unordered_map>
 
-#include "flutter/fml/build_config.h"
-#include "impeller/base/comparable.h"
-#include "impeller/base/thread.h"
-#include "impeller/core/sampler.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
-#include "impeller/renderer/backend/vulkan/shared_object_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "base/comparable.h"
+#include "base/thread.h"
+#include "core/sampler.h"
+#include "fml/build_config.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/shared_object_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

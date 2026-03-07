@@ -2,21 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/pipeline_vk.h"
+#include "renderer/backend/vulkan/pipeline_vk.h"
 
 #include <format>
 
-#include "flutter/fml/make_copyable.h"
-#include "flutter/fml/status_or.h"
-#include "flutter/fml/trace_event.h"
-#include "impeller/base/timing.h"
-#include "impeller/renderer/backend/vulkan/capabilities_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/render_pass_builder_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
-#include "impeller/renderer/backend/vulkan/shader_function_vk.h"
-#include "impeller/renderer/backend/vulkan/vertex_descriptor_vk.h"
+#include "base/timing.h"
+#include "fml/make_copyable.h"
+#include "fml/status_or.h"
+#include "fml/trace_event.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/render_pass_builder_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/shader_function_vk.h"
+#include "renderer/backend/vulkan/vertex_descriptor_vk.h"
 
 namespace impeller {
 

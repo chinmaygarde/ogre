@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "impeller/geometry/color.h"
+#include "geometry/color.h"
 
 namespace impeller {
 

@@ -9,8 +9,8 @@
 #include <optional>
 #include <utility>
 
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
+#include "base/thread.h"
+#include "renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
 #include "vulkan/vulkan_handles.hpp"
 
 namespace impeller {

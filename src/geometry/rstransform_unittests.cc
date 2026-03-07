@@ -4,9 +4,9 @@
 
 #include "gtest/gtest.h"
 
-#include "flutter/impeller/geometry/rstransform.h"
+#include "geometry/rstransform.h"
 
-#include "flutter/impeller/geometry/geometry_asserts.h"
+#include "geometry/geometry_asserts.h"
 
 namespace impeller {
 namespace testing {

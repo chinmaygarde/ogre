@@ -8,10 +8,10 @@
 #include <cstdint>
 #include <memory>
 
-#include "impeller/base/allocation.h"
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/renderer/backend/gles/reactor_gles.h"
+#include "base/allocation.h"
+#include "base/backend_cast.h"
+#include "core/device_buffer.h"
+#include "renderer/backend/gles/reactor_gles.h"
 
 namespace impeller {
 

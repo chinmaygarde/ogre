@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_DRIVER_INFO_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_DRIVER_INFO_VK_H_
 
-#include "impeller/base/version.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "base/version.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

@@ -9,11 +9,11 @@
 
 #include <optional>
 
-#include "flutter/fml/build_config.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/geometry/color.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
+#include "fml/build_config.h"
+#include "geometry/color.h"
 
 namespace impeller {
 

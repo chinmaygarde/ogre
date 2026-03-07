@@ -4,7 +4,7 @@
 
 #include <Foundation/Foundation.h>
 
-#include "flutter/fml/platform/darwin/string_range_sanitization.h"
+#include "fml/platform/darwin/string_range_sanitization.h"
 #include "gtest/gtest.h"
 
 TEST(StringRangeSanitizationTest, CanHandleUnicode) {
@@ -18,9 +18,12 @@ TEST(StringRangeSanitizationTest, HandlesInvalidRanges) {
   EXPECT_EQ(fml::RangeForCharacterAtIndex(@"😠", 3).location, ns_not_found);
   EXPECT_EQ(fml::RangeForCharacterAtIndex(@"😠", -1).location, ns_not_found);
   EXPECT_EQ(fml::RangeForCharacterAtIndex(nil, 0).location, ns_not_found);
-  EXPECT_EQ(fml::RangeForCharactersInRange(@"😠", NSMakeRange(1, 2)).location, ns_not_found);
-  EXPECT_EQ(fml::RangeForCharactersInRange(@"😠", NSMakeRange(3, 0)).location, ns_not_found);
-  EXPECT_EQ(fml::RangeForCharactersInRange(nil, NSMakeRange(0, 0)).location, ns_not_found);
+  EXPECT_EQ(fml::RangeForCharactersInRange(@"😠", NSMakeRange(1, 2)).location,
+            ns_not_found);
+  EXPECT_EQ(fml::RangeForCharactersInRange(@"😠", NSMakeRange(3, 0)).location,
+            ns_not_found);
+  EXPECT_EQ(fml::RangeForCharactersInRange(nil, NSMakeRange(0, 0)).location,
+            ns_not_found);
 }
 
 TEST(StringRangeSanitizationTest, CanHandleUnicodeRange) {

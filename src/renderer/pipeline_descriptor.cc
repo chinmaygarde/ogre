@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "renderer/pipeline_descriptor.h"
 
 #include <memory>
 #include <utility>
 
-#include "impeller/base/comparable.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/shader_function.h"
-#include "impeller/renderer/shader_library.h"
-#include "impeller/renderer/vertex_descriptor.h"
+#include "base/comparable.h"
+#include "core/formats.h"
+#include "renderer/shader_function.h"
+#include "renderer/shader_library.h"
+#include "renderer/vertex_descriptor.h"
 
 namespace impeller {
 

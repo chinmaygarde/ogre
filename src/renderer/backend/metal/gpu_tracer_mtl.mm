@@ -4,12 +4,12 @@
 
 #include <Metal/Metal.h>
 #include "fml/trace_event.h"
-#include "impeller/renderer/backend/metal/context_mtl.h"
-#include "impeller/renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/context_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
 
 #include <memory>
 
-#include "impeller/renderer/backend/metal/gpu_tracer_mtl.h"
+#include "renderer/backend/metal/gpu_tracer_mtl.h"
 
 namespace impeller {
 

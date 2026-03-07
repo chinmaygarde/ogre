@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_MATRIX_DECOMPOSITION_H_
 #define FLUTTER_IMPELLER_GEOMETRY_MATRIX_DECOMPOSITION_H_
 
-#include "impeller/geometry/quaternion.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/shear.h"
-#include "impeller/geometry/vector.h"
+#include "geometry/quaternion.h"
+#include "geometry/scalar.h"
+#include "geometry/shear.h"
+#include "geometry/vector.h"
 
 namespace impeller {
 

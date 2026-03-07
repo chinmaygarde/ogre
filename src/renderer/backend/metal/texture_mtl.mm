@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/texture_mtl.h"
+#include "renderer/backend/metal/texture_mtl.h"
 
 #include <format>
 #include <memory>
 
-#include "impeller/base/strings.h"
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
+#include "base/strings.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
 
 namespace impeller {
 

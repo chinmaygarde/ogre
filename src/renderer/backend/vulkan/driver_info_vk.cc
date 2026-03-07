@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/driver_info_vk.h"
+#include "renderer/backend/vulkan/driver_info_vk.h"
 
 #include <iomanip>
 #include <sstream>
 #include <string_view>
 #include <unordered_map>
 
-#include "flutter/fml/build_config.h"
+#include "fml/build_config.h"
 
 #ifdef FML_OS_ANDROID
 #include <sys/system_properties.h>

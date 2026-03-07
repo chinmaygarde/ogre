@@ -8,12 +8,12 @@
 #include <optional>
 #include <unordered_map>
 
+#include "base/thread.h"
+#include "base/thread_safety.h"
 #include "compute_pipeline_descriptor.h"
-#include "impeller/base/thread.h"
-#include "impeller/base/thread_safety.h"
-#include "impeller/renderer/pipeline.h"
-#include "impeller/renderer/pipeline_compile_queue.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "renderer/pipeline.h"
+#include "renderer/pipeline_compile_queue.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

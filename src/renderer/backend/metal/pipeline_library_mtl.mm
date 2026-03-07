@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/pipeline_library_mtl.h"
+#include "renderer/backend/metal/pipeline_library_mtl.h"
 
 #include <Foundation/Foundation.h>
 #include <Metal/Metal.h>
 
-#include "flutter/fml/build_config.h"
-#include "flutter/fml/container.h"
-#include "impeller/base/promise.h"
-#include "impeller/renderer/backend/metal/compute_pipeline_mtl.h"
-#include "impeller/renderer/backend/metal/formats_mtl.h"
-#include "impeller/renderer/backend/metal/pipeline_mtl.h"
-#include "impeller/renderer/backend/metal/shader_function_mtl.h"
-#include "impeller/renderer/backend/metal/vertex_descriptor_mtl.h"
+#include "base/promise.h"
+#include "fml/build_config.h"
+#include "fml/container.h"
+#include "renderer/backend/metal/compute_pipeline_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/pipeline_mtl.h"
+#include "renderer/backend/metal/shader_function_mtl.h"
+#include "renderer/backend/metal/vertex_descriptor_mtl.h"
 
 #if !__has_feature(objc_arc)
 #error ARC must be enabled !

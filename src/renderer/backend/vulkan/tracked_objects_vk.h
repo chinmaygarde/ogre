@@ -7,10 +7,10 @@
 
 #include <memory>
 
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/descriptor_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/gpu_tracer_vk.h"
-#include "impeller/renderer/backend/vulkan/texture_source_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/descriptor_pool_vk.h"
+#include "renderer/backend/vulkan/gpu_tracer_vk.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
 
 namespace impeller {
 

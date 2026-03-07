@@ -8,8 +8,8 @@
 #include <cstdint>
 #include <memory>
 
-#include "flutter/fml/mapping.h"
-#include "impeller/base/allocation_size.h"
+#include "base/allocation_size.h"
+#include "fml/mapping.h"
 
 namespace impeller {
 

@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SAMPLER_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SAMPLER_VK_H_
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/sampler.h"
-#include "impeller/renderer/backend/vulkan/shared_object_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "base/backend_cast.h"
+#include "core/sampler.h"
+#include "renderer/backend/vulkan/shared_object_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

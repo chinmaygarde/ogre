@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/core/vertex_buffer.h"
+#include "core/vertex_buffer.h"
 
 namespace impeller {
 

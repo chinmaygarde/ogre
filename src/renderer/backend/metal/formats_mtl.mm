@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
 #include <Metal/Metal.h>
 
 #include <memory>
 
-#include "impeller/renderer/render_pass.h"
+#include "renderer/render_pass.h"
 
 namespace impeller {
 

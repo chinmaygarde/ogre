@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/fixtures/spec_constant.frag.h"
-#include "impeller/fixtures/spec_constant.vert.h"
-#include "impeller/playground/playground_test.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/pipeline_gles.h"
-#include "impeller/renderer/backend/gles/pipeline_library_gles.h"
-#include "impeller/renderer/pipeline_library.h"
+#include "fixtures/spec_constant.frag.h"
+#include "fixtures/spec_constant.vert.h"
+#include "playground/playground_test.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/pipeline_gles.h"
+#include "renderer/backend/gles/pipeline_library_gles.h"
+#include "renderer/pipeline_library.h"
 
 namespace impeller::testing {
 

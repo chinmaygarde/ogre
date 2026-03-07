@@ -8,13 +8,13 @@
 #include <future>
 #include <memory>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/backend/vulkan/yuv_conversion_vk.h"
-#include "impeller/renderer/pipeline.h"
+#include "base/backend_cast.h"
+#include "base/thread.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_vk.h"
+#include "renderer/pipeline.h"
 
 namespace impeller {
 

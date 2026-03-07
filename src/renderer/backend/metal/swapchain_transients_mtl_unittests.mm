@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
 #include "flutter/testing/testing.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/playground/playground_test.h"
-#include "impeller/renderer/backend/metal/allocator_mtl.h"
-#include "impeller/renderer/backend/metal/context_mtl.h"
-#include "impeller/renderer/backend/metal/formats_mtl.h"
-#include "impeller/renderer/backend/metal/swapchain_transients_mtl.h"
-#include "impeller/renderer/backend/metal/texture_mtl.h"
-#include "impeller/renderer/capabilities.h"
+#include "playground/playground_test.h"
+#include "renderer/backend/metal/allocator_mtl.h"
+#include "renderer/backend/metal/context_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/swapchain_transients_mtl.h"
+#include "renderer/backend/metal/texture_mtl.h"
+#include "renderer/capabilities.h"
 
 #include <memory>
 #include <thread>

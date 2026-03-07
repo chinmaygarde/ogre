@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_DEVICE_HOLDER_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_DEVICE_HOLDER_VK_H_
 
-#include "impeller/renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
+#include "renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
 
 namespace impeller {
 

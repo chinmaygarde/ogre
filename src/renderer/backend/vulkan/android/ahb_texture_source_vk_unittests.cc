@@ -7,11 +7,11 @@
 
 #include "flutter/testing/testing.h"
 #include "gtest/gtest.h"
-#include "impeller/renderer/backend/vulkan/android/ahb_texture_source_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/surface_context_vk.h"
-#include "impeller/toolkit/android/hardware_buffer.h"
-#include "impeller/toolkit/android/surface_transaction.h"
+#include "renderer/backend/vulkan/android/ahb_texture_source_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/surface_context_vk.h"
+#include "toolkit/android/hardware_buffer.h"
+#include "toolkit/android/surface_transaction.h"
 
 namespace impeller::android::testing {
 

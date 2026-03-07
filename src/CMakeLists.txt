@@ -51,5 +51,8 @@ target_include_directories(onnx_sandbox_tests
 gtest_discover_tests(onnx_sandbox_tests)
 
 add_subdirectory(base)
+add_subdirectory(core)
 add_subdirectory(fml)
+add_subdirectory(geometry)
+
 

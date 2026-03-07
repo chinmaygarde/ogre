@@ -4,9 +4,9 @@
 
 #include "flutter/testing/testing.h"
 #include "fml/macros.h"
-#include "impeller/renderer/backend/vulkan/blit_pass_vk.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/backend/vulkan/blit_pass_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 
 namespace impeller {
 

@@ -7,10 +7,10 @@
 
 #include <optional>
 
-#include "flutter/fml/logging.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/gles/gles.h"
+#include "core/formats.h"
+#include "core/shader_types.h"
+#include "fml/logging.h"
+#include "renderer/backend/gles/gles.h"
 
 namespace impeller {
 

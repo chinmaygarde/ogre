@@ -7,14 +7,14 @@
 
 #include <cstddef>
 
+#include "core/formats.h"
+#include "core/resource_binder.h"
+#include "core/shader_types.h"
+#include "core/vertex_buffer.h"
 #include "fml/status.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/resource_binder.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/core/vertex_buffer.h"
-#include "impeller/renderer/command.h"
-#include "impeller/renderer/command_buffer.h"
-#include "impeller/renderer/render_target.h"
+#include "renderer/command.h"
+#include "renderer/command_buffer.h"
+#include "renderer/render_target.h"
 
 namespace impeller {
 

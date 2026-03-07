@@ -8,10 +8,10 @@
 #include <cmath>
 #include <string>
 
-#include "impeller/geometry/color.h"
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/size.h"
+#include "geometry/color.h"
+#include "geometry/point.h"
+#include "geometry/scalar.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

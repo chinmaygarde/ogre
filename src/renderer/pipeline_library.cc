@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/pipeline_library.h"
+#include "renderer/pipeline_library.h"
 #include <unordered_map>
 
-#include "impeller/base/thread.h"
-#include "impeller/renderer/pipeline_descriptor.h"
+#include "base/thread.h"
+#include "renderer/pipeline_descriptor.h"
 
 namespace impeller {
 

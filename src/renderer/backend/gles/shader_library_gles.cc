@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/shader_library_gles.h"
+#include "renderer/backend/gles/shader_library_gles.h"
 
 #include <sstream>
 
-#include "flutter/fml/closure.h"
-#include "impeller/base/config.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/gles/shader_function_gles.h"
-#include "impeller/shader_archive/shader_archive.h"
+#include "base/config.h"
+#include "base/validation.h"
+#include "fml/closure.h"
+#include "renderer/backend/gles/shader_function_gles.h"
+#include "shader_archive/shader_archive.h"
 
 namespace impeller {
 

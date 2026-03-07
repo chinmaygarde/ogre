@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/fml/synchronization/waitable_event.h"
+#include "core/host_buffer.h"
+#include "fixtures/sample.comp.h"
+#include "fixtures/stage1.comp.h"
+#include "fixtures/stage2.comp.h"
 #include "flutter/testing/testing.h"
+#include "fml/synchronization/waitable_event.h"
 #include "gmock/gmock.h"
-#include "impeller/core/host_buffer.h"
-#include "impeller/fixtures/sample.comp.h"
-#include "impeller/fixtures/stage1.comp.h"
-#include "impeller/fixtures/stage2.comp.h"
-#include "impeller/playground/compute_playground_test.h"
-#include "impeller/renderer/command_buffer.h"
-#include "impeller/renderer/compute_pipeline_builder.h"
-#include "impeller/renderer/pipeline_library.h"
-#include "impeller/renderer/prefix_sum_test.comp.h"
-#include "impeller/renderer/threadgroup_sizing_test.comp.h"
+#include "playground/compute_playground_test.h"
+#include "renderer/command_buffer.h"
+#include "renderer/compute_pipeline_builder.h"
+#include "renderer/pipeline_library.h"
+#include "renderer/prefix_sum_test.comp.h"
+#include "renderer/threadgroup_sizing_test.comp.h"
 
 namespace {
 std::shared_ptr<impeller::HostBuffer> CreateHostBufferFromContext(

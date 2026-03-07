@@ -7,13 +7,13 @@
 
 #include <optional>
 
-#include "flutter/fml/build_config.h"
-#include "flutter/fml/macros.h"
-#include "flutter/fml/memory/ref_counted.h"
-#include "flutter/fml/memory/ref_ptr.h"
+#include "fml/build_config.h"
+#include "fml/macros.h"
+#include "fml/memory/ref_counted.h"
+#include "fml/memory/ref_ptr.h"
 
 #if defined(FML_OS_WIN)
-#include "flutter/fml/platform/win/windows_shim.h"
+#include "fml/platform/win/windows_shim.h"
 #endif  // defined(FML_OS_WIN)
 
 namespace fml {

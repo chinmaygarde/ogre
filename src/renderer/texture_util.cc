@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/texture_util.h"
-#include "impeller/renderer/blit_pass.h"
-#include "impeller/renderer/command_buffer.h"
+#include "renderer/texture_util.h"
+#include "renderer/blit_pass.h"
+#include "renderer/command_buffer.h"
 
 namespace impeller {
 

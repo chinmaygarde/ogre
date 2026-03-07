@@ -12,13 +12,13 @@
 #include <ostream>
 #include <utility>
 
-#include "impeller/geometry/matrix_decomposition.h"
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/quaternion.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/shear.h"
-#include "impeller/geometry/size.h"
-#include "impeller/geometry/vector.h"
+#include "geometry/matrix_decomposition.h"
+#include "geometry/point.h"
+#include "geometry/quaternion.h"
+#include "geometry/scalar.h"
+#include "geometry/shear.h"
+#include "geometry/size.h"
+#include "geometry/vector.h"
 
 namespace impeller {
 

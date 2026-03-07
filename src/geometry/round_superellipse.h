@@ -5,11 +5,11 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_ROUND_SUPERELLIPSE_H_
 #define FLUTTER_IMPELLER_GEOMETRY_ROUND_SUPERELLIPSE_H_
 
-#include "flutter/impeller/geometry/path_source.h"
-#include "flutter/impeller/geometry/point.h"
-#include "flutter/impeller/geometry/rect.h"
-#include "flutter/impeller/geometry/rounding_radii.h"
-#include "flutter/impeller/geometry/size.h"
+#include "geometry/path_source.h"
+#include "geometry/point.h"
+#include "geometry/rect.h"
+#include "geometry/rounding_radii.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

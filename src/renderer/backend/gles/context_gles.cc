@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/gles/context_gles.h"
+#include "renderer/backend/gles/context_gles.h"
 #include <memory>
 
-#include "impeller/base/config.h"
-#include "impeller/base/validation.h"
-#include "impeller/base/version.h"
-#include "impeller/core/runtime_types.h"
-#include "impeller/renderer/backend/gles/command_buffer_gles.h"
-#include "impeller/renderer/backend/gles/gpu_tracer_gles.h"
-#include "impeller/renderer/backend/gles/handle_gles.h"
-#include "impeller/renderer/backend/gles/render_pass_gles.h"
-#include "impeller/renderer/backend/gles/texture_gles.h"
-#include "impeller/renderer/command_queue.h"
+#include "base/config.h"
+#include "base/validation.h"
+#include "base/version.h"
+#include "core/runtime_types.h"
+#include "renderer/backend/gles/command_buffer_gles.h"
+#include "renderer/backend/gles/gpu_tracer_gles.h"
+#include "renderer/backend/gles/handle_gles.h"
+#include "renderer/backend/gles/render_pass_gles.h"
+#include "renderer/backend/gles/texture_gles.h"
+#include "renderer/command_queue.h"
 
 namespace impeller {
 

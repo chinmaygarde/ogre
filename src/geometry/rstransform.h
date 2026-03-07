@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_RSTRANSFORM_H_
 #define FLUTTER_IMPELLER_GEOMETRY_RSTRANSFORM_H_
 
-#include "flutter/impeller/geometry/point.h"
-#include "flutter/impeller/geometry/rect.h"
-#include "flutter/impeller/geometry/scalar.h"
-#include "flutter/impeller/geometry/size.h"
+#include "geometry/point.h"
+#include "geometry/rect.h"
+#include "geometry/scalar.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

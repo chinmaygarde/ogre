@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/resource_manager_vk.h"
+#include "renderer/backend/vulkan/resource_manager_vk.h"
 
-#include "flutter/fml/cpu_affinity.h"
-#include "flutter/fml/thread.h"
-#include "flutter/fml/trace_event.h"
+#include "fml/cpu_affinity.h"
 #include "fml/logging.h"
+#include "fml/thread.h"
+#include "fml/trace_event.h"
 
 namespace impeller {
 

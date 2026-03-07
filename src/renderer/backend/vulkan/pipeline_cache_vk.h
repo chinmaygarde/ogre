@@ -5,10 +5,10 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_PIPELINE_CACHE_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_PIPELINE_CACHE_VK_H_
 
-#include "flutter/fml/file.h"
-#include "impeller/base/thread.h"
-#include "impeller/renderer/backend/vulkan/capabilities_vk.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
+#include "base/thread.h"
+#include "fml/file.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
 
 namespace impeller {
 

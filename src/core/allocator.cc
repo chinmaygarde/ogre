@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/core/allocator.h"
+#include "core/allocator.h"
 
-#include "impeller/base/validation.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/range.h"
+#include "base/validation.h"
+#include "core/device_buffer.h"
+#include "core/formats.h"
+#include "core/range.h"
 
 namespace impeller {
 

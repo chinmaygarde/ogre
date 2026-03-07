@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_impl_vk.h"
+#include "renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_impl_vk.h"
 
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/ahb_formats.h"
-#include "impeller/renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
-#include "impeller/renderer/backend/vulkan/swapchain/surface_vk.h"
-#include "impeller/toolkit/android/surface_transaction.h"
-#include "impeller/toolkit/android/surface_transaction_stats.h"
+#include "base/validation.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/swapchain/ahb/ahb_formats.h"
+#include "renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
+#include "renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "toolkit/android/surface_transaction.h"
+#include "toolkit/android/surface_transaction_stats.h"
 
 namespace impeller {
 

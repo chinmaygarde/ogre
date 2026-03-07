@@ -6,7 +6,7 @@
 #define FLUTTER_IMPELLER_GEOMETRY_RATIONAL_H_
 
 #include <cstdint>
-#include "impeller/geometry/scalar.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

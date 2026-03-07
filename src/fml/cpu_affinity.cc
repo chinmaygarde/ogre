@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/fml/cpu_affinity.h"
-#include "flutter/fml/build_config.h"
+#include "fml/cpu_affinity.h"
+#include "fml/build_config.h"
 
 #include <cstdint>
 #include <fstream>
@@ -11,7 +11,7 @@
 #include <string>
 
 #ifdef FML_OS_ANDROID
-#include "flutter/fml/platform/android/cpu_affinity.h"
+#include "fml/platform/android/cpu_affinity.h"
 #endif  // FML_OS_ANDROID
 
 namespace fml {

@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 #include "flutter/testing/testing.h"  // IWYU pragma: keep.
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/descriptor_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/descriptor_pool_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 
 namespace impeller {
 namespace testing {

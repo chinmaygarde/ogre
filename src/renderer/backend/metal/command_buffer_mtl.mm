@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/command_buffer_mtl.h"
+#include "renderer/backend/metal/command_buffer_mtl.h"
 
-#include "flutter/fml/make_copyable.h"
-#include "flutter/fml/synchronization/semaphore.h"
+#include "fml/make_copyable.h"
+#include "fml/synchronization/semaphore.h"
 
-#include "impeller/renderer/backend/metal/blit_pass_mtl.h"
-#include "impeller/renderer/backend/metal/compute_pass_mtl.h"
-#include "impeller/renderer/backend/metal/context_mtl.h"
-#include "impeller/renderer/backend/metal/render_pass_mtl.h"
+#include "renderer/backend/metal/blit_pass_mtl.h"
+#include "renderer/backend/metal/compute_pass_mtl.h"
+#include "renderer/backend/metal/context_mtl.h"
+#include "renderer/backend/metal/render_pass_mtl.h"
 
 namespace impeller {
 

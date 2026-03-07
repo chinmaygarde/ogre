@@ -8,12 +8,12 @@
 #include <array>
 #include <iostream>
 
+#include "geometry/matrix.h"
+#include "geometry/point.h"
+#include "geometry/rect.h"
+#include "geometry/size.h"
+#include "geometry/vector.h"
 #include "gtest/gtest.h"
-#include "impeller/geometry/matrix.h"
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/rect.h"
-#include "impeller/geometry/size.h"
-#include "impeller/geometry/vector.h"
 
 inline bool NumberNear(double a, double b) {
   if (a == b) {

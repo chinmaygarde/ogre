@@ -4,11 +4,11 @@
 
 #include "flutter/benchmarking/benchmarking.h"
 
+#include "entity/geometry/shadow_path_geometry.h"
+#include "entity/geometry/stroke_path_geometry.h"
 #include "flutter/display_list/geometry/dl_path.h"
 #include "flutter/display_list/geometry/dl_path_builder.h"
-#include "impeller/entity/geometry/shadow_path_geometry.h"
-#include "impeller/entity/geometry/stroke_path_geometry.h"
-#include "impeller/tessellator/tessellator_libtess.h"
+#include "tessellator/tessellator_libtess.h"
 
 namespace impeller {
 

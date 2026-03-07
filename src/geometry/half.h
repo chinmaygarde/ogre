@@ -7,12 +7,12 @@
 
 #include <cstdint>
 
-#include "flutter/fml/build_config.h"
+#include "fml/build_config.h"
 
-#include "impeller/geometry/color.h"
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/vector.h"
+#include "geometry/color.h"
+#include "geometry/point.h"
+#include "geometry/scalar.h"
+#include "geometry/vector.h"
 
 // NOLINTBEGIN(google-explicit-constructor)
 

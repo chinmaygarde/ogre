@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_YUV_CONVERSION_LIBRARY_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_YUV_CONVERSION_LIBRARY_VK_H_
 
-#include "impeller/renderer/backend/vulkan/yuv_conversion_vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_vk.h"
 
 namespace impeller {
 

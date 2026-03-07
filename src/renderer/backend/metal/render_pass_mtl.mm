@@ -2,27 +2,27 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/render_pass_mtl.h"
+#include "renderer/backend/metal/render_pass_mtl.h"
 
-#include "flutter/fml/closure.h"
-#include "flutter/fml/logging.h"
-#include "flutter/fml/make_copyable.h"
+#include "fml/closure.h"
+#include "fml/logging.h"
+#include "fml/make_copyable.h"
 #include "fml/status.h"
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/host_buffer.h"
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/metal/context_mtl.h"
-#include "impeller/renderer/backend/metal/device_buffer_mtl.h"
-#include "impeller/renderer/backend/metal/formats_mtl.h"
-#include "impeller/renderer/backend/metal/pipeline_mtl.h"
-#include "impeller/renderer/backend/metal/sampler_mtl.h"
-#include "impeller/renderer/backend/metal/texture_mtl.h"
-#include "impeller/renderer/command.h"
-#include "impeller/renderer/pipeline_descriptor.h"
-#include "impeller/renderer/pipeline_library.h"
-#include "impeller/renderer/vertex_descriptor.h"
+#include "base/backend_cast.h"
+#include "core/formats.h"
+#include "core/host_buffer.h"
+#include "core/shader_types.h"
+#include "renderer/backend/metal/context_mtl.h"
+#include "renderer/backend/metal/device_buffer_mtl.h"
+#include "renderer/backend/metal/formats_mtl.h"
+#include "renderer/backend/metal/pipeline_mtl.h"
+#include "renderer/backend/metal/sampler_mtl.h"
+#include "renderer/backend/metal/texture_mtl.h"
+#include "renderer/command.h"
+#include "renderer/pipeline_descriptor.h"
+#include "renderer/pipeline_library.h"
+#include "renderer/vertex_descriptor.h"
 
 namespace impeller {
 

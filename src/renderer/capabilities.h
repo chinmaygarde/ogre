@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "impeller/core/formats.h"
+#include "core/formats.h"
 
 namespace impeller {
 

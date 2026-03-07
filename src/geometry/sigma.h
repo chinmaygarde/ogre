@@ -5,7 +5,7 @@
 #ifndef FLUTTER_IMPELLER_GEOMETRY_SIGMA_H_
 #define FLUTTER_IMPELLER_GEOMETRY_SIGMA_H_
 
-#include "impeller/geometry/scalar.h"
+#include "geometry/scalar.h"
 
 namespace impeller {
 

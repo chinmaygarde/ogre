@@ -3,14 +3,14 @@
 // found in the LICENSE file.
 
 #include <memory>
+#include "core/formats.h"
+#include "core/sampler_descriptor.h"
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
 #include "gtest/gtest.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/backend/vulkan/command_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/sampler_library_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
+#include "renderer/backend/vulkan/command_pool_vk.h"
+#include "renderer/backend/vulkan/sampler_library_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
 
 namespace impeller {
 namespace testing {

@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 
 #include <cstdint>
 #include <cstring>
 #include <utility>
 #include <vector>
 
-#include "impeller/base/thread_safety.h"
-#include "impeller/renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
+#include "base/thread_safety.h"
+#include "renderer/backend/vulkan/vk.h"  // IWYU pragma: keep.
 #include "third_party/swiftshader/include/vulkan/vulkan_core.h"
 #include "vulkan/vulkan.hpp"
 #include "vulkan/vulkan_core.h"

@@ -86,3 +86,5 @@ add_library(fml OBJECT
   unique_object.h
   wakeable.h
 )
+
+target_include_directories(fml PUBLIC ..)

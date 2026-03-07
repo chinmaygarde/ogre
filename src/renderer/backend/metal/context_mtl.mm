@@ -2,22 +2,22 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/metal/context_mtl.h"
+#include "renderer/backend/metal/context_mtl.h"
 #include <Metal/Metal.h>
 
 #include <memory>
 
-#include "flutter/fml/concurrent_message_loop.h"
-#include "flutter/fml/file.h"
-#include "flutter/fml/logging.h"
-#include "flutter/fml/paths.h"
-#include "flutter/fml/synchronization/sync_switch.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/runtime_types.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/backend/metal/gpu_tracer_mtl.h"
-#include "impeller/renderer/backend/metal/sampler_library_mtl.h"
-#include "impeller/renderer/capabilities.h"
+#include "core/formats.h"
+#include "core/runtime_types.h"
+#include "core/sampler_descriptor.h"
+#include "fml/concurrent_message_loop.h"
+#include "fml/file.h"
+#include "fml/logging.h"
+#include "fml/paths.h"
+#include "fml/synchronization/sync_switch.h"
+#include "renderer/backend/metal/gpu_tracer_mtl.h"
+#include "renderer/backend/metal/sampler_library_mtl.h"
+#include "renderer/capabilities.h"
 
 namespace impeller {
 

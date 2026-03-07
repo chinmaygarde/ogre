@@ -5,14 +5,14 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_TEXTURE_SOURCE_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_TEXTURE_SOURCE_VK_H_
 
-#include "flutter/fml/status.h"
-#include "impeller/core/formats.h"
-#include "impeller/core/texture_descriptor.h"
-#include "impeller/renderer/backend/vulkan/barrier_vk.h"
-#include "impeller/renderer/backend/vulkan/formats_vk.h"
-#include "impeller/renderer/backend/vulkan/shared_object_vk.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/backend/vulkan/yuv_conversion_vk.h"
+#include "core/formats.h"
+#include "core/texture_descriptor.h"
+#include "fml/status.h"
+#include "renderer/backend/vulkan/barrier_vk.h"
+#include "renderer/backend/vulkan/formats_vk.h"
+#include "renderer/backend/vulkan/shared_object_vk.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/yuv_conversion_vk.h"
 
 namespace impeller {
 

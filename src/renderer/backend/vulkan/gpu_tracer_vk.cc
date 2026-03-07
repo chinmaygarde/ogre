@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/gpu_tracer_vk.h"
+#include "renderer/backend/vulkan/gpu_tracer_vk.h"
 
 #include <memory>
 #include <optional>
 #include <thread>
 #include <utility>
 
+#include "base/validation.h"
 #include "fml/logging.h"
 #include "fml/trace_event.h"
-#include "impeller/base/validation.h"
-#include "impeller/renderer/backend/vulkan/command_buffer_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
 
 namespace impeller {
 

@@ -7,10 +7,10 @@
 
 #include <memory>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/device_buffer.h"
-#include "impeller/renderer/backend/vulkan/resource_manager_vk.h"
-#include "impeller/renderer/backend/vulkan/vma.h"
+#include "base/backend_cast.h"
+#include "core/device_buffer.h"
+#include "renderer/backend/vulkan/resource_manager_vk.h"
+#include "renderer/backend/vulkan/vma.h"
 
 namespace impeller {
 

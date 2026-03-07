@@ -7,7 +7,7 @@
 
 #include <ostream>
 
-#include "impeller/geometry/vector.h"
+#include "geometry/vector.h"
 
 namespace impeller {
 

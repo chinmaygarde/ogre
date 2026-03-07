@@ -5,12 +5,12 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SAMPLER_LIBRARY_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_SAMPLER_LIBRARY_VK_H_
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/sampler.h"
-#include "impeller/core/sampler_descriptor.h"
-#include "impeller/renderer/backend/vulkan/device_holder_vk.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
-#include "impeller/renderer/sampler_library.h"
+#include "base/backend_cast.h"
+#include "core/sampler.h"
+#include "core/sampler_descriptor.h"
+#include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
+#include "renderer/sampler_library.h"
 
 namespace impeller {
 

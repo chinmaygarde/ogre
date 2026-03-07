@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/fml/synchronization/waitable_event.h"
+#include "base/validation.h"
+#include "core/formats.h"
 #include "flutter/testing/testing.h"  // IWYU pragma: keep
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/command_pool_vk.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
+#include "fml/synchronization/waitable_event.h"
+#include "renderer/backend/vulkan/command_pool_vk.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 #include "vulkan/vulkan_core.h"
 
 namespace impeller {

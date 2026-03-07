@@ -7,7 +7,7 @@
 
 #include <Metal/Metal.h>
 
-#include "impeller/renderer/pipeline_library.h"
+#include "renderer/pipeline_library.h"
 
 namespace impeller {
 

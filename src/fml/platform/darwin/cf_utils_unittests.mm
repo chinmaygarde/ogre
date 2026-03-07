@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/fml/platform/darwin/cf_utils.h"
+#include "fml/platform/darwin/cf_utils.h"
 
 #include "flutter/testing/testing.h"
 
@@ -18,14 +18,19 @@ struct CFRefTestState {
 template <>
 struct CFRefTraits<CFRefTestState*> {
   static constexpr CFRefTestState* kNullValue = nullptr;
-  static void Retain(CFRefTestState* instance) { instance->retain_called = true; }
-  static void Release(CFRefTestState* instance) { instance->release_called = true; }
+  static void Retain(CFRefTestState* instance) {
+    instance->retain_called = true;
+  }
+  static void Release(CFRefTestState* instance) {
+    instance->release_called = true;
+  }
 };
 
 namespace testing {
 
 TEST(CFTest, CanCreateRefs) {
-  CFRef<CFMutableStringRef> string(CFStringCreateMutable(kCFAllocatorDefault, 100u));
+  CFRef<CFMutableStringRef> string(
+      CFStringCreateMutable(kCFAllocatorDefault, 100u));
   // Cast
   ASSERT_TRUE(static_cast<bool>(string));
   ASSERT_TRUE(string);
@@ -76,7 +81,8 @@ TEST(CFTest, CanCreateRefs) {
 }
 
 TEST(CFTest, GetReturnsUnderlyingObject) {
-  CFMutableStringRef cf_string = CFStringCreateMutable(kCFAllocatorDefault, 100u);
+  CFMutableStringRef cf_string =
+      CFStringCreateMutable(kCFAllocatorDefault, 100u);
   const CFIndex ref_count_before = CFGetRetainCount(cf_string);
   CFRef<CFMutableStringRef> string_ref(cf_string);
 
@@ -87,7 +93,8 @@ TEST(CFTest, GetReturnsUnderlyingObject) {
 }
 
 TEST(CFTest, RetainSharesOwnership) {
-  CFMutableStringRef cf_string = CFStringCreateMutable(kCFAllocatorDefault, 100u);
+  CFMutableStringRef cf_string =
+      CFStringCreateMutable(kCFAllocatorDefault, 100u);
   const CFIndex ref_count_before = CFGetRetainCount(cf_string);
 
   CFRef<CFMutableStringRef> string_ref;

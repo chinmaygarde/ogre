@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
 
 #include <algorithm>
 #include <array>
 
-#include "impeller/base/validation.h"
-#include "impeller/core/formats.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
+#include "base/validation.h"
+#include "core/formats.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
 
 // vulkan.hpp generates some clang-tidy warnings.
 // NOLINTBEGIN(clang-analyzer-security.PointerSub)

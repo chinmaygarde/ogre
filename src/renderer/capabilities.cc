@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/renderer/capabilities.h"
-#include "impeller/core/formats.h"
+#include "renderer/capabilities.h"
+#include "core/formats.h"
 
 namespace impeller {
 

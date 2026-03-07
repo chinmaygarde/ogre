@@ -13,9 +13,9 @@
 #include <type_traits>
 
 #include "fml/logging.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/size.h"
-#include "impeller/geometry/type_traits.h"
+#include "geometry/scalar.h"
+#include "geometry/size.h"
+#include "geometry/type_traits.h"
 
 namespace impeller {
 

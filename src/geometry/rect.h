@@ -11,11 +11,11 @@
 #include <vector>
 
 #include "fml/logging.h"
-#include "impeller/geometry/matrix.h"
-#include "impeller/geometry/point.h"
-#include "impeller/geometry/saturated_math.h"
-#include "impeller/geometry/scalar.h"
-#include "impeller/geometry/size.h"
+#include "geometry/matrix.h"
+#include "geometry/point.h"
+#include "geometry/saturated_math.h"
+#include "geometry/scalar.h"
+#include "geometry/size.h"
 
 namespace impeller {
 

@@ -4,10 +4,10 @@
 
 #include "gtest/gtest.h"
 
-#include "flutter/impeller/geometry/matrix.h"
+#include "geometry/matrix.h"
 
-#include "flutter/impeller/geometry/geometry_asserts.h"
-#include "impeller/geometry/constants.h"
+#include "geometry/constants.h"
+#include "geometry/geometry_asserts.h"
 
 namespace impeller {
 namespace testing {

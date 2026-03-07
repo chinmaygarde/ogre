@@ -5,8 +5,8 @@
 #ifndef FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_VERTEX_DESCRIPTOR_VK_H_
 #define FLUTTER_IMPELLER_RENDERER_BACKEND_VULKAN_VERTEX_DESCRIPTOR_VK_H_
 
-#include "impeller/core/shader_types.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "core/shader_types.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 

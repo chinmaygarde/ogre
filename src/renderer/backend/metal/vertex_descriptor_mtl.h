@@ -9,8 +9,8 @@
 
 #include <set>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/renderer/vertex_descriptor.h"
+#include "base/backend_cast.h"
+#include "renderer/vertex_descriptor.h"
 
 namespace impeller {
 

@@ -7,11 +7,11 @@
 
 #include <memory>
 
-#include "impeller/base/backend_cast.h"
-#include "impeller/core/runtime_types.h"
-#include "impeller/renderer/backend/vulkan/vk.h"
-#include "impeller/renderer/command_queue.h"
-#include "impeller/renderer/context.h"
+#include "base/backend_cast.h"
+#include "core/runtime_types.h"
+#include "renderer/backend/vulkan/vk.h"
+#include "renderer/command_queue.h"
+#include "renderer/context.h"
 
 namespace impeller {
 

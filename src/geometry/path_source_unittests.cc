@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/geometry/path_source.h"
+#include "geometry/path_source.h"
 
 #include "gtest/gtest.h"
 
 #include "flutter/display_list/testing/dl_test_mock_path_receiver.h"
 #include "flutter/testing/testing.h"
-#include "impeller/geometry/dashed_line_path_source.h"
-#include "impeller/geometry/rect.h"
-#include "impeller/geometry/round_rect.h"
-#include "impeller/geometry/round_superellipse.h"
+#include "geometry/dashed_line_path_source.h"
+#include "geometry/rect.h"
+#include "geometry/round_rect.h"
+#include "geometry/round_superellipse.h"
 
 namespace impeller {
 namespace testing {

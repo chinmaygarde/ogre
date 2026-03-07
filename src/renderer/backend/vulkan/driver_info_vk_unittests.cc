@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "impeller/playground/playground_test.h"
-#include "impeller/renderer/backend/vulkan/context_vk.h"
-#include "impeller/renderer/backend/vulkan/driver_info_vk.h"
-#include "impeller/renderer/backend/vulkan/surface_context_vk.h"
-#include "impeller/renderer/backend/vulkan/test/mock_vulkan.h"
-#include "impeller/renderer/backend/vulkan/workarounds_vk.h"
+#include "playground/playground_test.h"
+#include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/driver_info_vk.h"
+#include "renderer/backend/vulkan/surface_context_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
+#include "renderer/backend/vulkan/workarounds_vk.h"
 
 namespace impeller::testing {
 

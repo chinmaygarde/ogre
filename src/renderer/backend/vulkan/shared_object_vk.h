@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "impeller/renderer/backend/vulkan/vk.h"
+#include "renderer/backend/vulkan/vk.h"
 
 namespace impeller {
 
