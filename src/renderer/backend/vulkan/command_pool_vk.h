@@ -16,30 +16,30 @@
 namespace ogre {
 
 class ContextVK;
-class CommandPoolRecyclerVK;
+class CommandPoolRecycler;
 
 //------------------------------------------------------------------------------
 /// @brief      Manages the lifecycle of a single |vk::CommandPool|.
 ///
 /// A |vk::CommandPool| is expensive to create and reset. This class manages
 /// the lifecycle of a single |vk::CommandPool| by returning to the origin
-/// (|CommandPoolRecyclerVK|) when it is destroyed to be reused.
+/// (|CommandPoolRecycler|) when it is destroyed to be reused.
 ///
 /// @warning    This class is not thread-safe.
 ///
-/// @see        |CommandPoolRecyclerVK|
-class CommandPoolVK final {
+/// @see        |CommandPoolRecycler|
+class CommandPool final {
  public:
-  ~CommandPoolVK();
+  ~CommandPool();
 
   /// @brief      Creates a resource that manages the life of a command pool.
   ///
   /// @param[in]  pool      The command pool to manage.
   /// @param[in]  buffers   Zero or more command buffers in an initial state.
   /// @param[in]  recycler  The context that will be notified on destruction.
-  CommandPoolVK(vk::UniqueCommandPool pool,
-                std::vector<vk::UniqueCommandBuffer>&& buffers,
-                std::weak_ptr<ContextVK>& context)
+  CommandPool(vk::UniqueCommandPool pool,
+              std::vector<vk::UniqueCommandBuffer>&& buffers,
+              std::weak_ptr<ContextVK>& context)
       : pool_(std::move(pool)),
         unused_command_buffers_(std::move(buffers)),
         context_(context) {}
@@ -62,9 +62,9 @@ class CommandPoolVK final {
   void Destroy();
 
  private:
-  CommandPoolVK(const CommandPoolVK&) = delete;
+  CommandPool(const CommandPool&) = delete;
 
-  CommandPoolVK& operator=(const CommandPoolVK&) = delete;
+  CommandPool& operator=(const CommandPool&) = delete;
 
   Mutex pool_mutex_;
   vk::UniqueCommandPool pool_ IPLR_GUARDED_BY(pool_mutex_);
@@ -100,8 +100,8 @@ class CommandPoolVK final {
 /// @see        |ContextVK|
 /// @see
 /// https://arm-software.github.io/vulkan_best_practice_for_mobile_developers/samples/performance/command_buffer_usage/command_buffer_usage_tutorial.html
-class CommandPoolRecyclerVK final
-    : public std::enable_shared_from_this<CommandPoolRecyclerVK> {
+class CommandPoolRecycler final
+    : public std::enable_shared_from_this<CommandPoolRecycler> {
  public:
   /// A unique command pool and zero or more recycled command buffers.
   struct RecycledData {
@@ -116,12 +116,12 @@ class CommandPoolRecyclerVK final
   /// @brief      Creates a recycler for the given |ContextVK|.
   ///
   /// @param[in]  context The context to create the recycler for.
-  explicit CommandPoolRecyclerVK(const std::shared_ptr<ContextVK>& context);
+  explicit CommandPoolRecycler(const std::shared_ptr<ContextVK>& context);
 
   /// @brief      Gets a command pool for the current thread.
   ///
   /// @warning    Returns a |nullptr| if a pool could not be created.
-  std::shared_ptr<CommandPoolVK> Get();
+  std::shared_ptr<CommandPool> Get();
 
   /// @brief      Returns a command pool to be reset on a background thread.
   ///
@@ -148,16 +148,16 @@ class CommandPoolRecyclerVK final
   /// @brief      Creates a new |vk::CommandPool|.
   ///
   /// @returns    Returns a |std::nullopt| if a pool could not be created.
-  std::optional<CommandPoolRecyclerVK::RecycledData> Create();
+  std::optional<CommandPoolRecycler::RecycledData> Create();
 
   /// @brief      Reuses a recycled |RecycledData|, if available.
   ///
   /// @returns    Returns a |std::nullopt| if a pool was not available.
   std::optional<RecycledData> Reuse();
 
-  CommandPoolRecyclerVK(const CommandPoolRecyclerVK&) = delete;
+  CommandPoolRecycler(const CommandPoolRecycler&) = delete;
 
-  CommandPoolRecyclerVK& operator=(const CommandPoolRecyclerVK&) = delete;
+  CommandPoolRecycler& operator=(const CommandPoolRecycler&) = delete;
 };
 
 }  // namespace ogre

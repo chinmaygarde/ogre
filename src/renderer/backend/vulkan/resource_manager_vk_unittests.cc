@@ -15,14 +15,14 @@ namespace ogre {
 namespace testing {
 
 // While expected to be a singleton per context, the class does not enforce it.
-TEST(ResourceManagerVKTest, CreatesANewInstance) {
-  auto const a = ResourceManagerVK::Create();
-  auto const b = ResourceManagerVK::Create();
+TEST(ResourceManagerTest, CreatesANewInstance) {
+  auto const a = ResourceManager::Create();
+  auto const b = ResourceManager::Create();
   EXPECT_NE(a, b);
 }
 
-TEST(ResourceManagerVKTest, ReclaimMovesAResourceAndDestroysIt) {
-  auto const manager = ResourceManagerVK::Create();
+TEST(ResourceManagerTest, ReclaimMovesAResourceAndDestroysIt) {
+  auto const manager = ResourceManager::Create();
 
   auto waiter = fml::AutoResetWaitableEvent();
   auto dead = false;
@@ -40,14 +40,14 @@ TEST(ResourceManagerVKTest, ReclaimMovesAResourceAndDestroysIt) {
 }
 
 // Regression test for https://github.com/flutter/flutter/issues/134482.
-TEST(ResourceManagerVKTest, TerminatesWhenOutOfScope) {
+TEST(ResourceManagerTest, TerminatesWhenOutOfScope) {
   // Originally, this shared_ptr was never destroyed, and the thread never
   // terminated. This test ensures that the thread terminates when the
-  // ResourceManagerVK is out of scope.
-  std::weak_ptr<ResourceManagerVK> manager;
+  // ResourceManager is out of scope.
+  std::weak_ptr<ResourceManager> manager;
 
   {
-    auto shared = ResourceManagerVK::Create();
+    auto shared = ResourceManager::Create();
     manager = shared;
   }
 
@@ -55,15 +55,15 @@ TEST(ResourceManagerVKTest, TerminatesWhenOutOfScope) {
   EXPECT_EQ(manager.lock(), nullptr);
 }
 
-TEST(ResourceManagerVKTest, IsThreadSafe) {
-  // In a typical app, there is a single ResourceManagerVK per app, shared b/w
+TEST(ResourceManagerTest, IsThreadSafe) {
+  // In a typical app, there is a single ResourceManager per app, shared b/w
   // threads.
   //
-  // This test ensures that the ResourceManagerVK is thread-safe.
-  std::weak_ptr<ResourceManagerVK> manager;
+  // This test ensures that the ResourceManager is thread-safe.
+  std::weak_ptr<ResourceManager> manager;
 
   {
-    auto const manager = ResourceManagerVK::Create();
+    auto const manager = ResourceManager::Create();
 
     // Spawn two threads, and have them both put resources into the manager.
     struct MockResource {};

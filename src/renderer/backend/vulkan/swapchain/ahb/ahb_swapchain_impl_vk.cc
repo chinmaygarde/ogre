@@ -220,7 +220,7 @@ bool AHBSwapchainImplVK::Present(
 }
 
 void AHBSwapchainImplVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBufferVK> cmd_buffer) {
+    std::shared_ptr<CommandBuffer> cmd_buffer) {
   frame_data_[frame_index_]->final_cmd_buffer = std::move(cmd_buffer);
 }
 

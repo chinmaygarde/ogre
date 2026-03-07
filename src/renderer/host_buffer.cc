@@ -18,14 +18,14 @@ namespace ogre {
 constexpr size_t kAllocatorBlockSize = 1024000;  // 1024 Kb.
 
 std::shared_ptr<HostBuffer> HostBuffer::Create(
-    const std::shared_ptr<AllocatorVK>& allocator,
+    const std::shared_ptr<Allocator>& allocator,
     const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
     size_t minimum_uniform_alignment) {
   return std::shared_ptr<HostBuffer>(
       new HostBuffer(allocator, idle_waiter, minimum_uniform_alignment));
 }
 
-HostBuffer::HostBuffer(const std::shared_ptr<AllocatorVK>& allocator,
+HostBuffer::HostBuffer(const std::shared_ptr<Allocator>& allocator,
                        const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
                        size_t minimum_uniform_alignment)
     : allocator_(allocator),

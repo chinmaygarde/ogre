@@ -21,12 +21,12 @@
 
 namespace ogre {
 
-class CommandEncoderVK;
-class CommandBufferVK;
+class CommandEncoder;
+class CommandBuffer;
 
-class BlitPassVK final {
+class BlitPass final {
  public:
-  ~BlitPassVK();
+  ~BlitPass();
 
   bool IsValid() const;
 
@@ -63,15 +63,14 @@ class BlitPassVK final {
   bool EncodeCommands() const;
 
  private:
-  friend class CommandBufferVK;
-  FML_FRIEND_TEST(BlitPassVKTest,
-                  MipmapGenerationTransitionsAllLevelsCorrectly);
+  friend class CommandBuffer;
+  FML_FRIEND_TEST(BlitPassTest, MipmapGenerationTransitionsAllLevelsCorrectly);
 
-  std::shared_ptr<CommandBufferVK> command_buffer_;
+  std::shared_ptr<CommandBuffer> command_buffer_;
   const WorkaroundsVK workarounds_;
 
-  explicit BlitPassVK(std::shared_ptr<CommandBufferVK> command_buffer,
-                      const WorkaroundsVK& workarounds);
+  explicit BlitPass(std::shared_ptr<CommandBuffer> command_buffer,
+                    const WorkaroundsVK& workarounds);
 
   void OnSetLabel(std::string_view label);
 
@@ -98,9 +97,9 @@ class BlitPassVK final {
   bool OnGenerateMipmapCommand(std::shared_ptr<Texture> texture,
                                std::string_view label);
 
-  BlitPassVK(const BlitPassVK&) = delete;
+  BlitPass(const BlitPass&) = delete;
 
-  BlitPassVK& operator=(const BlitPassVK&) = delete;
+  BlitPass& operator=(const BlitPass&) = delete;
 };
 
 }  // namespace ogre

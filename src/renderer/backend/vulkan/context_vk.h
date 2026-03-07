@@ -14,34 +14,33 @@
 #include "fml/concurrent_message_loop.h"
 #include "fml/mapping.h"
 #include "fml/unique_fd.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
 #include "renderer/backend/vulkan/command_pool_vk.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
 #include "renderer/backend/vulkan/driver_info_vk.h"
+#include "renderer/backend/vulkan/idle_waiter_vk.h"
 #include "renderer/backend/vulkan/pipeline_library_vk.h"
 #include "renderer/backend/vulkan/queue_vk.h"
 #include "renderer/backend/vulkan/sampler_library_vk.h"
 #include "renderer/backend/vulkan/shader_library_vk.h"
 #include "renderer/backend/vulkan/workarounds_vk.h"
-#include "renderer/backend/vulkan/idle_waiter_vk.h"
-#include "renderer/backend/vulkan/capabilities_vk.h"
-#include "renderer/backend/vulkan/command_queue_vk.h"
 #include "renderer/context.h"
 
 namespace ogre {
 
 bool HasValidationLayers();
 
-class CommandEncoderFactoryVK;
-class CommandEncoderVK;
-class CommandPoolRecyclerVK;
-class DebugReportVK;
-class FenceWaiterVK;
-class ResourceManagerVK;
-class SurfaceContextVK;
-class GPUTracerVK;
-class DescriptorPoolRecyclerVK;
-class CommandQueueVK;
-class DescriptorPoolVK;
+class CommandEncoder;
+class CommandPoolRecycler;
+class DebugReport;
+class FenceWaiter;
+class ResourceManager;
+class SurfaceContext;
+class GPUTracer;
+class DescriptorPoolRecycler;
+class CommandQueue;
+class DescriptorPool;
 
 class ContextVK final : public Context,
                         public BackendCast<ContextVK, Context>,
@@ -98,7 +97,7 @@ class ContextVK final : public Context,
   bool IsValid() const override;
 
   // |Context|
-  std::shared_ptr<AllocatorVK> GetResourceAllocator() const override;
+  std::shared_ptr<Allocator> GetResourceAllocator() const override;
 
   // |Context|
   std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const override;
@@ -110,14 +109,14 @@ class ContextVK final : public Context,
   std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const override;
 
   // |Context|
-  std::shared_ptr<CommandBufferVK> CreateCommandBuffer() const override;
+  std::shared_ptr<CommandBuffer> CreateCommandBuffer() const override;
 
   // |Context|
   const std::shared_ptr<const CapabilitiesVK>& GetCapabilities() const override;
 
   // |Context|
   virtual bool SubmitOnscreen(
-      std::shared_ptr<CommandBufferVK> cmd_buffer) override;
+      std::shared_ptr<CommandBuffer> cmd_buffer) override;
 
   const std::shared_ptr<YUVConversionLibraryVK>& GetYUVConversionLibrary()
       const;
@@ -183,23 +182,23 @@ class ContextVK final : public Context,
   const std::shared_ptr<fml::ConcurrentTaskRunner>
   GetConcurrentWorkerTaskRunner() const;
 
-  std::shared_ptr<SurfaceContextVK> CreateSurfaceContext();
+  std::shared_ptr<SurfaceContext> CreateSurfaceContext();
 
   const std::shared_ptr<QueueVK>& GetGraphicsQueue() const;
 
   vk::PhysicalDevice GetPhysicalDevice() const;
 
-  std::shared_ptr<FenceWaiterVK> GetFenceWaiter() const;
+  std::shared_ptr<FenceWaiter> GetFenceWaiter() const;
 
-  std::shared_ptr<ResourceManagerVK> GetResourceManager() const;
+  std::shared_ptr<ResourceManager> GetResourceManager() const;
 
-  std::shared_ptr<CommandPoolRecyclerVK> GetCommandPoolRecycler() const;
+  std::shared_ptr<CommandPoolRecycler> GetCommandPoolRecycler() const;
 
-  std::shared_ptr<DescriptorPoolRecyclerVK> GetDescriptorPoolRecycler() const;
+  std::shared_ptr<DescriptorPoolRecycler> GetDescriptorPoolRecycler() const;
 
-  std::shared_ptr<CommandQueueVK> GetCommandQueue() const override;
+  std::shared_ptr<CommandQueue> GetCommandQueue() const override;
 
-  std::shared_ptr<GPUTracerVK> GetGPUTracer() const;
+  std::shared_ptr<GPUTracer> GetGPUTracer() const;
 
   void RecordFrameEndTime() const;
 
@@ -215,7 +214,7 @@ class ContextVK final : public Context,
 
   // | Context |
   bool EnqueueCommandBuffer(
-      std::shared_ptr<CommandBufferVK> command_buffer) override;
+      std::shared_ptr<CommandBuffer> command_buffer) override;
 
   // | Context |
   bool FlushCommandBuffers() override;
@@ -250,34 +249,34 @@ class ContextVK final : public Context,
 
   std::shared_ptr<DeviceHolderImpl> device_holder_;
   std::unique_ptr<DriverInfoVK> driver_info_;
-  std::unique_ptr<DebugReportVK> debug_report_;
-  std::shared_ptr<AllocatorVK> allocator_;
+  std::unique_ptr<DebugReport> debug_report_;
+  std::shared_ptr<Allocator> allocator_;
   std::shared_ptr<ShaderLibraryVK> shader_library_;
   std::shared_ptr<SamplerLibraryVK> sampler_library_;
   std::shared_ptr<PipelineLibraryVK> pipeline_library_;
   std::shared_ptr<YUVConversionLibraryVK> yuv_conversion_library_;
   QueuesVK queues_;
   std::shared_ptr<const CapabilitiesVK> device_capabilities_;
-  std::shared_ptr<FenceWaiterVK> fence_waiter_;
-  std::shared_ptr<ResourceManagerVK> resource_manager_;
-  std::shared_ptr<DescriptorPoolRecyclerVK> descriptor_pool_recycler_;
-  std::shared_ptr<CommandPoolRecyclerVK> command_pool_recycler_;
+  std::shared_ptr<FenceWaiter> fence_waiter_;
+  std::shared_ptr<ResourceManager> resource_manager_;
+  std::shared_ptr<DescriptorPoolRecycler> descriptor_pool_recycler_;
+  std::shared_ptr<CommandPoolRecycler> command_pool_recycler_;
   std::string device_name_;
   std::shared_ptr<fml::ConcurrentMessageLoop> raster_message_loop_;
-  std::shared_ptr<GPUTracerVK> gpu_tracer_;
-  std::shared_ptr<CommandQueueVK> command_queue_vk_;
+  std::shared_ptr<GPUTracer> gpu_tracer_;
+  std::shared_ptr<CommandQueue> command_queue_vk_;
   std::shared_ptr<const IdleWaiterVK> idle_waiter_vk_;
   WorkaroundsVK workarounds_;
 
   using DescriptorPoolMap =
-      std::unordered_map<std::thread::id, std::shared_ptr<DescriptorPoolVK>>;
+      std::unordered_map<std::thread::id, std::shared_ptr<DescriptorPool>>;
 
   mutable Mutex desc_pool_mutex_;
   mutable DescriptorPoolMap IPLR_GUARDED_BY(desc_pool_mutex_)
       cached_descriptor_pool_;
   bool should_enable_surface_control_ = false;
   bool should_batch_cmd_buffers_ = false;
-  std::vector<std::shared_ptr<CommandBufferVK>> pending_command_buffers_;
+  std::vector<std::shared_ptr<CommandBuffer>> pending_command_buffers_;
 
   const uint64_t hash_;
 

@@ -14,13 +14,13 @@
 namespace ogre {
 
 //------------------------------------------------------------------------------
-/// @brief      A resource that may be reclaimed by a |ResourceManagerVK|.
+/// @brief      A resource that may be reclaimed by a |ResourceManager|.
 ///
 /// To create a resource, use `UniqueResourceVKT` to create a unique handle:
 ///
 ///     auto resource = UniqueResourceVKT<SomeResource>(resource_manager);
 ///
-/// @see        |ResourceManagerVK::Reclaim|.
+/// @see        |ResourceManager::Reclaim|.
 class ResourceVK {
  public:
   virtual ~ResourceVK() = default;
@@ -34,8 +34,8 @@ class ResourceVK {
 ///             thread. In the future, the resource manager may allow resource
 ///             pooling/reuse, delaying reclamation past frame workloads, etc...
 ///
-class ResourceManagerVK final
-    : public std::enable_shared_from_this<ResourceManagerVK> {
+class ResourceManager final
+    : public std::enable_shared_from_this<ResourceManager> {
  public:
   //----------------------------------------------------------------------------
   /// @brief      Creates a shared resource manager (a dedicated thread).
@@ -44,12 +44,12 @@ class ResourceManagerVK final
   /// are reclaimed (passed to `Reclaim`). The thread will exit when the
   /// resource manager is destroyed.
   ///
-  /// @note       Only one |ResourceManagerVK| should be created per Vulkan
+  /// @note       Only one |ResourceManager| should be created per Vulkan
   ///             context, but that contract is not enforced by this method.
   ///
   /// @return     A resource manager if one could be created.
   ///
-  static std::shared_ptr<ResourceManagerVK> Create();
+  static std::shared_ptr<ResourceManager> Create();
 
   //----------------------------------------------------------------------------
   /// @brief      Mark a resource as being reclaimable.
@@ -68,12 +68,12 @@ class ResourceManagerVK final
   ///
   /// The resource manager will stop collecting resources and will be destroyed
   /// when all references to it are dropped.
-  ~ResourceManagerVK();
+  ~ResourceManager();
 
  private:
   using Reclaimables = std::vector<std::unique_ptr<ResourceVK>>;
 
-  ResourceManagerVK();
+  ResourceManager();
   std::mutex reclaimables_mutex_;
   std::condition_variable reclaimables_cv_;
   Reclaimables reclaimables_;
@@ -95,9 +95,9 @@ class ResourceManagerVK final
   /// collected when the resource manager is collected.
   void Terminate();
 
-  ResourceManagerVK(const ResourceManagerVK&) = delete;
+  ResourceManager(const ResourceManager&) = delete;
 
-  ResourceManagerVK& operator=(const ResourceManagerVK&) = delete;
+  ResourceManager& operator=(const ResourceManager&) = delete;
 };
 
 //------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ class UniqueResourceVKT final {
   /// Initially the handle is empty, and can be populated by calling `Swap`.
   ///
   /// @param[in]  resource_manager  The resource manager.
-  explicit UniqueResourceVKT(std::weak_ptr<ResourceManagerVK> resource_manager)
+  explicit UniqueResourceVKT(std::weak_ptr<ResourceManager> resource_manager)
       : resource_manager_(std::move(resource_manager)) {}
 
   /// @brief      Construct a unique resource handle belonging to a manager.
@@ -159,7 +159,7 @@ class UniqueResourceVKT final {
   ///
   /// @param[in]  resource_manager  The resource manager.
   /// @param[in]  resource          The resource to move.
-  explicit UniqueResourceVKT(std::weak_ptr<ResourceManagerVK> resource_manager,
+  explicit UniqueResourceVKT(std::weak_ptr<ResourceManager> resource_manager,
                              ResourceType&& resource)
       : resource_manager_(std::move(resource_manager)),
         resource_(
@@ -198,7 +198,7 @@ class UniqueResourceVKT final {
   }
 
  private:
-  std::weak_ptr<ResourceManagerVK> resource_manager_;
+  std::weak_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<ResourceVKT<ResourceType>> resource_;
 
   UniqueResourceVKT(const UniqueResourceVKT&) = delete;

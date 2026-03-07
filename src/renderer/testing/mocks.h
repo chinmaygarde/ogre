@@ -6,10 +6,10 @@
 #define FLUTTER_OGRE_RENDERER_TESTING_MOCKS_H_
 
 #include "core/runtime_types.h"
-#include "renderer/backend/vulkan/allocator_vk.h"
 #include "core/sampler_descriptor.h"
 #include "core/texture.h"
 #include "gmock/gmock.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 #include "renderer/backend/vulkan/blit_pass_vk.h"
 #include "renderer/backend/vulkan/compute_pass_vk.h"
 #include "renderer/backend/vulkan/render_pass_vk.h"
@@ -89,7 +89,7 @@ class MockCommandBuffer : public CommandBuffer {
       : CommandBuffer(std::move(context)) {}
   MOCK_METHOD(bool, IsValid, (), (const, override));
   MOCK_METHOD(void, SetLabel, (std::string_view label), (const, override));
-  MOCK_METHOD(std::shared_ptr<BlitPassVK>, OnCreateBlitPass, (), (override));
+  MOCK_METHOD(std::shared_ptr<BlitPass>, OnCreateBlitPass, (), (override));
   MOCK_METHOD(bool,
               OnSubmitCommands,
               (bool block_on_schedule, CompletionCallback callback),
@@ -118,7 +118,7 @@ class MockImpellerContext : public Context {
 
   MOCK_METHOD(void, Shutdown, (), (override));
 
-  MOCK_METHOD(std::shared_ptr<AllocatorVK>,
+  MOCK_METHOD(std::shared_ptr<Allocator>,
               GetResourceAllocator,
               (),
               (const, override));

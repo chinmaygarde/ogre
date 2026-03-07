@@ -11,7 +11,7 @@
 namespace ogre {
 namespace testing {
 
-TEST(CommandPoolRecyclerVKTest, GetsACommandPoolPerThread) {
+TEST(CommandPoolRecyclerTest, GetsACommandPoolPerThread) {
   auto const context = MockVulkanContextBuilder().Build();
 
   {
@@ -20,8 +20,8 @@ TEST(CommandPoolRecyclerVKTest, GetsACommandPoolPerThread) {
     // These pools have to be held at this context, otherwise they will be
     // dropped and recycled and potentially reused by another thread, causing
     // flaky tests.
-    std::shared_ptr<CommandPoolVK> pool1;
-    std::shared_ptr<CommandPoolVK> pool2;
+    std::shared_ptr<CommandPool> pool1;
+    std::shared_ptr<CommandPool> pool2;
 
     // Create a command pool in two threads and record the memory location.
     std::thread thread1(
@@ -40,7 +40,7 @@ TEST(CommandPoolRecyclerVKTest, GetsACommandPoolPerThread) {
   context->Shutdown();
 }
 
-TEST(CommandPoolRecyclerVKTest, GetsTheSameCommandPoolOnSameThread) {
+TEST(CommandPoolRecyclerTest, GetsTheSameCommandPoolOnSameThread) {
   auto const context = MockVulkanContextBuilder().Build();
 
   auto const pool1 = context->GetCommandPoolRecycler()->Get();
@@ -104,7 +104,7 @@ std::shared_ptr<std::vector<std::string>> ReclaimAndGetMockVulkanFunctions(
 
 }  // namespace
 
-TEST(CommandPoolRecyclerVKTest, ReclaimMakesCommandPoolAvailable) {
+TEST(CommandPoolRecyclerTest, ReclaimMakesCommandPoolAvailable) {
   auto const context = MockVulkanContextBuilder().Build();
 
   {
@@ -134,7 +134,7 @@ TEST(CommandPoolRecyclerVKTest, ReclaimMakesCommandPoolAvailable) {
   context->Shutdown();
 }
 
-TEST(CommandPoolRecyclerVKTest, CommandBuffersAreRecycled) {
+TEST(CommandPoolRecyclerTest, CommandBuffersAreRecycled) {
   auto const context = MockVulkanContextBuilder().Build();
 
   {
@@ -175,7 +175,7 @@ TEST(CommandPoolRecyclerVKTest, CommandBuffersAreRecycled) {
   context->Shutdown();
 }
 
-TEST(CommandPoolRecyclerVKTest, ExtraCommandBufferAllocationsTriggerTrim) {
+TEST(CommandPoolRecyclerTest, ExtraCommandBufferAllocationsTriggerTrim) {
   auto const context = MockVulkanContextBuilder().Build();
 
   {
@@ -219,21 +219,21 @@ TEST(CommandPoolRecyclerVKTest, ExtraCommandBufferAllocationsTriggerTrim) {
   context->Shutdown();
 }
 
-TEST(CommandPoolRecyclerVKTest, RecyclerGlobalPoolMapSize) {
+TEST(CommandPoolRecyclerTest, RecyclerGlobalPoolMapSize) {
   auto context = MockVulkanContextBuilder().Build();
   auto const recycler = context->GetCommandPoolRecycler();
 
   // The global pool list for this context should initially be empty.
-  EXPECT_EQ(CommandPoolRecyclerVK::GetGlobalPoolCount(*context), 0);
+  EXPECT_EQ(CommandPoolRecycler::GetGlobalPoolCount(*context), 0);
 
   // Creating a pool for this thread should insert the pool into the global map.
   auto pool = recycler->Get();
-  EXPECT_EQ(CommandPoolRecyclerVK::GetGlobalPoolCount(*context), 1);
+  EXPECT_EQ(CommandPoolRecycler::GetGlobalPoolCount(*context), 1);
 
   // Disposing this thread's pool should remove it from the global map.
   pool.reset();
   recycler->Dispose();
-  EXPECT_EQ(CommandPoolRecyclerVK::GetGlobalPoolCount(*context), 0);
+  EXPECT_EQ(CommandPoolRecycler::GetGlobalPoolCount(*context), 0);
 
   context->Shutdown();
 }

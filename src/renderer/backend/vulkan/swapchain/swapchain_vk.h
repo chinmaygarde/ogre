@@ -9,9 +9,9 @@
 
 #include "fml/build_config.h"
 #include "geometry/size.h"
-#include "renderer/backend/vulkan/vk.h"
-#include "renderer/backend/vulkan/swapchain/surface_vk.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 #include "renderer/context.h"
 
 #if FML_OS_ANDROID
@@ -31,27 +31,27 @@ using CreateTransactionCB = std::function<android::SurfaceTransaction()>;
 ///             to an unrecoverable error and the swapchain must be recreated
 ///             with a new surface.
 ///
-class SwapchainVK {
+class Swapchain {
  public:
-  static std::shared_ptr<SwapchainVK> Create(
+  static std::shared_ptr<Swapchain> Create(
       const std::shared_ptr<Context>& context,
       vk::UniqueSurfaceKHR surface,
       const ISize& size,
       bool enable_msaa = true);
 
 #if FML_OS_ANDROID
-  static std::shared_ptr<SwapchainVK> Create(
+  static std::shared_ptr<Swapchain> Create(
       const std::shared_ptr<Context>& context,
       ANativeWindow* window,
       const CreateTransactionCB& cb,
       bool enable_msaa = true);
 #endif  // FML_OS_ANDROID
 
-  virtual ~SwapchainVK();
+  virtual ~Swapchain();
 
-  SwapchainVK(const SwapchainVK&) = delete;
+  Swapchain(const Swapchain&) = delete;
 
-  SwapchainVK& operator=(const SwapchainVK&) = delete;
+  Swapchain& operator=(const Swapchain&) = delete;
 
   virtual bool IsValid() const = 0;
 
@@ -60,14 +60,14 @@ class SwapchainVK {
   virtual vk::Format GetSurfaceFormat() const = 0;
 
   virtual void AddFinalCommandBuffer(
-      std::shared_ptr<CommandBufferVK> cmd_buffer) const = 0;
+      std::shared_ptr<CommandBuffer> cmd_buffer) const = 0;
 
   /// @brief Mark the current swapchain configuration as dirty, forcing it to be
   ///        recreated on the next frame.
   virtual void UpdateSurfaceSize(const ISize& size) = 0;
 
  protected:
-  SwapchainVK();
+  Swapchain();
 };
 
 }  // namespace ogre

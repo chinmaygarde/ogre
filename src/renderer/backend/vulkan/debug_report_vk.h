@@ -11,11 +11,11 @@ namespace ogre {
 
 class CapabilitiesVK;
 
-class DebugReportVK {
+class DebugReport {
  public:
-  DebugReportVK(const CapabilitiesVK& caps, const vk::Instance& instance);
+  DebugReport(const CapabilitiesVK& caps, const vk::Instance& instance);
 
-  ~DebugReportVK();
+  ~DebugReport();
 
   bool IsValid() const;
 
@@ -38,9 +38,9 @@ class DebugReportVK {
       const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
       void* user_data);
 
-  DebugReportVK(const DebugReportVK&) = delete;
+  DebugReport(const DebugReport&) = delete;
 
-  DebugReportVK& operator=(const DebugReportVK&) = delete;
+  DebugReport& operator=(const DebugReport&) = delete;
 };
 
 }  // namespace ogre

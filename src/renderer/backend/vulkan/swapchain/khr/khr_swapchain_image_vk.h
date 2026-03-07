@@ -12,14 +12,14 @@
 
 namespace ogre {
 
-class KHRSwapchainImageVK final : public TextureSourceVK {
+class KHRSwapchainImage final : public TextureSourceVK {
  public:
-  KHRSwapchainImageVK(TextureDescriptor desc,
-                      const vk::Device& device,
-                      vk::Image image);
+  KHRSwapchainImage(TextureDescriptor desc,
+                    const vk::Device& device,
+                    vk::Image image);
 
   // |TextureSourceVK|
-  ~KHRSwapchainImageVK() override;
+  ~KHRSwapchainImage() override;
 
   bool IsValid() const;
 
@@ -40,9 +40,9 @@ class KHRSwapchainImageVK final : public TextureSourceVK {
   vk::UniqueImageView image_view_ = {};
   bool is_valid_ = false;
 
-  KHRSwapchainImageVK(const KHRSwapchainImageVK&) = delete;
+  KHRSwapchainImage(const KHRSwapchainImage&) = delete;
 
-  KHRSwapchainImageVK& operator=(const KHRSwapchainImageVK&) = delete;
+  KHRSwapchainImage& operator=(const KHRSwapchainImage&) = delete;
 };
 
 }  // namespace ogre

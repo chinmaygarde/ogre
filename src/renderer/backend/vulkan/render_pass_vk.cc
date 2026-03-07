@@ -80,7 +80,7 @@ static size_t GetVKClearValues(
 SharedHandleVK<vk::RenderPass> RenderPassVK::CreateVKRenderPass(
     const ContextVK& context,
     const SharedHandleVK<vk::RenderPass>& recycled_renderpass,
-    const std::shared_ptr<CommandBufferVK>& command_buffer,
+    const std::shared_ptr<CommandBuffer>& command_buffer,
     bool is_swapchain) const {
   if (recycled_renderpass != nullptr) {
     return recycled_renderpass;
@@ -132,7 +132,7 @@ SharedHandleVK<vk::RenderPass> RenderPassVK::CreateVKRenderPass(
 
 RenderPassVK::RenderPassVK(const std::shared_ptr<const Context>& context,
                            const RenderTarget& target,
-                           std::shared_ptr<CommandBufferVK> command_buffer)
+                           std::shared_ptr<CommandBuffer> command_buffer)
     : context_(context),
       sample_count_(target.GetSampleCount()),
       pixel_format_(target.GetRenderTargetPixelFormat()),
@@ -210,7 +210,7 @@ RenderPassVK::RenderPassVK(const std::shared_ptr<const Context>& context,
       resolve_image_vk_->GetTextureDescriptor().mip_count > 1) {
     if (TextureVK::Cast(*resolve_image_vk_).GetLayout() ==
         vk::ImageLayout::eUndefined) {
-      BarrierVK barrier;
+      Barrier barrier;
       barrier.new_layout = vk::ImageLayout::eShaderReadOnlyOptimal;
       barrier.cmd_buffer = command_buffer_->GetCommandBuffer();
       barrier.src_stage = vk::PipelineStageFlagBits::eBottomOfPipe;
@@ -361,8 +361,7 @@ bool RenderPassVK::ValidateVertexBuffers(const BufferView vertex_buffers[],
 bool RenderPassVK::ValidateIndexBuffer(const BufferView& index_buffer,
                                        IndexType index_type) {
   if (index_type == IndexType::kUnknown) {
-    VALIDATION_LOG
-        << "Cannot bind an index buffer with an unknown index type.";
+    VALIDATION_LOG << "Cannot bind an index buffer with an unknown index type.";
     return false;
   }
   if (index_type != IndexType::kNone && !index_buffer) {

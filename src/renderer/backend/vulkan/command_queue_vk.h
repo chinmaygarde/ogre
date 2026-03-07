@@ -16,24 +16,24 @@ namespace ogre {
 
 class ContextVK;
 
-class CommandQueueVK {
+class CommandQueue {
  public:
-  using CompletionCallback = std::function<void(CommandBufferVK::Status)>;
+  using CompletionCallback = std::function<void(CommandBuffer::Status)>;
 
-  explicit CommandQueueVK(const std::weak_ptr<ContextVK>& context);
+  explicit CommandQueue(const std::weak_ptr<ContextVK>& context);
 
-  ~CommandQueueVK();
+  ~CommandQueue();
 
-  fml::Status Submit(const std::vector<std::shared_ptr<CommandBufferVK>>& buffers,
+  fml::Status Submit(const std::vector<std::shared_ptr<CommandBuffer>>& buffers,
                      const CompletionCallback& completion_callback = {},
                      bool block_on_schedule = false);
 
  private:
   std::weak_ptr<ContextVK> context_;
 
-  CommandQueueVK(const CommandQueueVK&) = delete;
+  CommandQueue(const CommandQueue&) = delete;
 
-  CommandQueueVK& operator=(const CommandQueueVK&) = delete;
+  CommandQueue& operator=(const CommandQueue&) = delete;
 };
 
 }  // namespace ogre

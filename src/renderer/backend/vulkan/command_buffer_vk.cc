@@ -21,17 +21,16 @@
 
 namespace ogre {
 
-CommandBufferVK::CommandBufferVK(
-    std::weak_ptr<const ContextVK> context,
-    std::weak_ptr<const DeviceHolderVK> device_holder,
-    std::shared_ptr<TrackedObjectsVK> tracked_objects)
+CommandBuffer::CommandBuffer(std::weak_ptr<const ContextVK> context,
+                             std::weak_ptr<const DeviceHolderVK> device_holder,
+                             std::shared_ptr<TrackedObjectsVK> tracked_objects)
     : context_(std::move(context)),
       device_holder_(std::move(device_holder)),
       tracked_objects_(std::move(tracked_objects)) {}
 
-CommandBufferVK::~CommandBufferVK() = default;
+CommandBuffer::~CommandBuffer() = default;
 
-void CommandBufferVK::SetLabel(std::string_view label) const {
+void CommandBuffer::SetLabel(std::string_view label) const {
 #ifdef OGRE_DEBUG
   auto context = context_.lock();
   if (!context) {
@@ -41,25 +40,25 @@ void CommandBufferVK::SetLabel(std::string_view label) const {
 #endif  // OGRE_DEBUG
 }
 
-bool CommandBufferVK::IsValid() const {
+bool CommandBuffer::IsValid() const {
   return true;
 }
 
-void CommandBufferVK::WaitUntilCompleted() {}
+void CommandBuffer::WaitUntilCompleted() {}
 
-void CommandBufferVK::WaitUntilScheduled() {}
+void CommandBuffer::WaitUntilScheduled() {}
 
-std::shared_ptr<RenderPassVK> CommandBufferVK::CreateRenderPass(
+std::shared_ptr<RenderPassVK> CommandBuffer::CreateRenderPass(
     const RenderTarget& render_target) {
   auto context = context_.lock();
   if (!context) {
     return nullptr;
   }
-  auto pass = std::shared_ptr<RenderPassVK>(
-      new RenderPassVK(context,            //
-                       render_target,      //
-                       shared_from_this()  //
-                       ));
+  auto pass =
+      std::shared_ptr<RenderPassVK>(new RenderPassVK(context,            //
+                                                     render_target,      //
+                                                     shared_from_this()  //
+                                                     ));
   if (!pass->IsValid()) {
     return nullptr;
   }
@@ -67,7 +66,7 @@ std::shared_ptr<RenderPassVK> CommandBufferVK::CreateRenderPass(
   return pass;
 }
 
-std::shared_ptr<BlitPassVK> CommandBufferVK::CreateBlitPass() {
+std::shared_ptr<BlitPass> CommandBuffer::CreateBlitPass() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -75,8 +74,8 @@ std::shared_ptr<BlitPassVK> CommandBufferVK::CreateBlitPass() {
   if (!context) {
     return nullptr;
   }
-  auto pass = std::shared_ptr<BlitPassVK>(
-      new BlitPassVK(shared_from_this(), context->GetWorkarounds()));
+  auto pass = std::shared_ptr<BlitPass>(
+      new BlitPass(shared_from_this(), context->GetWorkarounds()));
   if (!pass->IsValid()) {
     return nullptr;
   }
@@ -84,7 +83,7 @@ std::shared_ptr<BlitPassVK> CommandBufferVK::CreateBlitPass() {
   return pass;
 }
 
-std::shared_ptr<ComputePassVK> CommandBufferVK::CreateComputePass() {
+std::shared_ptr<ComputePassVK> CommandBuffer::CreateComputePass() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -92,10 +91,10 @@ std::shared_ptr<ComputePassVK> CommandBufferVK::CreateComputePass() {
   if (!context) {
     return nullptr;
   }
-  auto pass = std::shared_ptr<ComputePassVK>(
-      new ComputePassVK(context,            //
-                        shared_from_this()  //
-                        ));
+  auto pass =
+      std::shared_ptr<ComputePassVK>(new ComputePassVK(context,            //
+                                                       shared_from_this()  //
+                                                       ));
   if (!pass->IsValid()) {
     return nullptr;
   }
@@ -103,7 +102,7 @@ std::shared_ptr<ComputePassVK> CommandBufferVK::CreateComputePass() {
   return pass;
 }
 
-bool CommandBufferVK::EndCommandBuffer() const {
+bool CommandBuffer::EndCommandBuffer() const {
   InsertDebugMarker("QueueSubmit");
 
   auto command_buffer = GetCommandBuffer();
@@ -117,14 +116,14 @@ bool CommandBufferVK::EndCommandBuffer() const {
   return true;
 }
 
-vk::CommandBuffer CommandBufferVK::GetCommandBuffer() const {
+vk::CommandBuffer CommandBuffer::GetCommandBuffer() const {
   if (tracked_objects_) {
     return tracked_objects_->GetCommandBuffer();
   }
   return {};
 }
 
-bool CommandBufferVK::Track(const std::shared_ptr<SharedObjectVK>& object) {
+bool CommandBuffer::Track(const std::shared_ptr<SharedObjectVK>& object) {
   if (!IsValid()) {
     return false;
   }
@@ -132,7 +131,7 @@ bool CommandBufferVK::Track(const std::shared_ptr<SharedObjectVK>& object) {
   return true;
 }
 
-bool CommandBufferVK::Track(const std::shared_ptr<const DeviceBuffer>& buffer) {
+bool CommandBuffer::Track(const std::shared_ptr<const DeviceBuffer>& buffer) {
   if (!IsValid()) {
     return false;
   }
@@ -140,7 +139,7 @@ bool CommandBufferVK::Track(const std::shared_ptr<const DeviceBuffer>& buffer) {
   return true;
 }
 
-bool CommandBufferVK::Track(
+bool CommandBuffer::Track(
     const std::shared_ptr<const TextureSourceVK>& texture) {
   if (!IsValid()) {
     return false;
@@ -149,7 +148,7 @@ bool CommandBufferVK::Track(
   return true;
 }
 
-bool CommandBufferVK::Track(const std::shared_ptr<const Texture>& texture) {
+bool CommandBuffer::Track(const std::shared_ptr<const Texture>& texture) {
   if (!IsValid()) {
     return false;
   }
@@ -159,7 +158,7 @@ bool CommandBufferVK::Track(const std::shared_ptr<const Texture>& texture) {
   return Track(TextureVK::Cast(*texture).GetTextureSource());
 }
 
-fml::StatusOr<vk::DescriptorSet> CommandBufferVK::AllocateDescriptorSets(
+fml::StatusOr<vk::DescriptorSet> CommandBuffer::AllocateDescriptorSets(
     const vk::DescriptorSetLayout& layout,
     PipelineKey pipeline_key,
     const ContextVK& context) {
@@ -171,7 +170,7 @@ fml::StatusOr<vk::DescriptorSet> CommandBufferVK::AllocateDescriptorSets(
       layout, pipeline_key, context);
 }
 
-void CommandBufferVK::PushDebugGroup(std::string_view label) const {
+void CommandBuffer::PushDebugGroup(std::string_view label) const {
   if (!HasValidationLayers()) {
     return;
   }
@@ -182,7 +181,7 @@ void CommandBufferVK::PushDebugGroup(std::string_view label) const {
   }
 }
 
-void CommandBufferVK::PopDebugGroup() const {
+void CommandBuffer::PopDebugGroup() const {
   if (!HasValidationLayers()) {
     return;
   }
@@ -191,7 +190,7 @@ void CommandBufferVK::PopDebugGroup() const {
   }
 }
 
-void CommandBufferVK::InsertDebugMarker(std::string_view label) const {
+void CommandBuffer::InsertDebugMarker(std::string_view label) const {
   if (!HasValidationLayers()) {
     return;
   }
@@ -202,7 +201,7 @@ void CommandBufferVK::InsertDebugMarker(std::string_view label) const {
   }
 }
 
-DescriptorPoolVK& CommandBufferVK::GetDescriptorPool() const {
+DescriptorPool& CommandBuffer::GetDescriptorPool() const {
   return tracked_objects_->GetDescriptorPool();
 }
 

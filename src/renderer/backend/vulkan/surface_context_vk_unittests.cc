@@ -8,8 +8,8 @@
 
 #include "gtest/gtest.h"
 #include "renderer/backend/vulkan/surface_context_vk.h"
-#include "renderer/backend/vulkan/test/mock_vulkan.h"
 #include "renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "renderer/backend/vulkan/test/mock_vulkan.h"
 
 namespace ogre {
 namespace testing {
@@ -28,12 +28,12 @@ vk::UniqueSurfaceKHR CreateSurface(const ContextVK& context) {
 }
 }  // namespace
 
-TEST(SurfaceContextVK, TearsDownSwapchain) {
+TEST(SurfaceContext, TearsDownSwapchain) {
   SetSwapchainImageSize({100, 100});
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   vk::UniqueSurfaceKHR surface = CreateSurface(*context);
-  SurfaceContextVK surface_context(context);
+  SurfaceContext surface_context(context);
 
   EXPECT_TRUE(surface_context.SetWindowSurface(std::move(surface), {100, 100}));
   EXPECT_NE(surface_context.AcquireNextSurface(), nullptr);

@@ -11,45 +11,45 @@
 
 namespace ogre {
 
-KHRSwapchainVK::KHRSwapchainVK(const std::shared_ptr<Context>& context,
-                               vk::UniqueSurfaceKHR surface,
-                               const ISize& size,
-                               bool enable_msaa)
+KHRSwapchain::KHRSwapchain(const std::shared_ptr<Context>& context,
+                           vk::UniqueSurfaceKHR surface,
+                           const ISize& size,
+                           bool enable_msaa)
     : size_(size), enable_msaa_(enable_msaa) {
-  auto impl = KHRSwapchainImplVK::Create(context,             //
-                                         std::move(surface),  //
-                                         size_,               //
-                                         enable_msaa_         //
+  auto impl = KHRSwapchainImpl::Create(context,             //
+                                       std::move(surface),  //
+                                       size_,               //
+                                       enable_msaa_         //
   );
   if (!impl || !impl->IsValid()) {
-    VALIDATION_LOG << "Failed to create SwapchainVK implementation.";
+    VALIDATION_LOG << "Failed to create Swapchain implementation.";
     return;
   }
   impl_ = std::move(impl);
 }
 
-KHRSwapchainVK::~KHRSwapchainVK() = default;
+KHRSwapchain::~KHRSwapchain() = default;
 
-bool KHRSwapchainVK::IsValid() const {
+bool KHRSwapchain::IsValid() const {
   return impl_ ? impl_->IsValid() : false;
 }
 
-void KHRSwapchainVK::UpdateSurfaceSize(const ISize& size) {
+void KHRSwapchain::UpdateSurfaceSize(const ISize& size) {
   // Update the size of the swapchain. On the next acquired drawable,
   // the sizes may no longer match, forcing the swapchain to be recreated.
   size_ = size;
 }
 
-void KHRSwapchainVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBufferVK> cmd_buffer) const {
+void KHRSwapchain::AddFinalCommandBuffer(
+    std::shared_ptr<CommandBuffer> cmd_buffer) const {
   impl_->AddFinalCommandBuffer(std::move(cmd_buffer));
 }
 
-std::unique_ptr<SurfaceVK> KHRSwapchainVK::AcquireNextDrawable() {
+std::unique_ptr<SurfaceVK> KHRSwapchain::AcquireNextDrawable() {
   return AcquireNextDrawable(0u);
 }
 
-std::unique_ptr<SurfaceVK> KHRSwapchainVK::AcquireNextDrawable(
+std::unique_ptr<SurfaceVK> KHRSwapchain::AcquireNextDrawable(
     size_t resize_retry_count) {
   if (!IsValid()) {
     return nullptr;
@@ -90,11 +90,11 @@ std::unique_ptr<SurfaceVK> KHRSwapchainVK::AcquireNextDrawable(
   auto context = impl_->GetContext();
   auto [surface, old_swapchain] = impl_->DestroySwapchain();
 
-  auto new_impl = KHRSwapchainImplVK::Create(context,             //
-                                             std::move(surface),  //
-                                             size_,               //
-                                             enable_msaa_,        //
-                                             *old_swapchain       //
+  auto new_impl = KHRSwapchainImpl::Create(context,             //
+                                           std::move(surface),  //
+                                           size_,               //
+                                           enable_msaa_,        //
+                                           *old_swapchain       //
   );
   if (!new_impl || !new_impl->IsValid()) {
     VALIDATION_LOG << "Could not update swapchain.";
@@ -111,7 +111,7 @@ std::unique_ptr<SurfaceVK> KHRSwapchainVK::AcquireNextDrawable(
   return AcquireNextDrawable(resize_retry_count + 1);
 }
 
-vk::Format KHRSwapchainVK::GetSurfaceFormat() const {
+vk::Format KHRSwapchain::GetSurfaceFormat() const {
   return IsValid() ? impl_->GetSurfaceFormat() : vk::Format::eUndefined;
 }
 

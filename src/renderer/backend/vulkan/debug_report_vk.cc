@@ -9,8 +9,8 @@
 
 namespace ogre {
 
-DebugReportVK::DebugReportVK(const CapabilitiesVK& caps,
-                             const vk::Instance& instance) {
+DebugReport::DebugReport(const CapabilitiesVK& caps,
+                         const vk::Instance& instance) {
   if (!caps.AreValidationsEnabled()) {
     is_valid_ = true;
     return;
@@ -39,9 +39,9 @@ DebugReportVK::DebugReportVK(const CapabilitiesVK& caps,
   is_valid_ = true;
 }
 
-DebugReportVK::~DebugReportVK() = default;
+DebugReport::~DebugReport() = default;
 
-bool DebugReportVK::IsValid() const {
+bool DebugReport::IsValid() const {
   return is_valid_;
 }
 
@@ -77,13 +77,13 @@ static std::string JoinVKDebugUtilsObjectNameInfoEXT(
   return stream.str();
 }
 
-VKAPI_ATTR VkBool32 VKAPI_CALL DebugReportVK::DebugUtilsMessengerCallback(
+VKAPI_ATTR VkBool32 VKAPI_CALL DebugReport::DebugUtilsMessengerCallback(
     vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
     vk::DebugUtilsMessageTypeFlagsEXT type,
     const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
     void* debug_report) {
   auto result =
-      reinterpret_cast<DebugReportVK*>(debug_report)
+      reinterpret_cast<DebugReport*>(debug_report)
           ->OnDebugCallback(
               static_cast<vk::DebugUtilsMessageSeverityFlagBitsEXT>(
                   severity),                                         //
@@ -99,7 +99,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL DebugReportVK::DebugUtilsMessengerCallback(
   return VK_FALSE;
 }
 
-DebugReportVK::Result DebugReportVK::OnDebugCallback(
+DebugReport::Result DebugReport::OnDebugCallback(
     vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
     vk::DebugUtilsMessageTypeFlagsEXT type,
     const vk::DebugUtilsMessengerCallbackDataEXT* data) {

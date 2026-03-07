@@ -11,18 +11,18 @@
 
 namespace ogre {
 
-std::shared_ptr<ResourceManagerVK> ResourceManagerVK::Create() {
+std::shared_ptr<ResourceManager> ResourceManager::Create() {
   // It will be tempting to refactor this to create the waiter thread in the
   // static method instead of the constructor. However, that causes the
   // destructor never to be called, and the thread never terminates!
   //
   // See https://github.com/flutter/flutter/issues/134482.
-  return std::shared_ptr<ResourceManagerVK>(new ResourceManagerVK());
+  return std::shared_ptr<ResourceManager>(new ResourceManager());
 }
 
-ResourceManagerVK::ResourceManagerVK() : waiter_([&]() { Start(); }) {}
+ResourceManager::ResourceManager() : waiter_([&]() { Start(); }) {}
 
-ResourceManagerVK::~ResourceManagerVK() {
+ResourceManager::~ResourceManager() {
   FML_DCHECK(waiter_.get_id() != std::this_thread::get_id())
       << "The ResourceManager being destructed on its own spawned thread is a "
       << "sign that ContextVK was not properly destroyed. A usual fix for this "
@@ -32,9 +32,9 @@ ResourceManagerVK::~ResourceManagerVK() {
   waiter_.join();
 }
 
-void ResourceManagerVK::Start() {
+void ResourceManager::Start() {
   // It's possible for Start() to be called when terminating:
-  // { ResourceManagerVK::Create(); }
+  // { ResourceManager::Create(); }
   //
   // ... so no FML_DCHECK here.
 
@@ -72,7 +72,7 @@ void ResourceManagerVK::Start() {
   }
 }
 
-void ResourceManagerVK::Reclaim(std::unique_ptr<ResourceVK> resource) {
+void ResourceManager::Reclaim(std::unique_ptr<ResourceVK> resource) {
   if (!resource) {
     return;
   }
@@ -83,7 +83,7 @@ void ResourceManagerVK::Reclaim(std::unique_ptr<ResourceVK> resource) {
   reclaimables_cv_.notify_one();
 }
 
-void ResourceManagerVK::Terminate() {
+void ResourceManager::Terminate() {
   // The thread should not be terminated more than once.
   FML_DCHECK(!should_exit_);
 

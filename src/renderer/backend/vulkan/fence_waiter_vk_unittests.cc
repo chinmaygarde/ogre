@@ -10,13 +10,13 @@
 namespace ogre {
 namespace testing {
 
-TEST(FenceWaiterVKTest, IgnoresNullFence) {
+TEST(FenceWaiterTest, IgnoresNullFence) {
   auto const context = MockVulkanContextBuilder().Build();
   auto const waiter = context->GetFenceWaiter();
   EXPECT_FALSE(waiter->AddFence(vk::UniqueFence(), []() {}));
 }
 
-TEST(FenceWaiterVKTest, IgnoresNullCallback) {
+TEST(FenceWaiterTest, IgnoresNullCallback) {
   auto const context = MockVulkanContextBuilder().Build();
   auto const device = context->GetDevice();
   auto const waiter = context->GetFenceWaiter();
@@ -25,7 +25,7 @@ TEST(FenceWaiterVKTest, IgnoresNullCallback) {
   EXPECT_FALSE(waiter->AddFence(std::move(fence), nullptr));
 }
 
-TEST(FenceWaiterVKTest, ExecutesFenceCallback) {
+TEST(FenceWaiterTest, ExecutesFenceCallback) {
   auto const context = MockVulkanContextBuilder().Build();
   auto const device = context->GetDevice();
   auto const waiter = context->GetFenceWaiter();
@@ -37,7 +37,7 @@ TEST(FenceWaiterVKTest, ExecutesFenceCallback) {
   signal.Wait();
 }
 
-TEST(FenceWaiterVKTest, ExecutesFenceCallbackX2) {
+TEST(FenceWaiterTest, ExecutesFenceCallbackX2) {
   auto const context = MockVulkanContextBuilder().Build();
   auto const device = context->GetDevice();
   auto const waiter = context->GetFenceWaiter();
@@ -54,7 +54,7 @@ TEST(FenceWaiterVKTest, ExecutesFenceCallbackX2) {
   signal2.Wait();
 }
 
-TEST(FenceWaiterVKTest, ExecutesNewFenceThenOldFence) {
+TEST(FenceWaiterTest, ExecutesNewFenceThenOldFence) {
   auto const context = MockVulkanContextBuilder().Build();
   auto const device = context->GetDevice();
   auto const waiter = context->GetFenceWaiter();
@@ -83,7 +83,7 @@ TEST(FenceWaiterVKTest, ExecutesNewFenceThenOldFence) {
   signal.Wait();
 }
 
-TEST(FenceWaiterVKTest, AddFenceDoesNothingIfTerminating) {
+TEST(FenceWaiterTest, AddFenceDoesNothingIfTerminating) {
   auto signal = fml::ManualResetWaitableEvent();
 
   {
@@ -100,7 +100,7 @@ TEST(FenceWaiterVKTest, AddFenceDoesNothingIfTerminating) {
   EXPECT_TRUE(signal.WaitWithTimeout(fml::TimeDelta::FromMilliseconds(100)));
 }
 
-TEST(FenceWaiterVKTest, InProgressFencesStillWaitIfTerminated) {
+TEST(FenceWaiterTest, InProgressFencesStillWaitIfTerminated) {
   MockFence* raw_fence = nullptr;
   auto signal = fml::ManualResetWaitableEvent();
 

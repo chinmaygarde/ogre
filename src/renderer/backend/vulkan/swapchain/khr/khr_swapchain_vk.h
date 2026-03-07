@@ -14,47 +14,47 @@
 
 namespace ogre {
 
-class KHRSwapchainImplVK;
+class KHRSwapchainImpl;
 
 //------------------------------------------------------------------------------
 /// @brief      A swapchain implemented backed by VK_KHR_swapchain and
 ///             VK_KHR_surface.
 ///
-class KHRSwapchainVK final : public SwapchainVK {
+class KHRSwapchain final : public Swapchain {
  public:
-  ~KHRSwapchainVK();
+  ~KHRSwapchain();
 
-  // |SwapchainVK|
+  // |Swapchain|
   bool IsValid() const override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   std::unique_ptr<SurfaceVK> AcquireNextDrawable() override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   vk::Format GetSurfaceFormat() const override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   void UpdateSurfaceSize(const ISize& size) override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   void AddFinalCommandBuffer(
-      std::shared_ptr<CommandBufferVK> cmd_buffer) const override;
+      std::shared_ptr<CommandBuffer> cmd_buffer) const override;
 
  private:
-  friend class SwapchainVK;
+  friend class Swapchain;
 
-  std::shared_ptr<KHRSwapchainImplVK> impl_;
+  std::shared_ptr<KHRSwapchainImpl> impl_;
   ISize size_;
   const bool enable_msaa_;
 
-  KHRSwapchainVK(const std::shared_ptr<Context>& context,
-                 vk::UniqueSurfaceKHR surface,
-                 const ISize& size,
-                 bool enable_msaa);
+  KHRSwapchain(const std::shared_ptr<Context>& context,
+               vk::UniqueSurfaceKHR surface,
+               const ISize& size,
+               bool enable_msaa);
 
-  KHRSwapchainVK(const KHRSwapchainVK&) = delete;
+  KHRSwapchain(const KHRSwapchain&) = delete;
 
-  KHRSwapchainVK& operator=(const KHRSwapchainVK&) = delete;
+  KHRSwapchain& operator=(const KHRSwapchain&) = delete;
 
   std::unique_ptr<SurfaceVK> AcquireNextDrawable(size_t resize_retry_count);
 };

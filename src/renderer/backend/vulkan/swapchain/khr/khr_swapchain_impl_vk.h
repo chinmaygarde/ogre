@@ -14,11 +14,11 @@
 
 namespace ogre {
 
-class CommandBufferVK;
+class CommandBuffer;
 class Context;
-class KHRSwapchainImageVK;
+class KHRSwapchainImage;
 class SurfaceVK;
-struct KHRFrameSynchronizerVK;
+struct KHRFrameSynchronizer;
 
 //------------------------------------------------------------------------------
 /// @brief      An instance of a swapchain that does NOT adapt to going out of
@@ -28,17 +28,17 @@ struct KHRFrameSynchronizerVK;
 ///             the caller must recreate another instance by optionally
 ///             stealing this implementations guts.
 ///
-class KHRSwapchainImplVK final
-    : public std::enable_shared_from_this<KHRSwapchainImplVK> {
+class KHRSwapchainImpl final
+    : public std::enable_shared_from_this<KHRSwapchainImpl> {
  public:
-  static std::shared_ptr<KHRSwapchainImplVK> Create(
+  static std::shared_ptr<KHRSwapchainImpl> Create(
       const std::shared_ptr<Context>& context,
       vk::UniqueSurfaceKHR surface,
       const ISize& size,
       bool enable_msaa = true,
       vk::SwapchainKHR old_swapchain = VK_NULL_HANDLE);
 
-  ~KHRSwapchainImplVK();
+  ~KHRSwapchainImpl();
 
   bool IsValid() const;
 
@@ -63,7 +63,7 @@ class KHRSwapchainImplVK final
 
   const ISize& GetSize() const;
 
-  void AddFinalCommandBuffer(std::shared_ptr<CommandBufferVK> cmd_buffer);
+  void AddFinalCommandBuffer(std::shared_ptr<CommandBuffer> cmd_buffer);
 
   std::optional<ISize> GetCurrentUnderlyingSurfaceSize() const;
 
@@ -73,28 +73,27 @@ class KHRSwapchainImplVK final
   vk::Format surface_format_ = vk::Format::eUndefined;
   vk::UniqueSwapchainKHR swapchain_;
   std::shared_ptr<SwapchainTransientsVK> transients_;
-  std::vector<std::shared_ptr<KHRSwapchainImageVK>> images_;
-  std::vector<std::unique_ptr<KHRFrameSynchronizerVK>> synchronizers_;
+  std::vector<std::shared_ptr<KHRSwapchainImage>> images_;
+  std::vector<std::unique_ptr<KHRFrameSynchronizer>> synchronizers_;
   std::vector<vk::UniqueSemaphore> present_semaphores_;
   size_t current_frame_ = 0u;
   ISize size_;
   bool enable_msaa_ = true;
   bool is_valid_ = false;
 
-  KHRSwapchainImplVK(const std::shared_ptr<Context>& context,
-                     vk::UniqueSurfaceKHR surface,
-                     const ISize& size,
-                     bool enable_msaa,
-                     vk::SwapchainKHR old_swapchain);
+  KHRSwapchainImpl(const std::shared_ptr<Context>& context,
+                   vk::UniqueSurfaceKHR surface,
+                   const ISize& size,
+                   bool enable_msaa,
+                   vk::SwapchainKHR old_swapchain);
 
-  bool Present(const std::shared_ptr<KHRSwapchainImageVK>& image,
-               uint32_t index);
+  bool Present(const std::shared_ptr<KHRSwapchainImage>& image, uint32_t index);
 
   void WaitIdle() const;
 
-  KHRSwapchainImplVK(const KHRSwapchainImplVK&) = delete;
+  KHRSwapchainImpl(const KHRSwapchainImpl&) = delete;
 
-  KHRSwapchainImplVK& operator=(const KHRSwapchainImplVK&) = delete;
+  KHRSwapchainImpl& operator=(const KHRSwapchainImpl&) = delete;
 };
 
 }  // namespace ogre

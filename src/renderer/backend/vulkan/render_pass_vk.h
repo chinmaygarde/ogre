@@ -27,7 +27,7 @@
 
 namespace ogre {
 
-class CommandBufferVK;
+class CommandBuffer;
 class Context;
 class SamplerVK;
 
@@ -117,7 +117,7 @@ class RenderPassVK final : public ResourceBinder {
   bool HasStencilAttachment() const;
 
  private:
-  friend class CommandBufferVK;
+  friend class CommandBuffer;
 
   const std::shared_ptr<const Context> context_;
   const SampleCount sample_count_;
@@ -127,7 +127,7 @@ class RenderPassVK final : public ResourceBinder {
   const ISize render_target_size_;
   RenderTarget render_target_;
   const Matrix orthographic_;
-  std::shared_ptr<CommandBufferVK> command_buffer_;
+  std::shared_ptr<CommandBuffer> command_buffer_;
   std::string debug_label_;
   SharedHandleVK<vk::RenderPass> render_pass_;
   bool is_valid_ = false;
@@ -156,7 +156,7 @@ class RenderPassVK final : public ResourceBinder {
 
   RenderPassVK(const std::shared_ptr<const Context>& context,
                const RenderTarget& target,
-               std::shared_ptr<CommandBufferVK> command_buffer);
+               std::shared_ptr<CommandBuffer> command_buffer);
 
   static bool ValidateVertexBuffers(const BufferView vertex_buffers[],
                                     size_t vertex_buffer_count);
@@ -173,7 +173,7 @@ class RenderPassVK final : public ResourceBinder {
   SharedHandleVK<vk::RenderPass> CreateVKRenderPass(
       const ContextVK& context,
       const SharedHandleVK<vk::RenderPass>& recycled_renderpass,
-      const std::shared_ptr<CommandBufferVK>& command_buffer,
+      const std::shared_ptr<CommandBuffer>& command_buffer,
       bool is_swapchain) const;
 
   SharedHandleVK<vk::Framebuffer> CreateVKFramebuffer(

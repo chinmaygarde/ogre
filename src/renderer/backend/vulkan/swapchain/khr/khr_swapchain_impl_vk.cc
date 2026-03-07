@@ -20,15 +20,15 @@ namespace ogre {
 
 static constexpr size_t kMaxFramesInFlight = 2u;
 
-struct KHRFrameSynchronizerVK {
+struct KHRFrameSynchronizer {
   vk::UniqueFence acquire;
   vk::UniqueSemaphore render_ready;
-  std::shared_ptr<CommandBufferVK> final_cmd_buffer;
+  std::shared_ptr<CommandBuffer> final_cmd_buffer;
   bool is_valid = false;
   // Whether the renderer attached an onscreen command buffer to render to.
   bool has_onscreen = false;
 
-  explicit KHRFrameSynchronizerVK(const vk::Device& device) {
+  explicit KHRFrameSynchronizer(const vk::Device& device) {
     auto acquire_res = device.createFenceUnique(
         vk::FenceCreateInfo{vk::FenceCreateFlagBits::eSignaled});
     auto render_res = device.createSemaphoreUnique({});
@@ -42,7 +42,7 @@ struct KHRFrameSynchronizerVK {
     is_valid = true;
   }
 
-  ~KHRFrameSynchronizerVK() = default;
+  ~KHRFrameSynchronizer() = default;
 
   bool WaitForFence(const vk::Device& device) {
     if (auto result = device.waitForFences(
@@ -108,21 +108,21 @@ static std::optional<vk::CompositeAlphaFlagBitsKHR> ChooseAlphaCompositionMode(
   return std::nullopt;
 }
 
-std::shared_ptr<KHRSwapchainImplVK> KHRSwapchainImplVK::Create(
+std::shared_ptr<KHRSwapchainImpl> KHRSwapchainImpl::Create(
     const std::shared_ptr<Context>& context,
     vk::UniqueSurfaceKHR surface,
     const ISize& size,
     bool enable_msaa,
     vk::SwapchainKHR old_swapchain) {
-  return std::shared_ptr<KHRSwapchainImplVK>(new KHRSwapchainImplVK(
+  return std::shared_ptr<KHRSwapchainImpl>(new KHRSwapchainImpl(
       context, std::move(surface), size, enable_msaa, old_swapchain));
 }
 
-KHRSwapchainImplVK::KHRSwapchainImplVK(const std::shared_ptr<Context>& context,
-                                       vk::UniqueSurfaceKHR surface,
-                                       const ISize& size,
-                                       bool enable_msaa,
-                                       vk::SwapchainKHR old_swapchain) {
+KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
+                                   vk::UniqueSurfaceKHR surface,
+                                   const ISize& size,
+                                   bool enable_msaa,
+                                   vk::SwapchainKHR old_swapchain) {
   if (!context) {
     VALIDATION_LOG << "Cannot create a swapchain without a context.";
     return;
@@ -219,14 +219,14 @@ KHRSwapchainImplVK::KHRSwapchainImplVK(const std::shared_ptr<Context>& context,
   texture_desc.size = ISize::MakeWH(swapchain_info.imageExtent.width,
                                     swapchain_info.imageExtent.height);
 
-  std::vector<std::shared_ptr<KHRSwapchainImageVK>> swapchain_images;
+  std::vector<std::shared_ptr<KHRSwapchainImage>> swapchain_images;
   std::vector<vk::UniqueSemaphore> present_semaphores;
   for (const auto& image : images) {
-    auto swapchain_image = std::make_shared<KHRSwapchainImageVK>(
-        texture_desc,            // texture descriptor
-        vk_context.GetDevice(),  // device
-        image                    // image
-    );
+    auto swapchain_image =
+        std::make_shared<KHRSwapchainImage>(texture_desc,  // texture descriptor
+                                            vk_context.GetDevice(),  // device
+                                            image                    // image
+        );
     if (!swapchain_image->IsValid()) {
       VALIDATION_LOG << "Could not create swapchain image.";
       return;
@@ -248,10 +248,9 @@ KHRSwapchainImplVK::KHRSwapchainImplVK(const std::shared_ptr<Context>& context,
     present_semaphores.push_back(std::move(present_res.value));
   }
 
-  std::vector<std::unique_ptr<KHRFrameSynchronizerVK>> synchronizers;
+  std::vector<std::unique_ptr<KHRFrameSynchronizer>> synchronizers;
   for (size_t i = 0u; i < kMaxFramesInFlight; i++) {
-    auto sync =
-        std::make_unique<KHRFrameSynchronizerVK>(vk_context.GetDevice());
+    auto sync = std::make_unique<KHRFrameSynchronizer>(vk_context.GetDevice());
     if (!sync->is_valid) {
       VALIDATION_LOG << "Could not create frame synchronizers.";
       return;
@@ -275,16 +274,15 @@ KHRSwapchainImplVK::KHRSwapchainImplVK(const std::shared_ptr<Context>& context,
   is_valid_ = true;
 }
 
-KHRSwapchainImplVK::~KHRSwapchainImplVK() {
+KHRSwapchainImpl::~KHRSwapchainImpl() {
   DestroySwapchain();
 }
 
-const ISize& KHRSwapchainImplVK::GetSize() const {
+const ISize& KHRSwapchainImpl::GetSize() const {
   return size_;
 }
 
-std::optional<ISize> KHRSwapchainImplVK::GetCurrentUnderlyingSurfaceSize()
-    const {
+std::optional<ISize> KHRSwapchainImpl::GetCurrentUnderlyingSurfaceSize() const {
   if (!IsValid()) {
     return std::nullopt;
   }
@@ -315,11 +313,11 @@ std::optional<ISize> KHRSwapchainImplVK::GetCurrentUnderlyingSurfaceSize()
                        surface_caps.currentExtent.height);
 }
 
-bool KHRSwapchainImplVK::IsValid() const {
+bool KHRSwapchainImpl::IsValid() const {
   return is_valid_;
 }
 
-void KHRSwapchainImplVK::WaitIdle() const {
+void KHRSwapchainImpl::WaitIdle() const {
   if (auto context = context_.lock()) {
     [[maybe_unused]] auto result =
         ContextVK::Cast(*context).GetDevice().waitIdle();
@@ -327,7 +325,7 @@ void KHRSwapchainImplVK::WaitIdle() const {
 }
 
 std::pair<vk::UniqueSurfaceKHR, vk::UniqueSwapchainKHR>
-KHRSwapchainImplVK::DestroySwapchain() {
+KHRSwapchainImpl::DestroySwapchain() {
   WaitIdle();
   is_valid_ = false;
   synchronizers_.clear();
@@ -336,18 +334,18 @@ KHRSwapchainImplVK::DestroySwapchain() {
   return {std::move(surface_), std::move(swapchain_)};
 }
 
-vk::Format KHRSwapchainImplVK::GetSurfaceFormat() const {
+vk::Format KHRSwapchainImpl::GetSurfaceFormat() const {
   return surface_format_;
 }
 
-std::shared_ptr<Context> KHRSwapchainImplVK::GetContext() const {
+std::shared_ptr<Context> KHRSwapchainImpl::GetContext() const {
   return context_.lock();
 }
 
-KHRSwapchainImplVK::AcquireResult KHRSwapchainImplVK::AcquireNextDrawable() {
+KHRSwapchainImpl::AcquireResult KHRSwapchainImpl::AcquireNextDrawable() {
   auto context_strong = context_.lock();
   if (!context_strong) {
-    return KHRSwapchainImplVK::AcquireResult{};
+    return KHRSwapchainImpl::AcquireResult{};
   }
 
   const auto& context = ContextVK::Cast(*context_strong);
@@ -361,7 +359,7 @@ KHRSwapchainImplVK::AcquireResult KHRSwapchainImplVK::AcquireNextDrawable() {
   ///
   if (!sync->WaitForFence(context.GetDevice())) {
     VALIDATION_LOG << "Could not wait for fence.";
-    return KHRSwapchainImplVK::AcquireResult{};
+    return KHRSwapchainImpl::AcquireResult{};
   }
 
   //----------------------------------------------------------------------------
@@ -396,7 +394,7 @@ KHRSwapchainImplVK::AcquireResult KHRSwapchainImplVK::AcquireNextDrawable() {
 
   if (index >= images_.size()) {
     VALIDATION_LOG << "Swapchain returned an invalid image index.";
-    return KHRSwapchainImplVK::AcquireResult{};
+    return KHRSwapchainImpl::AcquireResult{};
   }
 
   /// Record all subsequent cmd buffers as part of the current frame.
@@ -417,16 +415,15 @@ KHRSwapchainImplVK::AcquireResult KHRSwapchainImplVK::AcquireNextDrawable() {
       )};
 }
 
-void KHRSwapchainImplVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBufferVK> cmd_buffer) {
+void KHRSwapchainImpl::AddFinalCommandBuffer(
+    std::shared_ptr<CommandBuffer> cmd_buffer) {
   const auto& sync = synchronizers_[current_frame_];
   sync->final_cmd_buffer = std::move(cmd_buffer);
   sync->has_onscreen = true;
 }
 
-bool KHRSwapchainImplVK::Present(
-    const std::shared_ptr<KHRSwapchainImageVK>& image,
-    uint32_t index) {
+bool KHRSwapchainImpl::Present(const std::shared_ptr<KHRSwapchainImage>& image,
+                               uint32_t index) {
   auto context_strong = context_.lock();
   if (!context_strong) {
     return false;
@@ -447,10 +444,9 @@ bool KHRSwapchainImplVK::Present(
     return false;
   }
 
-  auto vk_final_cmd_buffer =
-      sync->final_cmd_buffer->GetCommandBuffer();
+  auto vk_final_cmd_buffer = sync->final_cmd_buffer->GetCommandBuffer();
   {
-    BarrierVK barrier;
+    Barrier barrier;
     barrier.new_layout = vk::ImageLayout::ePresentSrcKHR;
     barrier.cmd_buffer = vk_final_cmd_buffer;
     barrier.src_access = vk::AccessFlagBits::eColorAttachmentWrite;

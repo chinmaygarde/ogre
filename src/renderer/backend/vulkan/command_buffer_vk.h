@@ -16,10 +16,10 @@
 
 namespace ogre {
 
-class BlitPassVK;
+class BlitPass;
 class ComputePassVK;
 class ContextVK;
-class DescriptorPoolVK;
+class DescriptorPool;
 class DeviceBuffer;
 class RenderPassVK;
 class RenderTarget;
@@ -28,8 +28,7 @@ class Texture;
 class TextureSourceVK;
 class TrackedObjectsVK;
 
-class CommandBufferVK final
-    : public std::enable_shared_from_this<CommandBufferVK> {
+class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
  public:
   enum class Status {
     kPending,
@@ -39,7 +38,7 @@ class CommandBufferVK final
 
   using CompletionCallback = std::function<void(Status)>;
 
-  ~CommandBufferVK();
+  ~CommandBuffer();
 
   bool IsValid() const;
 
@@ -52,7 +51,7 @@ class CommandBufferVK final
   std::shared_ptr<RenderPassVK> CreateRenderPass(
       const RenderTarget& render_target);
 
-  std::shared_ptr<BlitPassVK> CreateBlitPass();
+  std::shared_ptr<BlitPass> CreateBlitPass();
 
   std::shared_ptr<ComputePassVK> CreateComputePass();
 
@@ -105,23 +104,23 @@ class CommandBufferVK final
       const ContextVK& context);
 
   // Visible for testing.
-  DescriptorPoolVK& GetDescriptorPool() const;
+  DescriptorPool& GetDescriptorPool() const;
 
  private:
   friend class ContextVK;
-  friend class CommandQueueVK;
+  friend class CommandQueue;
 
   std::weak_ptr<const ContextVK> context_;
   std::weak_ptr<const DeviceHolderVK> device_holder_;
   std::shared_ptr<TrackedObjectsVK> tracked_objects_;
 
-  CommandBufferVK(std::weak_ptr<const ContextVK> context,
-                  std::weak_ptr<const DeviceHolderVK> device_holder,
-                  std::shared_ptr<TrackedObjectsVK> tracked_objects);
+  CommandBuffer(std::weak_ptr<const ContextVK> context,
+                std::weak_ptr<const DeviceHolderVK> device_holder,
+                std::shared_ptr<TrackedObjectsVK> tracked_objects);
 
-  CommandBufferVK(const CommandBufferVK&) = delete;
+  CommandBuffer(const CommandBuffer&) = delete;
 
-  CommandBufferVK& operator=(const CommandBufferVK&) = delete;
+  CommandBuffer& operator=(const CommandBuffer&) = delete;
 };
 
 }  // namespace ogre

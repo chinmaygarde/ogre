@@ -26,21 +26,21 @@ static const constexpr DescriptorPoolSize kDefaultBindingSize =
         .subpass_bindings = 4u  // Subpass Bindings
     };
 
-DescriptorPoolVK::DescriptorPoolVK(std::weak_ptr<const ContextVK> context)
+DescriptorPool::DescriptorPool(std::weak_ptr<const ContextVK> context)
     : context_(std::move(context)) {}
 
-void DescriptorPoolVK::Destroy() {
+void DescriptorPool::Destroy() {
   pools_.clear();
 }
 
-DescriptorPoolVK::DescriptorPoolVK(std::weak_ptr<const ContextVK> context,
-                                   DescriptorCacheMap descriptor_sets,
-                                   std::vector<vk::UniqueDescriptorPool> pools)
+DescriptorPool::DescriptorPool(std::weak_ptr<const ContextVK> context,
+                               DescriptorCacheMap descriptor_sets,
+                               std::vector<vk::UniqueDescriptorPool> pools)
     : context_(std::move(context)),
       descriptor_sets_(std::move(descriptor_sets)),
       pools_(std::move(pools)) {}
 
-DescriptorPoolVK::~DescriptorPoolVK() {
+DescriptorPool::~DescriptorPool() {
   if (pools_.empty()) {
     return;
   }
@@ -57,7 +57,7 @@ DescriptorPoolVK::~DescriptorPoolVK() {
   recycler->Reclaim(std::move(descriptor_sets_), std::move(pools_));
 }
 
-fml::StatusOr<vk::DescriptorSet> DescriptorPoolVK::AllocateDescriptorSets(
+fml::StatusOr<vk::DescriptorSet> DescriptorPool::AllocateDescriptorSets(
     const vk::DescriptorSetLayout& layout,
     PipelineKey pipeline_key,
     const ContextVK& context_vk) {
@@ -98,7 +98,7 @@ fml::StatusOr<vk::DescriptorSet> DescriptorPoolVK::AllocateDescriptorSets(
   return set;
 }
 
-fml::Status DescriptorPoolVK::CreateNewPool(const ContextVK& context_vk) {
+fml::Status DescriptorPool::CreateNewPool(const ContextVK& context_vk) {
   auto new_pool = context_vk.GetDescriptorPoolRecycler()->Get();
   if (!new_pool) {
     return fml::Status(fml::StatusCode::kUnknown,
@@ -108,7 +108,7 @@ fml::Status DescriptorPoolVK::CreateNewPool(const ContextVK& context_vk) {
   return fml::Status();
 }
 
-void DescriptorPoolRecyclerVK::Reclaim(
+void DescriptorPoolRecycler::Reclaim(
     DescriptorCacheMap descriptor_sets,
     std::vector<vk::UniqueDescriptorPool> pools) {
   // Reset the pool on a background thread.
@@ -131,16 +131,16 @@ void DescriptorPoolRecyclerVK::Reclaim(
     back_entry->Destroy();
     recycled_.pop_back();
   }
-  recycled_.push_back(std::make_shared<DescriptorPoolVK>(
+  recycled_.push_back(std::make_shared<DescriptorPool>(
       context_, std::move(descriptor_sets), std::move(pools)));
 }
 
-vk::UniqueDescriptorPool DescriptorPoolRecyclerVK::Get() {
+vk::UniqueDescriptorPool DescriptorPoolRecycler::Get() {
   // Recycle a pool with a matching minumum capcity if it is available.
   return Create();
 }
 
-vk::UniqueDescriptorPool DescriptorPoolRecyclerVK::Create() {
+vk::UniqueDescriptorPool DescriptorPoolRecycler::Create() {
   auto strong_context = context_.lock();
   if (!strong_context) {
     VALIDATION_LOG << "Unable to create a descriptor pool";
@@ -170,8 +170,7 @@ vk::UniqueDescriptorPool DescriptorPoolRecyclerVK::Create() {
   return std::move(pool);
 }
 
-std::shared_ptr<DescriptorPoolVK>
-DescriptorPoolRecyclerVK::GetDescriptorPool() {
+std::shared_ptr<DescriptorPool> DescriptorPoolRecycler::GetDescriptorPool() {
   {
     Lock recycled_lock(recycled_mutex_);
     if (!recycled_.empty()) {
@@ -180,7 +179,7 @@ DescriptorPoolRecyclerVK::GetDescriptorPool() {
       return result;
     }
   }
-  return std::make_shared<DescriptorPoolVK>(context_);
+  return std::make_shared<DescriptorPool>(context_);
 }
 
 }  // namespace ogre

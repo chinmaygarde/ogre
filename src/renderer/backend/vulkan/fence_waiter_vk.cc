@@ -52,17 +52,17 @@ class WaitSetEntry {
   WaitSetEntry& operator=(WaitSetEntry&&) = delete;
 };
 
-FenceWaiterVK::FenceWaiterVK(std::weak_ptr<DeviceHolderVK> device_holder)
+FenceWaiter::FenceWaiter(std::weak_ptr<DeviceHolderVK> device_holder)
     : device_holder_(std::move(device_holder)) {
   waiter_thread_ = std::make_unique<std::thread>([&]() { Main(); });
 }
 
-FenceWaiterVK::~FenceWaiterVK() {
+FenceWaiter::~FenceWaiter() {
   Terminate();
 }
 
-bool FenceWaiterVK::AddFence(vk::UniqueFence fence,
-                             const fml::closure& callback) {
+bool FenceWaiter::AddFence(vk::UniqueFence fence,
+                           const fml::closure& callback) {
   if (!fence || !callback) {
     return false;
   }
@@ -88,7 +88,7 @@ static std::vector<vk::Fence> GetFencesForWaitSet(const WaitSet& set) {
   return fences;
 }
 
-void FenceWaiterVK::Main() {
+void FenceWaiter::Main() {
   fml::Thread::SetCurrentThreadName(
       fml::Thread::ThreadConfig{"IplrVkFenceWait"});
   // Since this thread mostly waits on fences, it doesn't need to be fast.
@@ -120,7 +120,7 @@ void FenceWaiterVK::Main() {
   }
 }
 
-void FenceWaiterVK::WaitUntilEmpty() {
+void FenceWaiter::WaitUntilEmpty() {
   // Note, there is no lock because once terminate_ is set to true, no other
   // fence can be added to the wait set. Just in case, here's a FML_DCHECK:
   FML_DCHECK(terminate_) << "Fence waiter must be terminated.";
@@ -129,7 +129,7 @@ void FenceWaiterVK::WaitUntilEmpty() {
   }
 }
 
-bool FenceWaiterVK::Wait() {
+bool FenceWaiter::Wait() {
   // Snapshot the wait set and wait on the fences.
   WaitSet wait_set;
   {
@@ -203,7 +203,7 @@ bool FenceWaiterVK::Wait() {
   return true;
 }
 
-void FenceWaiterVK::Terminate() {
+void FenceWaiter::Terminate() {
   {
     std::scoped_lock lock(wait_set_mutex_);
     if (terminate_) {

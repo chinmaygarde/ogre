@@ -26,35 +26,35 @@ using CreateTransactionCB = std::function<android::SurfaceTransaction()>;
 ///             blocks for these kinds of swapchains are only available on
 ///             Android API levels >= 29.
 ///
-class AHBSwapchainVK final : public SwapchainVK {
+class AHBSwapchain final : public Swapchain {
  public:
   static bool IsAvailableOnPlatform();
 
-  // |SwapchainVK|
-  ~AHBSwapchainVK() override;
+  // |Swapchain|
+  ~AHBSwapchain() override;
 
-  AHBSwapchainVK(const AHBSwapchainVK&) = delete;
+  AHBSwapchain(const AHBSwapchain&) = delete;
 
-  AHBSwapchainVK& operator=(const AHBSwapchainVK&) = delete;
+  AHBSwapchain& operator=(const AHBSwapchain&) = delete;
 
-  // |SwapchainVK|
+  // |Swapchain|
   bool IsValid() const override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   std::unique_ptr<SurfaceVK> AcquireNextDrawable() override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   vk::Format GetSurfaceFormat() const override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   void UpdateSurfaceSize(const ISize& size) override;
 
-  // |SwapchainVK|
+  // |Swapchain|
   void AddFinalCommandBuffer(
-      std::shared_ptr<CommandBufferVK> cmd_buffer) const override;
+      std::shared_ptr<CommandBuffer> cmd_buffer) const override;
 
  private:
-  friend class SwapchainVK;
+  friend class Swapchain;
 
   std::weak_ptr<Context> context_;
   std::shared_ptr<android::SurfaceControl> surface_control_;
@@ -62,11 +62,11 @@ class AHBSwapchainVK final : public SwapchainVK {
   CreateTransactionCB cb_;
   std::shared_ptr<AHBSwapchainImplVK> impl_;
 
-  explicit AHBSwapchainVK(const std::shared_ptr<Context>& context,
-                          ANativeWindow* window,
-                          const CreateTransactionCB& cb,
-                          const ISize& size,
-                          bool enable_msaa);
+  explicit AHBSwapchain(const std::shared_ptr<Context>& context,
+                        ANativeWindow* window,
+                        const CreateTransactionCB& cb,
+                        const ISize& size,
+                        bool enable_msaa);
 };
 
 }  // namespace ogre

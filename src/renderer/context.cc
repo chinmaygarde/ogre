@@ -35,7 +35,7 @@ bool Context::UpdateOffscreenLayerPixelFormat(PixelFormat format) {
 }
 
 bool Context::EnqueueCommandBuffer(
-    std::shared_ptr<CommandBufferVK> command_buffer) {
+    std::shared_ptr<CommandBuffer> command_buffer) {
   return GetCommandQueue()->Submit({std::move(command_buffer)}).ok();
 }
 
@@ -55,7 +55,7 @@ bool Context::AddTrackingFence(const std::shared_ptr<Texture>& texture) const {
   return false;
 }
 
-bool Context::SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer) {
+bool Context::SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) {
   return EnqueueCommandBuffer(std::move(cmd_buffer));
 }
 

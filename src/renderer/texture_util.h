@@ -11,7 +11,7 @@
 
 namespace ogre {
 
-class CommandBufferVK;
+class CommandBuffer;
 
 std::shared_ptr<Texture> CreateTexture(
     const TextureDescriptor& texture_descriptor,
@@ -21,7 +21,7 @@ std::shared_ptr<Texture> CreateTexture(
 
 /// Adds a blit command to the render pass.
 [[nodiscard]] fml::Status AddMipmapGeneration(
-    const std::shared_ptr<CommandBufferVK>& command_buffer,
+    const std::shared_ptr<CommandBuffer>& command_buffer,
     const std::shared_ptr<Context>& context,
     const std::shared_ptr<Texture>& texture);
 

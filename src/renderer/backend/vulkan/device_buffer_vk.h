@@ -34,7 +34,7 @@ class DeviceBufferVK final : public DeviceBuffer,
   bool IsHostCoherent() const;
 
  private:
-  friend class AllocatorVK;
+  friend class Allocator;
 
   struct BufferResource {
     UniqueBufferVMA buffer;

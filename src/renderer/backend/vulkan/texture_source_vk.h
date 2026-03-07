@@ -88,7 +88,7 @@ class TextureSourceVK {
   ///
   /// @return     If the layout transition was successfully made.
   ///
-  fml::Status SetLayout(const BarrierVK& barrier) const;
+  fml::Status SetLayout(const Barrier& barrier) const;
 
   //----------------------------------------------------------------------------
   /// @brief      Store the layout of the image.

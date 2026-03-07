@@ -46,7 +46,7 @@ vk::UniqueDeviceMemory ImportVKDeviceMemoryFromAndroidHarwareBuffer(
     const AHBProperties& ahb_props) {
   vk::PhysicalDeviceMemoryProperties memory_properties;
   physical_device.getMemoryProperties(&memory_properties);
-  int memory_type_index = AllocatorVK::FindMemoryTypeIndex(
+  int memory_type_index = Allocator::FindMemoryTypeIndex(
       ahb_props.get().memoryTypeBits, memory_properties);
   if (memory_type_index < 0) {
     VALIDATION_LOG << "Could not find memory type of external image.";

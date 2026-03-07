@@ -15,13 +15,13 @@
 
 namespace ogre {
 
-std::shared_ptr<SwapchainVK> SwapchainVK::Create(
+std::shared_ptr<Swapchain> Swapchain::Create(
     const std::shared_ptr<Context>& context,
     vk::UniqueSurfaceKHR surface,
     const ISize& size,
     bool enable_msaa) {
-  auto swapchain = std::shared_ptr<KHRSwapchainVK>(
-      new KHRSwapchainVK(context, std::move(surface), size, enable_msaa));
+  auto swapchain = std::shared_ptr<KHRSwapchain>(
+      new KHRSwapchain(context, std::move(surface), size, enable_msaa));
   if (!swapchain->IsValid()) {
     VALIDATION_LOG << "Could not create valid swapchain.";
     return nullptr;
@@ -30,7 +30,7 @@ std::shared_ptr<SwapchainVK> SwapchainVK::Create(
 }
 
 #if FML_OS_ANDROID
-std::shared_ptr<SwapchainVK> SwapchainVK::Create(
+std::shared_ptr<Swapchain> Swapchain::Create(
     const std::shared_ptr<Context>& context,
     ANativeWindow* p_window,
     const CreateTransactionCB& cb,
@@ -47,16 +47,16 @@ std::shared_ptr<SwapchainVK> SwapchainVK::Create(
 
   // Use AHB Swapchains if they are opted in.
   if (ContextVK::Cast(*context).GetShouldEnableSurfaceControlSwapchain() &&
-      AHBSwapchainVK::IsAvailableOnPlatform()) {
+      AHBSwapchain::IsAvailableOnPlatform()) {
     CreateTransactionCB callback =
         android_get_device_api_level() >= 34 ? cb : CreateTransactionCB({});
-    auto ahb_swapchain = std::shared_ptr<AHBSwapchainVK>(new AHBSwapchainVK(
-        context,             //
-        window.GetHandle(),  //
-        callback,            //
-        window.GetSize(),    //
-        enable_msaa          //
-        ));
+    auto ahb_swapchain =
+        std::shared_ptr<AHBSwapchain>(new AHBSwapchain(context,             //
+                                                       window.GetHandle(),  //
+                                                       callback,            //
+                                                       window.GetSize(),    //
+                                                       enable_msaa          //
+                                                       ));
 
     if (ahb_swapchain->IsValid()) {
       return ahb_swapchain;
@@ -82,8 +82,8 @@ std::shared_ptr<SwapchainVK> SwapchainVK::Create(
 }
 #endif  // FML_OS_ANDROID
 
-SwapchainVK::SwapchainVK() = default;
+Swapchain::Swapchain() = default;
 
-SwapchainVK::~SwapchainVK() = default;
+Swapchain::~Swapchain() = default;
 
 }  // namespace ogre

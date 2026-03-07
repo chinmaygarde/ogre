@@ -8,15 +8,15 @@
 #include <memory>
 #include <string>
 
-#include "renderer/resource_binder.h"
 #include "fml/status.h"
 #include "renderer/backend/vulkan/pipeline_vk.h"
 #include "renderer/backend/vulkan/vk.h"
 #include "renderer/context.h"
+#include "renderer/resource_binder.h"
 
 namespace ogre {
 
-class CommandBufferVK;
+class CommandBuffer;
 
 class ComputePassVK final : public ResourceBinder {
  public:
@@ -59,10 +59,10 @@ class ComputePassVK final : public ResourceBinder {
   bool BindResource(size_t binding, DescriptorType type, BufferView view);
 
  private:
-  friend class CommandBufferVK;
+  friend class CommandBuffer;
 
   const std::shared_ptr<const Context> context_;
-  std::shared_ptr<CommandBufferVK> command_buffer_;
+  std::shared_ptr<CommandBuffer> command_buffer_;
   std::string label_;
   std::array<uint32_t, 3> max_wg_size_ = {};
   bool is_valid_ = false;
@@ -81,7 +81,7 @@ class ComputePassVK final : public ResourceBinder {
   vk::PipelineLayout pipeline_layout_ = {};
 
   ComputePassVK(std::shared_ptr<const Context> context,
-                std::shared_ptr<CommandBufferVK> command_buffer);
+                std::shared_ptr<CommandBuffer> command_buffer);
 
   void OnSetLabel(const std::string& label);
 

@@ -29,7 +29,7 @@ TEST(ContextVKTest, CommonHardwareConcurrencyConfigurations) {
 
 TEST(ContextVKTest, DeletesCommandPools) {
   std::weak_ptr<ContextVK> weak_context;
-  std::weak_ptr<CommandPoolVK> weak_pool;
+  std::weak_ptr<CommandPool> weak_pool;
   {
     std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
     auto const pool = context->GetCommandPoolRecycler()->Get();
@@ -44,7 +44,7 @@ TEST(ContextVKTest, DeletesCommandPools) {
 
 TEST(ContextVKTest, DeletesCommandPoolsOnAllThreads) {
   std::weak_ptr<ContextVK> weak_context;
-  std::weak_ptr<CommandPoolVK> weak_pool_main;
+  std::weak_ptr<CommandPool> weak_pool_main;
 
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
   weak_pool_main = context->GetCommandPoolRecycler()->Get();
@@ -54,7 +54,7 @@ TEST(ContextVKTest, DeletesCommandPoolsOnAllThreads) {
 
   // Start a second thread that obtains a command pool.
   fml::AutoResetWaitableEvent latch1, latch2;
-  std::weak_ptr<CommandPoolVK> weak_pool_thread;
+  std::weak_ptr<CommandPool> weak_pool_thread;
   std::thread thread([&]() {
     weak_pool_thread = context->GetCommandPoolRecycler()->Get();
     latch1.Signal();
@@ -77,7 +77,7 @@ TEST(ContextVKTest, ThreadLocalCleanupDeletesCommandPool) {
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   fml::AutoResetWaitableEvent latch1, latch2;
-  std::weak_ptr<CommandPoolVK> weak_pool;
+  std::weak_ptr<CommandPool> weak_pool;
   std::thread thread([&]() {
     weak_pool = context->GetCommandPoolRecycler()->Get();
     context->DisposeThreadLocalCachedResources();

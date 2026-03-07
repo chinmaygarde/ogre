@@ -19,31 +19,30 @@
 namespace ogre {
 
 // Holds the command pool in a background thread, recyling it when not in use.
-class BackgroundCommandPoolVK final {
+class BackgroundCommandPool final {
  public:
-  BackgroundCommandPoolVK(BackgroundCommandPoolVK&&) = default;
+  BackgroundCommandPool(BackgroundCommandPool&&) = default;
 
   // The recycler also recycles command buffers that were never used, up to a
   // limit of 16 per frame. This number was somewhat arbitrarily chosen.
   static constexpr size_t kUnusedCommandBufferLimit = 16u;
 
-  explicit BackgroundCommandPoolVK(
-      vk::UniqueCommandPool&& pool,
-      std::vector<vk::UniqueCommandBuffer>&& buffers,
-      size_t unused_count,
-      std::weak_ptr<CommandPoolRecyclerVK> recycler)
+  explicit BackgroundCommandPool(vk::UniqueCommandPool&& pool,
+                                 std::vector<vk::UniqueCommandBuffer>&& buffers,
+                                 size_t unused_count,
+                                 std::weak_ptr<CommandPoolRecycler> recycler)
       : pool_(std::move(pool)),
         buffers_(std::move(buffers)),
         unused_count_(unused_count),
         recycler_(std::move(recycler)) {}
 
-  ~BackgroundCommandPoolVK() {
+  ~BackgroundCommandPool() {
     auto const recycler = recycler_.lock();
 
     // Not only does this prevent recycling when the context is being destroyed,
     // but it also prevents the destructor from effectively being called twice;
-    // once for the original BackgroundCommandPoolVK() and once for the moved
-    // BackgroundCommandPoolVK().
+    // once for the original BackgroundCommandPool() and once for the moved
+    // BackgroundCommandPool().
     if (!recycler) {
       return;
     }
@@ -55,9 +54,9 @@ class BackgroundCommandPoolVK final {
   }
 
  private:
-  BackgroundCommandPoolVK(const BackgroundCommandPoolVK&) = delete;
+  BackgroundCommandPool(const BackgroundCommandPool&) = delete;
 
-  BackgroundCommandPoolVK& operator=(const BackgroundCommandPoolVK&) = delete;
+  BackgroundCommandPool& operator=(const BackgroundCommandPool&) = delete;
 
   vk::UniqueCommandPool pool_;
 
@@ -66,10 +65,10 @@ class BackgroundCommandPoolVK final {
   // thread safety violation as this may happen on the fence waiter thread.
   std::vector<vk::UniqueCommandBuffer> buffers_;
   const size_t unused_count_;
-  std::weak_ptr<CommandPoolRecyclerVK> recycler_;
+  std::weak_ptr<CommandPoolRecycler> recycler_;
 };
 
-CommandPoolVK::~CommandPoolVK() {
+CommandPool::~CommandPool() {
   if (!pool_) {
     return;
   }
@@ -90,15 +89,15 @@ CommandPoolVK::~CommandPoolVK() {
   }
   unused_command_buffers_.clear();
 
-  auto reset_pool_when_dropped = BackgroundCommandPoolVK(
+  auto reset_pool_when_dropped = BackgroundCommandPool(
       std::move(pool_), std::move(collected_buffers_), unused_count, recycler);
 
-  UniqueResourceVKT<BackgroundCommandPoolVK> pool(
+  UniqueResourceVKT<BackgroundCommandPool> pool(
       context->GetResourceManager(), std::move(reset_pool_when_dropped));
 }
 
 // TODO(matanlurey): Return a status_or<> instead of {} when we have one.
-vk::UniqueCommandBuffer CommandPoolVK::CreateCommandBuffer() {
+vk::UniqueCommandBuffer CommandPool::CreateCommandBuffer() {
   auto const context = context_.lock();
   if (!context) {
     return {};
@@ -126,7 +125,7 @@ vk::UniqueCommandBuffer CommandPoolVK::CreateCommandBuffer() {
   return std::move(buffers[0]);
 }
 
-void CommandPoolVK::CollectCommandBuffer(vk::UniqueCommandBuffer&& buffer) {
+void CommandPool::CollectCommandBuffer(vk::UniqueCommandBuffer&& buffer) {
   Lock lock(pool_mutex_);
   if (!pool_) {
     // If the command pool has already been destroyed, then its buffers have
@@ -137,7 +136,7 @@ void CommandPoolVK::CollectCommandBuffer(vk::UniqueCommandBuffer&& buffer) {
   collected_buffers_.push_back(std::move(buffer));
 }
 
-void CommandPoolVK::Destroy() {
+void CommandPool::Destroy() {
   Lock lock(pool_mutex_);
   pool_.reset();
 
@@ -155,9 +154,9 @@ void CommandPoolVK::Destroy() {
 
 // Associates a resource with a thread and context.
 using CommandPoolMap =
-    std::unordered_map<uint64_t, std::shared_ptr<CommandPoolVK>>;
+    std::unordered_map<uint64_t, std::shared_ptr<CommandPool>>;
 
-// CommandPoolVK Lifecycle:
+// CommandPool Lifecycle:
 // 1. End of frame will reset the command pool (clearing this on a thread).
 //    There will still be references to the command pool from the uncompleted
 //    command buffers.
@@ -172,23 +171,23 @@ static thread_local std::unique_ptr<CommandPoolMap> tls_command_pool_map;
 static Mutex g_all_pools_map_mutex;
 static std::unordered_map<
     uint64_t,
-    std::unordered_map<std::thread::id, std::weak_ptr<CommandPoolVK>>>
+    std::unordered_map<std::thread::id, std::weak_ptr<CommandPool>>>
     g_all_pools_map IPLR_GUARDED_BY(g_all_pools_map_mutex);
 
-CommandPoolRecyclerVK::CommandPoolRecyclerVK(
+CommandPoolRecycler::CommandPoolRecycler(
     const std::shared_ptr<ContextVK>& context)
     : context_(context), context_hash_(context->GetHash()) {}
 
 // Visible for testing.
 // Returns the number of pools in g_all_pools_map for the given context.
-int CommandPoolRecyclerVK::GetGlobalPoolCount(const ContextVK& context) {
+int CommandPoolRecycler::GetGlobalPoolCount(const ContextVK& context) {
   Lock all_pools_lock(g_all_pools_map_mutex);
   auto it = g_all_pools_map.find(context.GetHash());
   return it != g_all_pools_map.end() ? it->second.size() : 0;
 }
 
 // TODO(matanlurey): Return a status_or<> instead of nullptr when we have one.
-std::shared_ptr<CommandPoolVK> CommandPoolRecyclerVK::Get() {
+std::shared_ptr<CommandPool> CommandPoolRecycler::Get() {
   auto const strong_context = context_.lock();
   if (!strong_context) {
     return nullptr;
@@ -210,7 +209,7 @@ std::shared_ptr<CommandPoolVK> CommandPoolRecyclerVK::Get() {
     return nullptr;
   }
 
-  auto const resource = std::make_shared<CommandPoolVK>(
+  auto const resource = std::make_shared<CommandPool>(
       std::move(data->pool), std::move(data->buffers), context_);
   pool_map.emplace(context_hash_, resource);
 
@@ -223,8 +222,7 @@ std::shared_ptr<CommandPoolVK> CommandPoolRecyclerVK::Get() {
 }
 
 // TODO(matanlurey): Return a status_or<> instead of nullopt when we have one.
-std::optional<CommandPoolRecyclerVK::RecycledData>
-CommandPoolRecyclerVK::Create() {
+std::optional<CommandPoolRecycler::RecycledData> CommandPoolRecycler::Create() {
   // If we can reuse a command pool and its buffers, do so.
   if (auto data = Reuse()) {
     return data;
@@ -244,12 +242,11 @@ CommandPoolRecyclerVK::Create() {
   if (result != vk::Result::eSuccess) {
     return std::nullopt;
   }
-  return CommandPoolRecyclerVK::RecycledData{.pool = std::move(pool),
-                                             .buffers = {}};
+  return CommandPoolRecycler::RecycledData{.pool = std::move(pool),
+                                           .buffers = {}};
 }
 
-std::optional<CommandPoolRecyclerVK::RecycledData>
-CommandPoolRecyclerVK::Reuse() {
+std::optional<CommandPoolRecycler::RecycledData> CommandPoolRecycler::Reuse() {
   // If there are no recycled pools, return nullopt.
   Lock recycled_lock(recycled_mutex_);
   if (recycled_.empty()) {
@@ -262,7 +259,7 @@ CommandPoolRecyclerVK::Reuse() {
   return data;
 }
 
-void CommandPoolRecyclerVK::Reclaim(
+void CommandPoolRecycler::Reclaim(
     vk::UniqueCommandPool&& pool,
     std::vector<vk::UniqueCommandBuffer>&& buffers,
     bool should_trim) {
@@ -288,7 +285,7 @@ void CommandPoolRecyclerVK::Reclaim(
       RecycledData{.pool = std::move(pool), .buffers = std::move(buffers)});
 }
 
-void CommandPoolRecyclerVK::Dispose() {
+void CommandPoolRecycler::Dispose() {
   CommandPoolMap* pool_map = tls_command_pool_map.get();
   if (pool_map) {
     pool_map->erase(context_hash_);
@@ -303,13 +300,13 @@ void CommandPoolRecyclerVK::Dispose() {
   }
 }
 
-void CommandPoolRecyclerVK::DestroyThreadLocalPools() {
+void CommandPoolRecycler::DestroyThreadLocalPools() {
   // Delete the context's entry in this thread's command pool map.
   if (tls_command_pool_map.get()) {
     tls_command_pool_map.get()->erase(context_hash_);
   }
 
-  // Destroy all other thread-local CommandPoolVK instances associated with
+  // Destroy all other thread-local CommandPool instances associated with
   // this context.
   Lock all_pools_lock(g_all_pools_map_mutex);
   auto found = g_all_pools_map.find(context_hash_);

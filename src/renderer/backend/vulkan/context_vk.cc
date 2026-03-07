@@ -39,8 +39,8 @@
 #include "renderer/backend/vulkan/fence_waiter_vk.h"
 #include "renderer/backend/vulkan/gpu_tracer_vk.h"
 #include "renderer/backend/vulkan/resource_manager_vk.h"
-#include "renderer/backend/vulkan/tracked_objects_vk.h"
 #include "renderer/backend/vulkan/surface_context_vk.h"
+#include "renderer/backend/vulkan/tracked_objects_vk.h"
 #include "renderer/backend/vulkan/yuv_conversion_library_vk.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
@@ -266,7 +266,7 @@ void ContextVK::Setup(Settings settings) {
   /// initialization issues.
   ///
   auto debug_report =
-      std::make_unique<DebugReportVK>(*caps, device_holder->instance.get());
+      std::make_unique<DebugReport>(*caps, device_holder->instance.get());
 
   if (!debug_report->IsValid()) {
     VALIDATION_LOG << "Could not set up debug report.";
@@ -365,7 +365,7 @@ void ContextVK::Setup(Settings settings) {
   //----------------------------------------------------------------------------
   /// Create the allocator.
   ///
-  auto allocator = std::shared_ptr<AllocatorVK>(new AllocatorVK(
+  auto allocator = std::shared_ptr<Allocator>(new Allocator(
       weak_from_this(),                //
       application_info.apiVersion,     //
       device_holder->physical_device,  //
@@ -411,26 +411,26 @@ void ContextVK::Setup(Settings settings) {
   /// Create the fence waiter.
   ///
   auto fence_waiter =
-      std::shared_ptr<FenceWaiterVK>(new FenceWaiterVK(device_holder));
+      std::shared_ptr<FenceWaiter>(new FenceWaiter(device_holder));
 
   //----------------------------------------------------------------------------
   /// Create the resource manager and command pool recycler.
   ///
-  auto resource_manager = ResourceManagerVK::Create();
+  auto resource_manager = ResourceManager::Create();
   if (!resource_manager) {
     VALIDATION_LOG << "Could not create resource manager.";
     return;
   }
 
   auto command_pool_recycler =
-      std::make_shared<CommandPoolRecyclerVK>(shared_from_this());
+      std::make_shared<CommandPoolRecycler>(shared_from_this());
   if (!command_pool_recycler) {
     VALIDATION_LOG << "Could not create command pool recycler.";
     return;
   }
 
   auto descriptor_pool_recycler =
-      std::make_shared<DescriptorPoolRecyclerVK>(weak_from_this());
+      std::make_shared<DescriptorPoolRecycler>(weak_from_this());
   if (!descriptor_pool_recycler) {
     VALIDATION_LOG << "Could not create descriptor pool recycler.";
     return;
@@ -488,15 +488,15 @@ void ContextVK::Setup(Settings settings) {
   command_pool_recycler_ = std::move(command_pool_recycler);
   descriptor_pool_recycler_ = std::move(descriptor_pool_recycler);
   device_name_ = std::string(physical_device_properties.deviceName);
-  command_queue_vk_ = std::make_shared<CommandQueueVK>(weak_from_this());
+  command_queue_vk_ = std::make_shared<CommandQueue>(weak_from_this());
   should_enable_surface_control_ = settings.enable_surface_control;
   should_batch_cmd_buffers_ = !workarounds_.batch_submit_command_buffer_timeout;
   is_valid_ = true;
 
   // Create the GPU Tracer later because it depends on state from
   // the ContextVK.
-  gpu_tracer_ = std::make_shared<GPUTracerVK>(weak_from_this(),
-                                              settings.enable_gpu_tracing);
+  gpu_tracer_ = std::make_shared<GPUTracer>(weak_from_this(),
+                                            settings.enable_gpu_tracing);
   gpu_tracer_->InitializeQueryPool(*this);
 
   //----------------------------------------------------------------------------
@@ -507,7 +507,8 @@ void ContextVK::Setup(Settings settings) {
 }
 
 void ContextVK::SetOffscreenFormat(PixelFormat pixel_format) {
-  const_cast<CapabilitiesVK&>(*device_capabilities_).SetOffscreenFormat(pixel_format);
+  const_cast<CapabilitiesVK&>(*device_capabilities_)
+      .SetOffscreenFormat(pixel_format);
 }
 
 // |Context|
@@ -519,7 +520,7 @@ bool ContextVK::IsValid() const {
   return is_valid_;
 }
 
-std::shared_ptr<AllocatorVK> ContextVK::GetResourceAllocator() const {
+std::shared_ptr<Allocator> ContextVK::GetResourceAllocator() const {
   return allocator_;
 }
 
@@ -535,7 +536,7 @@ std::shared_ptr<PipelineLibraryVK> ContextVK::GetPipelineLibrary() const {
   return pipeline_library_;
 }
 
-std::shared_ptr<CommandBufferVK> ContextVK::CreateCommandBuffer() const {
+std::shared_ptr<CommandBuffer> ContextVK::CreateCommandBuffer() const {
   const auto& recycler = GetCommandPoolRecycler();
   auto tls_pool = recycler->Get();
   if (!tls_pool) {
@@ -544,7 +545,7 @@ std::shared_ptr<CommandBufferVK> ContextVK::CreateCommandBuffer() const {
 
   // look up a cached descriptor pool for the current frame and reuse it
   // if it exists, otherwise create a new pool.
-  std::shared_ptr<DescriptorPoolVK> descriptor_pool;
+  std::shared_ptr<DescriptorPool> descriptor_pool;
   {
     Lock lock(desc_pool_mutex_);
     DescriptorPoolMap::iterator current_pool =
@@ -577,7 +578,7 @@ std::shared_ptr<CommandBufferVK> ContextVK::CreateCommandBuffer() const {
   tracked_objects->GetGPUProbe().RecordCmdBufferStart(
       tracked_objects->GetCommandBuffer());
 
-  return std::shared_ptr<CommandBufferVK>(new CommandBufferVK(
+  return std::shared_ptr<CommandBuffer>(new CommandBuffer(
       shared_from_this(),         //
       GetDeviceHolder(),          //
       std::move(tracked_objects)  //
@@ -598,7 +599,7 @@ ContextVK::GetConcurrentWorkerTaskRunner() const {
 }
 
 void ContextVK::Shutdown() {
-  // There are multiple objects, for example |CommandPoolVK|, that in their
+  // There are multiple objects, for example |CommandPool|, that in their
   // destructors make a strong reference to |ContextVK|. Resetting these shared
   // pointers ensures that cleanup happens in a correct order.
   //
@@ -609,11 +610,12 @@ void ContextVK::Shutdown() {
   raster_message_loop_->Terminate();
 }
 
-std::shared_ptr<SurfaceContextVK> ContextVK::CreateSurfaceContext() {
-  return std::make_shared<SurfaceContextVK>(shared_from_this());
+std::shared_ptr<SurfaceContext> ContextVK::CreateSurfaceContext() {
+  return std::make_shared<SurfaceContext>(shared_from_this());
 }
 
-const std::shared_ptr<const CapabilitiesVK>& ContextVK::GetCapabilities() const {
+const std::shared_ptr<const CapabilitiesVK>& ContextVK::GetCapabilities()
+    const {
   return device_capabilities_;
 }
 
@@ -625,34 +627,33 @@ vk::PhysicalDevice ContextVK::GetPhysicalDevice() const {
   return device_holder_->physical_device;
 }
 
-std::shared_ptr<FenceWaiterVK> ContextVK::GetFenceWaiter() const {
+std::shared_ptr<FenceWaiter> ContextVK::GetFenceWaiter() const {
   return fence_waiter_;
 }
 
-std::shared_ptr<ResourceManagerVK> ContextVK::GetResourceManager() const {
+std::shared_ptr<ResourceManager> ContextVK::GetResourceManager() const {
   return resource_manager_;
 }
 
-std::shared_ptr<CommandPoolRecyclerVK> ContextVK::GetCommandPoolRecycler()
-    const {
+std::shared_ptr<CommandPoolRecycler> ContextVK::GetCommandPoolRecycler() const {
   return command_pool_recycler_;
 }
 
-std::shared_ptr<GPUTracerVK> ContextVK::GetGPUTracer() const {
+std::shared_ptr<GPUTracer> ContextVK::GetGPUTracer() const {
   return gpu_tracer_;
 }
 
-std::shared_ptr<DescriptorPoolRecyclerVK> ContextVK::GetDescriptorPoolRecycler()
+std::shared_ptr<DescriptorPoolRecycler> ContextVK::GetDescriptorPoolRecycler()
     const {
   return descriptor_pool_recycler_;
 }
 
-std::shared_ptr<CommandQueueVK> ContextVK::GetCommandQueue() const {
+std::shared_ptr<CommandQueue> ContextVK::GetCommandQueue() const {
   return command_queue_vk_;
 }
 
 bool ContextVK::EnqueueCommandBuffer(
-    std::shared_ptr<CommandBufferVK> command_buffer) {
+    std::shared_ptr<CommandBuffer> command_buffer) {
   if (should_batch_cmd_buffers_) {
     pending_command_buffers_.push_back(std::move(command_buffer));
     return true;
@@ -744,7 +745,7 @@ RuntimeStageBackend ContextVK::GetRuntimeStageBackend() const {
   return RuntimeStageBackend::kVulkan;
 }
 
-bool ContextVK::SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer) {
+bool ContextVK::SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) {
   return EnqueueCommandBuffer(std::move(cmd_buffer));
 }
 

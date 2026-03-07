@@ -21,10 +21,10 @@
 
 namespace ogre {
 
-class AllocatorVK final {
+class Allocator final {
  public:
   // |Allocator|
-  ~AllocatorVK();
+  ~Allocator();
 
   bool IsValid() const;
 
@@ -77,12 +77,12 @@ class AllocatorVK final {
   bool created_buffer_pool_ = true;
   vk::PhysicalDeviceMemoryProperties memory_properties_;
 
-  AllocatorVK(std::weak_ptr<Context> context,
-              uint32_t vulkan_api_version,
-              const vk::PhysicalDevice& physical_device,
-              const std::shared_ptr<DeviceHolderVK>& device_holder,
-              const vk::Instance& instance,
-              const CapabilitiesVK& capabilities);
+  Allocator(std::weak_ptr<Context> context,
+            uint32_t vulkan_api_version,
+            const vk::PhysicalDevice& physical_device,
+            const std::shared_ptr<DeviceHolderVK>& device_holder,
+            const vk::Instance& instance,
+            const CapabilitiesVK& capabilities);
 
   std::shared_ptr<DeviceBuffer> OnCreateBuffer(
       const DeviceBufferDescriptor& desc);
@@ -90,9 +90,9 @@ class AllocatorVK final {
   std::shared_ptr<Texture> OnCreateTexture(const TextureDescriptor& desc,
                                            bool threadsafe);
 
-  AllocatorVK(const AllocatorVK&) = delete;
+  Allocator(const Allocator&) = delete;
 
-  AllocatorVK& operator=(const AllocatorVK&) = delete;
+  Allocator& operator=(const Allocator&) = delete;
 };
 
 }  // namespace ogre

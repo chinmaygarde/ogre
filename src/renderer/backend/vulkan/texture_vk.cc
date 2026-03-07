@@ -5,8 +5,8 @@
 #include "renderer/backend/vulkan/texture_vk.h"
 
 #include "core/formats.h"
-#include "renderer/backend/vulkan/allocator_vk.h"
 #include "core/texture_descriptor.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
 #include "renderer/backend/vulkan/formats_vk.h"
 #include "renderer/backend/vulkan/sampler_vk.h"
@@ -94,7 +94,7 @@ bool TextureVK::OnSetContents(const uint8_t* contents,
 
   const auto& vk_cmd_buffer = cmd_buffer->GetCommandBuffer();
 
-  BarrierVK barrier;
+  Barrier barrier;
   barrier.cmd_buffer = vk_cmd_buffer;
   barrier.new_layout = vk::ImageLayout::eTransferDstOptimal;
   barrier.src_access = {};
@@ -132,7 +132,7 @@ bool TextureVK::OnSetContents(const uint8_t* contents,
 
   // Transition to shader-read.
   {
-    BarrierVK barrier;
+    Barrier barrier;
     barrier.cmd_buffer = vk_cmd_buffer;
     barrier.src_access = vk::AccessFlagBits::eColorAttachmentWrite |
                          vk::AccessFlagBits::eTransferWrite;
@@ -178,7 +178,7 @@ std::shared_ptr<const TextureSourceVK> TextureVK::GetTextureSource() const {
   return source_;
 }
 
-bool TextureVK::SetLayout(const BarrierVK& barrier) const {
+bool TextureVK::SetLayout(const Barrier& barrier) const {
   return source_ ? source_->SetLayout(barrier).ok() : false;
 }
 

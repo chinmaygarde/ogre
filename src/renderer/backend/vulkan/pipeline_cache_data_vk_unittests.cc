@@ -102,8 +102,8 @@ TEST(PipelineCacheDataVKTest, WritesIncompleteCacheData) {
   ASSERT_TRUE(PipelineCacheDataPersist(
       temp_dir.fd(), caps.GetPhysicalDeviceProperties(), cache.value));
 
-  std::unique_ptr<fml::FileMapping> mapping = fml::FileMapping::CreateReadOnly(
-      temp_dir.fd(), "flutter.ogre.vkcache");
+  std::unique_ptr<fml::FileMapping> mapping =
+      fml::FileMapping::CreateReadOnly(temp_dir.fd(), "flutter.ogre.vkcache");
   ASSERT_TRUE(mapping);
   PipelineCacheHeaderVK header;
   ASSERT_GE(mapping->GetSize(), sizeof(header));
@@ -116,7 +116,7 @@ INSTANTIATE_VULKAN_PLAYGROUND_SUITE(PipelineCacheDataVKPlaygroundTest);
 
 TEST_P(PipelineCacheDataVKPlaygroundTest, CanPersistAndRetrievePipelineCache) {
   fml::ScopedTemporaryDirectory temp_dir;
-  const auto& surface_context = SurfaceContextVK::Cast(*GetContext());
+  const auto& surface_context = SurfaceContext::Cast(*GetContext());
   const auto& context_vk = ContextVK::Cast(*surface_context.GetParent());
   const auto& caps = CapabilitiesVK::Cast(*context_vk.GetCapabilities());
 
@@ -144,7 +144,7 @@ TEST_P(PipelineCacheDataVKPlaygroundTest, CanPersistAndRetrievePipelineCache) {
 TEST_P(PipelineCacheDataVKPlaygroundTest,
        IntegrityChecksArePerformedOnPersistedData) {
   fml::ScopedTemporaryDirectory temp_dir;
-  const auto& surface_context = SurfaceContextVK::Cast(*GetContext());
+  const auto& surface_context = SurfaceContext::Cast(*GetContext());
   const auto& context_vk = ContextVK::Cast(*surface_context.GetParent());
   const auto& caps = CapabilitiesVK::Cast(*context_vk.GetCapabilities());
 

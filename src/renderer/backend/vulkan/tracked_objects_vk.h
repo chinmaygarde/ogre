@@ -19,8 +19,8 @@ namespace ogre {
 class TrackedObjectsVK {
  public:
   explicit TrackedObjectsVK(const std::weak_ptr<const ContextVK>& context,
-                            const std::shared_ptr<CommandPoolVK>& pool,
-                            std::shared_ptr<DescriptorPoolVK> descriptor_pool,
+                            const std::shared_ptr<CommandPool>& pool,
+                            std::shared_ptr<DescriptorPool> descriptor_pool,
                             std::unique_ptr<GPUProbe> probe);
 
   ~TrackedObjectsVK();
@@ -35,14 +35,14 @@ class TrackedObjectsVK {
 
   vk::CommandBuffer GetCommandBuffer() const;
 
-  DescriptorPoolVK& GetDescriptorPool();
+  DescriptorPool& GetDescriptorPool();
 
   GPUProbe& GetGPUProbe() const;
 
  private:
-  std::shared_ptr<DescriptorPoolVK> desc_pool_;
+  std::shared_ptr<DescriptorPool> desc_pool_;
   // `shared_ptr` since command buffers have a link to the command pool.
-  std::shared_ptr<CommandPoolVK> pool_;
+  std::shared_ptr<CommandPool> pool_;
   vk::UniqueCommandBuffer buffer_;
   std::vector<std::shared_ptr<SharedObjectVK>> tracked_objects_;
   std::vector<std::shared_ptr<const DeviceBuffer>> tracked_buffers_;

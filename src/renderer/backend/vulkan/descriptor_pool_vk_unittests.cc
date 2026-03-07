@@ -10,7 +10,7 @@
 namespace ogre {
 namespace testing {
 
-TEST(DescriptorPoolRecyclerVKTest, GetDescriptorPoolRecyclerCreatesNewPools) {
+TEST(DescriptorPoolRecyclerTest, GetDescriptorPoolRecyclerCreatesNewPools) {
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   vk::UniqueDescriptorPool pool1 = context->GetDescriptorPoolRecycler()->Get();
@@ -22,16 +22,16 @@ TEST(DescriptorPoolRecyclerVKTest, GetDescriptorPoolRecyclerCreatesNewPools) {
   context->Shutdown();
 }
 
-TEST(DescriptorPoolRecyclerVKTest, ReclaimMakesDescriptorPoolAvailable) {
+TEST(DescriptorPoolRecyclerTest, ReclaimMakesDescriptorPoolAvailable) {
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   {
     // Fetch a pool (which will be created).
-    DescriptorPoolVK pool = DescriptorPoolVK(context);
+    DescriptorPool pool = DescriptorPool(context);
     pool.AllocateDescriptorSets({}, /*pipeline_key=*/0, *context);
   }
 
-  std::shared_ptr<DescriptorPoolVK> pool =
+  std::shared_ptr<DescriptorPool> pool =
       context->GetDescriptorPoolRecycler()->GetDescriptorPool();
 
   // Now check that we only ever created one pool.
@@ -43,15 +43,15 @@ TEST(DescriptorPoolRecyclerVKTest, ReclaimMakesDescriptorPoolAvailable) {
   context->Shutdown();
 }
 
-TEST(DescriptorPoolRecyclerVKTest, ReclaimDropsDescriptorPoolIfSizeIsExceeded) {
+TEST(DescriptorPoolRecyclerTest, ReclaimDropsDescriptorPoolIfSizeIsExceeded) {
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   // Create 33 pools
   {
-    std::vector<std::unique_ptr<DescriptorPoolVK>> pools;
+    std::vector<std::unique_ptr<DescriptorPool>> pools;
     for (size_t i = 0u; i < 33; i++) {
-      std::unique_ptr<DescriptorPoolVK> pool =
-          std::make_unique<DescriptorPoolVK>(context);
+      std::unique_ptr<DescriptorPool> pool =
+          std::make_unique<DescriptorPool>(context);
       pool->AllocateDescriptorSets({}, /*pipeline_key=*/0, *context);
       pools.push_back(std::move(pool));
     }
@@ -66,9 +66,9 @@ TEST(DescriptorPoolRecyclerVKTest, ReclaimDropsDescriptorPoolIfSizeIsExceeded) {
   // Now create 33 more descriptor pools and observe that only one more is
   // allocated.
   {
-    std::vector<std::shared_ptr<DescriptorPoolVK>> pools;
+    std::vector<std::shared_ptr<DescriptorPool>> pools;
     for (size_t i = 0u; i < 33; i++) {
-      std::shared_ptr<DescriptorPoolVK> pool =
+      std::shared_ptr<DescriptorPool> pool =
           context->GetDescriptorPoolRecycler()->GetDescriptorPool();
       pool->AllocateDescriptorSets({}, /*pipeline_key=*/0, *context);
       pools.push_back(std::move(pool));
@@ -85,14 +85,14 @@ TEST(DescriptorPoolRecyclerVKTest, ReclaimDropsDescriptorPoolIfSizeIsExceeded) {
   context->Shutdown();
 }
 
-TEST(DescriptorPoolRecyclerVKTest, MultipleCommandBuffersShareDescriptorPool) {
+TEST(DescriptorPoolRecyclerTest, MultipleCommandBuffersShareDescriptorPool) {
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   std::shared_ptr<CommandBuffer> cmd_buffer_1 = context->CreateCommandBuffer();
   std::shared_ptr<CommandBuffer> cmd_buffer_2 = context->CreateCommandBuffer();
 
-  CommandBufferVK& vk_1 = CommandBufferVK::Cast(*cmd_buffer_1);
-  CommandBufferVK& vk_2 = CommandBufferVK::Cast(*cmd_buffer_2);
+  CommandBuffer& vk_1 = CommandBuffer::Cast(*cmd_buffer_1);
+  CommandBuffer& vk_2 = CommandBuffer::Cast(*cmd_buffer_2);
 
   EXPECT_EQ(&vk_1.GetDescriptorPool(), &vk_2.GetDescriptorPool());
 
@@ -100,23 +100,23 @@ TEST(DescriptorPoolRecyclerVKTest, MultipleCommandBuffersShareDescriptorPool) {
   context->DisposeThreadLocalCachedResources();
 
   std::shared_ptr<CommandBuffer> cmd_buffer_3 = context->CreateCommandBuffer();
-  CommandBufferVK& vk_3 = CommandBufferVK::Cast(*cmd_buffer_3);
+  CommandBuffer& vk_3 = CommandBuffer::Cast(*cmd_buffer_3);
 
   EXPECT_NE(&vk_1.GetDescriptorPool(), &vk_3.GetDescriptorPool());
 
   context->Shutdown();
 }
 
-TEST(DescriptorPoolRecyclerVKTest, DescriptorsAreRecycled) {
+TEST(DescriptorPoolRecyclerTest, DescriptorsAreRecycled) {
   std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();
 
   {
-    DescriptorPoolVK pool = DescriptorPoolVK(context);
+    DescriptorPool pool = DescriptorPool(context);
     pool.AllocateDescriptorSets({}, /*pipeline_key=*/0, *context);
   }
 
   // Should reuse the same descriptor set allocated above.
-  std::shared_ptr<DescriptorPoolVK> pool =
+  std::shared_ptr<DescriptorPool> pool =
       context->GetDescriptorPoolRecycler()->GetDescriptorPool();
   pool->AllocateDescriptorSets({}, /*pipeline_key=*/0, *context);
 

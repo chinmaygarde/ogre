@@ -12,8 +12,8 @@
 namespace ogre {
 namespace testing {
 
-TEST(CommandEncoderVKTest, DeleteEncoderAfterThreadDies) {
-  // Tests that when a CommandEncoderVK is deleted that it will clean up its
+TEST(CommandEncoderTest, DeleteEncoderAfterThreadDies) {
+  // Tests that when a CommandEncoder is deleted that it will clean up its
   // command buffers before it cleans up its command pool.
   std::shared_ptr<std::vector<std::string>> called_functions;
   {
@@ -34,7 +34,7 @@ TEST(CommandEncoderVKTest, DeleteEncoderAfterThreadDies) {
   EXPECT_TRUE(free_buffers < destroy_pool);
 }
 
-TEST(CommandEncoderVKTest, CleanupAfterSubmit) {
+TEST(CommandEncoderTest, CleanupAfterSubmit) {
   // This tests deleting the TrackedObjects where the thread is killed before
   // the fence waiter has disposed of them, making sure the command buffer and
   // its pools are deleted in that order.

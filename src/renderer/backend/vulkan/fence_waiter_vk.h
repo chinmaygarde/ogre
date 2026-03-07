@@ -20,9 +20,9 @@ class WaitSetEntry;
 
 using WaitSet = std::vector<std::shared_ptr<WaitSetEntry>>;
 
-class FenceWaiterVK {
+class FenceWaiter {
  public:
-  ~FenceWaiterVK();
+  ~FenceWaiter();
 
   bool IsValid() const;
 
@@ -40,16 +40,16 @@ class FenceWaiterVK {
   WaitSet wait_set_;
   bool terminate_ = false;
 
-  explicit FenceWaiterVK(std::weak_ptr<DeviceHolderVK> device_holder);
+  explicit FenceWaiter(std::weak_ptr<DeviceHolderVK> device_holder);
 
   void Main();
 
   bool Wait();
   void WaitUntilEmpty();
 
-  FenceWaiterVK(const FenceWaiterVK&) = delete;
+  FenceWaiter(const FenceWaiter&) = delete;
 
-  FenceWaiterVK& operator=(const FenceWaiterVK&) = delete;
+  FenceWaiter& operator=(const FenceWaiter&) = delete;
 };
 
 }  // namespace ogre

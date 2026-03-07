@@ -23,11 +23,11 @@ class GPUProbe;
 ///   <meta-data
 ///       android:name="io.flutter.embedding.android.EnableVulkanGPUTracing"
 ///       android:value="false" />
-class GPUTracerVK : public std::enable_shared_from_this<GPUTracerVK> {
+class GPUTracer : public std::enable_shared_from_this<GPUTracer> {
  public:
-  GPUTracerVK(std::weak_ptr<ContextVK> context, bool enable_gpu_tracing);
+  GPUTracer(std::weak_ptr<ContextVK> context, bool enable_gpu_tracing);
 
-  ~GPUTracerVK() = default;
+  ~GPUTracer() = default;
 
   /// @brief Create a GPUProbe to trace the execution of a command buffer on the
   ///        GPU.
@@ -100,7 +100,7 @@ class GPUTracerVK : public std::enable_shared_from_this<GPUTracerVK> {
 
 class GPUProbe {
  public:
-  explicit GPUProbe(const std::weak_ptr<GPUTracerVK>& tracer);
+  explicit GPUProbe(const std::weak_ptr<GPUTracer>& tracer);
 
   GPUProbe(GPUProbe&&) = delete;
   GPUProbe& operator=(GPUProbe&&) = delete;
@@ -116,9 +116,9 @@ class GPUProbe {
   void RecordCmdBufferEnd(const vk::CommandBuffer& buffer);
 
  private:
-  friend class GPUTracerVK;
+  friend class GPUTracer;
 
-  std::weak_ptr<GPUTracerVK> tracer_;
+  std::weak_ptr<GPUTracer> tracer_;
   std::optional<size_t> index_ = std::nullopt;
 };
 

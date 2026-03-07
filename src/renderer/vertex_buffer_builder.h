@@ -12,10 +12,10 @@
 #include <vector>
 
 #include "core/device_buffer.h"
-#include "renderer/backend/vulkan/allocator_vk.h"
 #include "core/formats.h"
-#include "renderer/host_buffer.h"
 #include "core/vertex_buffer.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/host_buffer.h"
 
 namespace ogre {
 
@@ -102,7 +102,7 @@ class VertexBufferBuilder {
     return buffer;
   };
 
-  VertexBuffer CreateVertexBuffer(AllocatorVK& device_allocator) const {
+  VertexBuffer CreateVertexBuffer(Allocator& device_allocator) const {
     VertexBuffer buffer;
     // This can be merged into a single allocation.
     buffer.vertex_buffer = CreateVertexBufferView(device_allocator);
@@ -129,7 +129,7 @@ class VertexBufferBuilder {
                                     alignof(VertexType));
   }
 
-  BufferView CreateVertexBufferView(AllocatorVK& allocator) const {
+  BufferView CreateVertexBufferView(Allocator& allocator) const {
     auto buffer = allocator.CreateBufferWithCopy(
         reinterpret_cast<const uint8_t*>(vertices_.data()),
         vertices_.size() * sizeof(VertexType));
@@ -154,7 +154,7 @@ class VertexBufferBuilder {
                                        alignof(IndexType));
   }
 
-  BufferView CreateIndexBufferView(AllocatorVK& allocator) const {
+  BufferView CreateIndexBufferView(Allocator& allocator) const {
     const auto index_buffer = CreateIndexBuffer();
     if (index_buffer.size() == 0) {
       return {};

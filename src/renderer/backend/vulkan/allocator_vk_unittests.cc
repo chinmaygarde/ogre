@@ -16,8 +16,8 @@
 namespace ogre {
 namespace testing {
 
-TEST(AllocatorVKTest, ToVKImageUsageFlags) {
-  EXPECT_EQ(AllocatorVK::ToVKImageUsageFlags(
+TEST(AllocatorTest, ToVKImageUsageFlags) {
+  EXPECT_EQ(Allocator::ToVKImageUsageFlags(
                 PixelFormat::kR8G8B8A8UNormInt,
                 static_cast<TextureUsageMask>(TextureUsage::kRenderTarget),
                 StorageMode::kDeviceTransient,
@@ -26,7 +26,7 @@ TEST(AllocatorVKTest, ToVKImageUsageFlags) {
                 vk::ImageUsageFlagBits::eColorAttachment |
                 vk::ImageUsageFlagBits::eTransientAttachment);
 
-  EXPECT_EQ(AllocatorVK::ToVKImageUsageFlags(
+  EXPECT_EQ(Allocator::ToVKImageUsageFlags(
                 PixelFormat::kD24UnormS8Uint,
                 static_cast<TextureUsageMask>(TextureUsage::kRenderTarget),
                 StorageMode::kDeviceTransient,
@@ -35,7 +35,7 @@ TEST(AllocatorVKTest, ToVKImageUsageFlags) {
                 vk::ImageUsageFlagBits::eTransientAttachment);
 }
 
-TEST(AllocatorVKTest, MemoryTypeSelectionSingleHeap) {
+TEST(AllocatorTest, MemoryTypeSelectionSingleHeap) {
   vk::PhysicalDeviceMemoryProperties properties;
   properties.memoryTypeCount = 1;
   properties.memoryHeapCount = 1;
@@ -45,12 +45,12 @@ TEST(AllocatorVKTest, MemoryTypeSelectionSingleHeap) {
   properties.memoryHeaps[0].size = 1024 * 1024 * 1024;
   properties.memoryHeaps[0].flags = vk::MemoryHeapFlagBits::eDeviceLocal;
 
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(1, properties), 0);
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(2, properties), -1);
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(3, properties), 0);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(1, properties), 0);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(2, properties), -1);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(3, properties), 0);
 }
 
-TEST(AllocatorVKTest, MemoryTypeSelectionTwoHeap) {
+TEST(AllocatorTest, MemoryTypeSelectionTwoHeap) {
   vk::PhysicalDeviceMemoryProperties properties;
   properties.memoryTypeCount = 2;
   properties.memoryHeapCount = 2;
@@ -67,13 +67,13 @@ TEST(AllocatorVKTest, MemoryTypeSelectionTwoHeap) {
   properties.memoryHeaps[1].flags = vk::MemoryHeapFlagBits::eDeviceLocal;
 
   // First fails because this only looks for eDeviceLocal.
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(1, properties), -1);
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(2, properties), 1);
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(3, properties), 1);
-  EXPECT_EQ(AllocatorVK::FindMemoryTypeIndex(4, properties), -1);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(1, properties), -1);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(2, properties), 1);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(3, properties), 1);
+  EXPECT_EQ(Allocator::FindMemoryTypeIndex(4, properties), -1);
 }
 
-TEST(AllocatorVKTest, ImageResourceKeepsVulkanDeviceAlive) {
+TEST(AllocatorTest, ImageResourceKeepsVulkanDeviceAlive) {
   std::shared_ptr<Texture> texture;
   std::weak_ptr<Allocator> weak_allocator;
   {
@@ -94,11 +94,11 @@ TEST(AllocatorVKTest, ImageResourceKeepsVulkanDeviceAlive) {
 
 #ifdef OGRE_DEBUG
 
-TEST(AllocatorVKTest, RecreateSwapchainWhenSizeChanges) {
+TEST(AllocatorTest, RecreateSwapchainWhenSizeChanges) {
   auto const context = MockVulkanContextBuilder().Build();
   auto allocator = context->GetResourceAllocator();
 
-  EXPECT_EQ(reinterpret_cast<AllocatorVK*>(allocator.get())
+  EXPECT_EQ(reinterpret_cast<Allocator*>(allocator.get())
                 ->DebugGetHeapUsage()
                 .GetByteSize(),
             0u);
@@ -111,7 +111,7 @@ TEST(AllocatorVKTest, RecreateSwapchainWhenSizeChanges) {
   // Usage increases beyond the size of the allocated buffer since VMA will
   // first allocate large blocks of memory and then suballocate small memory
   // allocations.
-  EXPECT_EQ(reinterpret_cast<AllocatorVK*>(allocator.get())
+  EXPECT_EQ(reinterpret_cast<Allocator*>(allocator.get())
                 ->DebugGetHeapUsage()
                 .ConvertTo<MebiBytes>()
                 .GetSize(),

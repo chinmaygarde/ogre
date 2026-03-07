@@ -16,11 +16,11 @@
 #include "fml/closure.h"
 namespace ogre {
 
-class AllocatorVK;
+class Allocator;
 class CapabilitiesVK;
 class Context;
-class CommandBufferVK;
-class CommandQueueVK;
+class CommandBuffer;
+class CommandQueue;
 class PipelineLibraryVK;
 class SamplerLibraryVK;
 class ShaderLibraryVK;
@@ -141,7 +141,7 @@ class Context {
   /// @return     The resource allocator. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<AllocatorVK> GetResourceAllocator() const = 0;
+  virtual std::shared_ptr<Allocator> GetResourceAllocator() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Returns the library of shaders used to specify the
@@ -181,10 +181,10 @@ class Context {
   ///
   /// @return     A new command buffer.
   ///
-  virtual std::shared_ptr<CommandBufferVK> CreateCommandBuffer() const = 0;
+  virtual std::shared_ptr<CommandBuffer> CreateCommandBuffer() const = 0;
 
   /// @brief Return the graphics queue for submitting command buffers.
-  virtual std::shared_ptr<CommandQueueVK> GetCommandQueue() const = 0;
+  virtual std::shared_ptr<CommandQueue> GetCommandQueue() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Force all pending asynchronous work to finish. This is
@@ -234,7 +234,7 @@ class Context {
   /// Returns true if submission has succeeded. If the buffer is enqueued
   /// then no error may be returned until FlushCommandBuffers is called.
   [[nodiscard]] virtual bool EnqueueCommandBuffer(
-      std::shared_ptr<CommandBufferVK> command_buffer);
+      std::shared_ptr<CommandBuffer> command_buffer);
 
   /// @brief Flush all pending command buffers.
   ///
@@ -264,7 +264,7 @@ class Context {
   virtual RuntimeStageBackend GetRuntimeStageBackend() const = 0;
 
   /// @brief Submit the command buffer that renders to the onscreen surface.
-  virtual bool SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer);
+  virtual bool SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer);
 
   const Flags& GetFlags() const { return flags_; }
 

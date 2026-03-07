@@ -9,33 +9,33 @@
 
 #include "base/backend_cast.h"
 #include "core/runtime_types.h"
-#include "renderer/backend/vulkan/vk.h"
 #include "renderer/backend/vulkan/command_queue_vk.h"
+#include "renderer/backend/vulkan/vk.h"
 #include "renderer/context.h"
 
 namespace ogre {
 
 class ContextVK;
 class SurfaceVK;
-class SwapchainVK;
+class Swapchain;
 
 /// For Vulkan, there is both a ContextVK that implements Context and a
-/// SurfaceContextVK that also implements Context and takes a ContextVK as its
+/// SurfaceContext that also implements Context and takes a ContextVK as its
 /// parent. There is a one to many relationship between ContextVK and
-/// SurfaceContextVK.
+/// SurfaceContext.
 ///
 /// Most operations in this class are delegated to the parent ContextVK.
 /// This class specifically manages swapchains and creation of VkSurfaces on
 /// Android. By maintaining the swapchain this way, it is possible to have
 /// multiple surfaces sharing the same ContextVK without stepping on each
 /// other's swapchains.
-class SurfaceContextVK : public Context,
-                         public BackendCast<SurfaceContextVK, Context> {
+class SurfaceContext : public Context,
+                       public BackendCast<SurfaceContext, Context> {
  public:
-  explicit SurfaceContextVK(const std::shared_ptr<ContextVK>& parent);
+  explicit SurfaceContext(const std::shared_ptr<ContextVK>& parent);
 
   // |Context|
-  ~SurfaceContextVK() override;
+  ~SurfaceContext() override;
 
   // |Context|
   BackendType GetBackendType() const override;
@@ -47,7 +47,7 @@ class SurfaceContextVK : public Context,
   bool IsValid() const override;
 
   // |Context|
-  std::shared_ptr<AllocatorVK> GetResourceAllocator() const override;
+  std::shared_ptr<Allocator> GetResourceAllocator() const override;
 
   // |Context|
   std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const override;
@@ -59,13 +59,13 @@ class SurfaceContextVK : public Context,
   std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const override;
 
   // |Context|
-  std::shared_ptr<CommandBufferVK> CreateCommandBuffer() const override;
+  std::shared_ptr<CommandBuffer> CreateCommandBuffer() const override;
 
   // |Context|
   const std::shared_ptr<const CapabilitiesVK>& GetCapabilities() const override;
 
   // |Context|
-  std::shared_ptr<CommandQueueVK> GetCommandQueue() const override;
+  std::shared_ptr<CommandQueue> GetCommandQueue() const override;
 
   // |Context|
   std::shared_ptr<const IdleWaiterVK> GetIdleWaiter() const override;
@@ -74,7 +74,7 @@ class SurfaceContextVK : public Context,
   RuntimeStageBackend GetRuntimeStageBackend() const override;
 
   // |Context|
-  bool SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer) override;
+  bool SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) override;
 
   // |Context|
   void Shutdown() override;
@@ -82,7 +82,7 @@ class SurfaceContextVK : public Context,
   [[nodiscard]] bool SetWindowSurface(vk::UniqueSurfaceKHR surface,
                                       const ISize& size);
 
-  [[nodiscard]] bool SetSwapchain(std::shared_ptr<SwapchainVK> swapchain);
+  [[nodiscard]] bool SetSwapchain(std::shared_ptr<Swapchain> swapchain);
 
   std::unique_ptr<SurfaceVK> AcquireNextSurface();
 
@@ -110,13 +110,13 @@ class SurfaceContextVK : public Context,
   const std::shared_ptr<ContextVK>& GetParent() const;
 
   bool EnqueueCommandBuffer(
-      std::shared_ptr<CommandBufferVK> command_buffer) override;
+      std::shared_ptr<CommandBuffer> command_buffer) override;
 
   bool FlushCommandBuffers() override;
 
  private:
   std::shared_ptr<ContextVK> parent_;
-  std::shared_ptr<SwapchainVK> swapchain_;
+  std::shared_ptr<Swapchain> swapchain_;
 };
 
 }  // namespace ogre

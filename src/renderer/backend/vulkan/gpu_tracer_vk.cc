@@ -19,8 +19,7 @@ namespace ogre {
 
 static constexpr uint32_t kPoolSize = 128u;
 
-GPUTracerVK::GPUTracerVK(std::weak_ptr<ContextVK> context,
-                         bool enable_gpu_tracing)
+GPUTracer::GPUTracer(std::weak_ptr<ContextVK> context, bool enable_gpu_tracing)
     : context_(std::move(context)) {
   if (!enable_gpu_tracing) {
     return;
@@ -40,13 +39,13 @@ GPUTracerVK::GPUTracerVK(std::weak_ptr<ContextVK> context,
 #endif  // OGRE_DEBUG
 }
 
-void GPUTracerVK::InitializeQueryPool(const ContextVK& context) {
+void GPUTracer::InitializeQueryPool(const ContextVK& context) {
   if (!enabled_) {
     return;
   }
   Lock lock(trace_state_mutex_);
-  std::shared_ptr<CommandBufferVK> buffer = context.CreateCommandBuffer();
-  CommandBufferVK& buffer_vk = *buffer;
+  std::shared_ptr<CommandBuffer> buffer = context.CreateCommandBuffer();
+  CommandBuffer& buffer_vk = *buffer;
 
   for (auto i = 0u; i < kTraceStatesSize; i++) {
     vk::QueryPoolCreateInfo info;
@@ -68,11 +67,11 @@ void GPUTracerVK::InitializeQueryPool(const ContextVK& context) {
   }
 }
 
-bool GPUTracerVK::IsEnabled() const {
+bool GPUTracer::IsEnabled() const {
   return enabled_;
 }
 
-void GPUTracerVK::MarkFrameStart() {
+void GPUTracer::MarkFrameStart() {
   if (!enabled_) {
     return;
   }
@@ -81,7 +80,7 @@ void GPUTracerVK::MarkFrameStart() {
   raster_thread_id_ = std::this_thread::get_id();
 }
 
-void GPUTracerVK::MarkFrameEnd() {
+void GPUTracer::MarkFrameEnd() {
   in_frame_ = false;
 
   if (!enabled_) {
@@ -102,12 +101,12 @@ void GPUTracerVK::MarkFrameEnd() {
   state.current_index = 0;
 }
 
-std::unique_ptr<GPUProbe> GPUTracerVK::CreateGPUProbe() {
+std::unique_ptr<GPUProbe> GPUTracer::CreateGPUProbe() {
   return std::make_unique<GPUProbe>(weak_from_this());
 }
 
-void GPUTracerVK::RecordCmdBufferStart(const vk::CommandBuffer& buffer,
-                                       GPUProbe& probe) {
+void GPUTracer::RecordCmdBufferStart(const vk::CommandBuffer& buffer,
+                                     GPUProbe& probe) {
   if (!enabled_ || std::this_thread::get_id() != raster_thread_id_ ||
       !in_frame_) {
     return;
@@ -139,8 +138,8 @@ void GPUTracerVK::RecordCmdBufferStart(const vk::CommandBuffer& buffer,
   state.pending_buffers += 1;
 }
 
-void GPUTracerVK::RecordCmdBufferEnd(const vk::CommandBuffer& buffer,
-                                     GPUProbe& probe) {
+void GPUTracer::RecordCmdBufferEnd(const vk::CommandBuffer& buffer,
+                                   GPUProbe& probe) {
   if (!enabled_ || std::this_thread::get_id() != raster_thread_id_ ||
       !in_frame_ || !probe.index_.has_value()) {
     return;
@@ -158,7 +157,7 @@ void GPUTracerVK::RecordCmdBufferEnd(const vk::CommandBuffer& buffer,
   state.current_index += 1;
 }
 
-void GPUTracerVK::OnFenceComplete(size_t frame_index) {
+void GPUTracer::OnFenceComplete(size_t frame_index) {
   if (!enabled_) {
     return;
   }
@@ -216,8 +215,7 @@ void GPUTracerVK::OnFenceComplete(size_t frame_index) {
   }
 }
 
-GPUProbe::GPUProbe(const std::weak_ptr<GPUTracerVK>& tracer)
-    : tracer_(tracer) {}
+GPUProbe::GPUProbe(const std::weak_ptr<GPUTracer>& tracer) : tracer_(tracer) {}
 
 GPUProbe::~GPUProbe() {
   if (!index_.has_value()) {

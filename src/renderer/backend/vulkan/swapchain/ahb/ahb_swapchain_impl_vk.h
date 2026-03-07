@@ -12,8 +12,8 @@
 #include "renderer/backend/vulkan/android/ahb_texture_source_vk.h"
 #include "renderer/backend/vulkan/swapchain/ahb/ahb_texture_pool_vk.h"
 #include "renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
-#include "renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
 #include "renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
 #include "toolkit/android/hardware_buffer.h"
 #include "toolkit/android/surface_control.h"
 #include "toolkit/android/surface_transaction.h"
@@ -21,7 +21,7 @@
 
 namespace ogre {
 
-class CommandBufferVK;
+class CommandBuffer;
 
 using CreateTransactionCB = std::function<android::SurfaceTransaction()>;
 
@@ -31,7 +31,7 @@ struct AHBFrameSynchronizerVK {
   vk::UniqueFence acquire;
   vk::UniqueSemaphore render_ready = {};
   std::shared_ptr<ExternalSemaphoreVK> present_ready;
-  std::shared_ptr<CommandBufferVK> final_cmd_buffer;
+  std::shared_ptr<CommandBuffer> final_cmd_buffer;
   bool is_valid = false;
 
   explicit AHBFrameSynchronizerVK(const vk::Device& device);
@@ -112,7 +112,7 @@ class AHBSwapchainImplVK final
   ///
   std::unique_ptr<SurfaceVK> AcquireNextDrawable();
 
-  void AddFinalCommandBuffer(std::shared_ptr<CommandBufferVK> cmd_buffer);
+  void AddFinalCommandBuffer(std::shared_ptr<CommandBuffer> cmd_buffer);
 
  private:
   using AutoSemaSignaler = std::shared_ptr<fml::ScopedCleanupClosure>;

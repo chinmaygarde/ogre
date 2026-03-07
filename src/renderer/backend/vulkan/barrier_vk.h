@@ -24,7 +24,7 @@ namespace ogre {
 ///             this barrier may proceed till <dst access> in the <dst pipeline
 ///             stage>."
 ///
-struct BarrierVK {
+struct Barrier {
   vk::CommandBuffer cmd_buffer = {};
   vk::ImageLayout new_layout = vk::ImageLayout::eUndefined;
 

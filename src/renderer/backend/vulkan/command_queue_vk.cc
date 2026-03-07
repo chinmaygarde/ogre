@@ -12,13 +12,13 @@
 
 namespace ogre {
 
-CommandQueueVK::CommandQueueVK(const std::weak_ptr<ContextVK>& context)
+CommandQueue::CommandQueue(const std::weak_ptr<ContextVK>& context)
     : context_(context) {}
 
-CommandQueueVK::~CommandQueueVK() = default;
+CommandQueue::~CommandQueue() = default;
 
-fml::Status CommandQueueVK::Submit(
-    const std::vector<std::shared_ptr<CommandBufferVK>>& buffers,
+fml::Status CommandQueue::Submit(
+    const std::vector<std::shared_ptr<CommandBuffer>>& buffers,
     const CompletionCallback& completion_callback,
     bool block_on_schedule) {
   if (buffers.empty()) {
@@ -28,7 +28,7 @@ fml::Status CommandQueueVK::Submit(
   // Success or failure, you only get to submit once.
   fml::ScopedCleanupClosure reset([&]() {
     if (completion_callback) {
-      completion_callback(CommandBufferVK::Status::kError);
+      completion_callback(CommandBuffer::Status::kError);
     }
   });
 
@@ -36,7 +36,7 @@ fml::Status CommandQueueVK::Submit(
   std::vector<std::shared_ptr<TrackedObjectsVK>> tracked_objects;
   vk_buffers.reserve(buffers.size());
   tracked_objects.reserve(buffers.size());
-  for (const std::shared_ptr<CommandBufferVK>& buffer : buffers) {
+  for (const std::shared_ptr<CommandBuffer>& buffer : buffers) {
     if (!buffer->EndCommandBuffer()) {
       return fml::Status(fml::StatusCode::kCancelled,
                          "Failed to end command buffer.");
@@ -73,7 +73,7 @@ fml::Status CommandQueueVK::Submit(
         // callbacks.
         tracked_objects.clear();
         if (completion_callback) {
-          completion_callback(CommandBufferVK::Status::kCompleted);
+          completion_callback(CommandBuffer::Status::kCompleted);
         }
       });
   if (!added_fence) {

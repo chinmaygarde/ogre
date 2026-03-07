@@ -33,15 +33,15 @@ using DescriptorCacheMap = std::unordered_map<PipelineKey, DescriptorCache>;
 ///
 ///             Encoders create pools as necessary as they have the same
 ///             threading and lifecycle restrictions.
-class DescriptorPoolVK {
+class DescriptorPool {
  public:
-  explicit DescriptorPoolVK(std::weak_ptr<const ContextVK> context);
+  explicit DescriptorPool(std::weak_ptr<const ContextVK> context);
 
-  DescriptorPoolVK(std::weak_ptr<const ContextVK> context,
-                   DescriptorCacheMap descriptor_sets,
-                   std::vector<vk::UniqueDescriptorPool> pools);
+  DescriptorPool(std::weak_ptr<const ContextVK> context,
+                 DescriptorCacheMap descriptor_sets,
+                 std::vector<vk::UniqueDescriptorPool> pools);
 
-  ~DescriptorPoolVK();
+  ~DescriptorPool();
 
   fml::StatusOr<vk::DescriptorSet> AllocateDescriptorSets(
       const vk::DescriptorSetLayout& layout,
@@ -49,7 +49,7 @@ class DescriptorPoolVK {
       const ContextVK& context_vk);
 
  private:
-  friend class DescriptorPoolRecyclerVK;
+  friend class DescriptorPoolRecycler;
 
   std::weak_ptr<const ContextVK> context_;
   DescriptorCacheMap descriptor_sets_;
@@ -59,18 +59,18 @@ class DescriptorPoolVK {
 
   fml::Status CreateNewPool(const ContextVK& context_vk);
 
-  DescriptorPoolVK(const DescriptorPoolVK&) = delete;
+  DescriptorPool(const DescriptorPool&) = delete;
 
-  DescriptorPoolVK& operator=(const DescriptorPoolVK&) = delete;
+  DescriptorPool& operator=(const DescriptorPool&) = delete;
 };
 
 //------------------------------------------------------------------------------
-/// @brief      Creates and manages the lifecycle of |vk::DescriptorPoolVK|
+/// @brief      Creates and manages the lifecycle of |vk::DescriptorPool|
 ///             objects.
-class DescriptorPoolRecyclerVK final
-    : public std::enable_shared_from_this<DescriptorPoolRecyclerVK> {
+class DescriptorPoolRecycler final
+    : public std::enable_shared_from_this<DescriptorPoolRecycler> {
  public:
-  ~DescriptorPoolRecyclerVK() = default;
+  ~DescriptorPoolRecycler() = default;
 
   /// The maximum number of descriptor pools this recycler will hold onto.
   static constexpr size_t kMaxRecycledPools = 32u;
@@ -78,7 +78,7 @@ class DescriptorPoolRecyclerVK final
   /// @brief      Creates a recycler for the given |ContextVK|.
   ///
   /// @param[in]  context The context to create the recycler for.
-  explicit DescriptorPoolRecyclerVK(std::weak_ptr<ContextVK> context)
+  explicit DescriptorPoolRecycler(std::weak_ptr<ContextVK> context)
       : context_(std::move(context)) {}
 
   /// @brief      Gets a descriptor pool.
@@ -87,7 +87,7 @@ class DescriptorPoolRecyclerVK final
   ///             the necessary capacity.
   vk::UniqueDescriptorPool Get();
 
-  std::shared_ptr<DescriptorPoolVK> GetDescriptorPool();
+  std::shared_ptr<DescriptorPool> GetDescriptorPool();
 
   void Reclaim(DescriptorCacheMap descriptor_sets,
                std::vector<vk::UniqueDescriptorPool> pools);
@@ -96,7 +96,7 @@ class DescriptorPoolRecyclerVK final
   std::weak_ptr<ContextVK> context_;
 
   Mutex recycled_mutex_;
-  std::vector<std::shared_ptr<DescriptorPoolVK>> recycled_
+  std::vector<std::shared_ptr<DescriptorPool>> recycled_
       IPLR_GUARDED_BY(recycled_mutex_);
 
   /// @brief      Creates a new |vk::CommandPool|.
@@ -104,9 +104,9 @@ class DescriptorPoolRecyclerVK final
   /// @returns    Returns a |std::nullopt| if a pool could not be created.
   vk::UniqueDescriptorPool Create();
 
-  DescriptorPoolRecyclerVK(const DescriptorPoolRecyclerVK&) = delete;
+  DescriptorPoolRecycler(const DescriptorPoolRecycler&) = delete;
 
-  DescriptorPoolRecyclerVK& operator=(const DescriptorPoolRecyclerVK&) = delete;
+  DescriptorPoolRecycler& operator=(const DescriptorPoolRecycler&) = delete;
 };
 
 }  // namespace ogre

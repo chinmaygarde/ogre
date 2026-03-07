@@ -12,16 +12,16 @@
 
 namespace ogre {
 
-bool AHBSwapchainVK::IsAvailableOnPlatform() {
+bool AHBSwapchain::IsAvailableOnPlatform() {
   return android::SurfaceControl::IsAvailableOnPlatform() &&
          android::HardwareBuffer::IsAvailableOnPlatform();
 }
 
-AHBSwapchainVK::AHBSwapchainVK(const std::shared_ptr<Context>& context,
-                               ANativeWindow* window,
-                               const CreateTransactionCB& cb,
-                               const ISize& size,
-                               bool enable_msaa)
+AHBSwapchain::AHBSwapchain(const std::shared_ptr<Context>& context,
+                           ANativeWindow* window,
+                           const CreateTransactionCB& cb,
+                           const ISize& size,
+                           bool enable_msaa)
     : context_(context),
       surface_control_(
           std::make_shared<android::SurfaceControl>(window, "ImpellerSurface")),
@@ -30,15 +30,15 @@ AHBSwapchainVK::AHBSwapchainVK(const std::shared_ptr<Context>& context,
   UpdateSurfaceSize(size);
 }
 
-AHBSwapchainVK::~AHBSwapchainVK() = default;
+AHBSwapchain::~AHBSwapchain() = default;
 
-// |SwapchainVK|
-bool AHBSwapchainVK::IsValid() const {
+// |Swapchain|
+bool AHBSwapchain::IsValid() const {
   return impl_ ? impl_->IsValid() : false;
 }
 
-// |SwapchainVK|
-std::unique_ptr<SurfaceVK> AHBSwapchainVK::AcquireNextDrawable() {
+// |Swapchain|
+std::unique_ptr<SurfaceVK> AHBSwapchain::AcquireNextDrawable() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -47,21 +47,21 @@ std::unique_ptr<SurfaceVK> AHBSwapchainVK::AcquireNextDrawable() {
   return impl_->AcquireNextDrawable();
 }
 
-// |SwapchainVK|
-vk::Format AHBSwapchainVK::GetSurfaceFormat() const {
+// |Swapchain|
+vk::Format AHBSwapchain::GetSurfaceFormat() const {
   return IsValid()
              ? ToVKImageFormat(ToPixelFormat(impl_->GetDescriptor().format))
              : vk::Format::eUndefined;
 }
 
-// |SwapchainVK|
-void AHBSwapchainVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBufferVK> cmd_buffer) const {
+// |Swapchain|
+void AHBSwapchain::AddFinalCommandBuffer(
+    std::shared_ptr<CommandBuffer> cmd_buffer) const {
   return impl_->AddFinalCommandBuffer(cmd_buffer);
 }
 
-// |SwapchainVK|
-void AHBSwapchainVK::UpdateSurfaceSize(const ISize& size) {
+// |Swapchain|
+void AHBSwapchain::UpdateSurfaceSize(const ISize& size) {
   if (impl_ && impl_->GetSize() == size) {
     return;
   }

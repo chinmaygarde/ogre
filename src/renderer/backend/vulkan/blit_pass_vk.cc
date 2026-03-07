@@ -48,26 +48,26 @@ static void InsertImageMemoryBarrier(const vk::CommandBuffer& cmd,
   cmd.pipelineBarrier(src_stage, dst_stage, {}, nullptr, nullptr, barrier);
 }
 
-BlitPassVK::BlitPassVK(std::shared_ptr<CommandBufferVK> command_buffer,
-                       const WorkaroundsVK& workarounds)
+BlitPass::BlitPass(std::shared_ptr<CommandBuffer> command_buffer,
+                   const WorkaroundsVK& workarounds)
     : command_buffer_(std::move(command_buffer)), workarounds_(workarounds) {}
 
-BlitPassVK::~BlitPassVK() = default;
+BlitPass::~BlitPass() = default;
 
-void BlitPassVK::OnSetLabel(std::string_view label) {}
+void BlitPass::OnSetLabel(std::string_view label) {}
 
-void BlitPassVK::SetLabel(std::string_view label) {
+void BlitPass::SetLabel(std::string_view label) {
   if (label.empty()) {
     return;
   }
   OnSetLabel(label);
 }
 
-bool BlitPassVK::AddCopy(std::shared_ptr<Texture> source,
-                         std::shared_ptr<Texture> destination,
-                         std::optional<IRect> source_region,
-                         IPoint destination_origin,
-                         std::string_view label) {
+bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
+                       std::shared_ptr<Texture> destination,
+                       std::optional<IRect> source_region,
+                       IPoint destination_origin,
+                       std::string_view label) {
   if (!source) {
     VALIDATION_LOG << "Attempted to add a texture blit with no source.";
     return false;
@@ -112,11 +112,11 @@ bool BlitPassVK::AddCopy(std::shared_ptr<Texture> source,
       destination_origin, label);
 }
 
-bool BlitPassVK::AddCopy(std::shared_ptr<Texture> source,
-                         std::shared_ptr<DeviceBuffer> destination,
-                         std::optional<IRect> source_region,
-                         size_t destination_offset,
-                         std::string_view label) {
+bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
+                       std::shared_ptr<DeviceBuffer> destination,
+                       std::optional<IRect> source_region,
+                       size_t destination_offset,
+                       std::string_view label) {
   if (!source) {
     VALIDATION_LOG << "Attempted to add a texture blit with no source.";
     return false;
@@ -151,13 +151,13 @@ bool BlitPassVK::AddCopy(std::shared_ptr<Texture> source,
                                       label);
 }
 
-bool BlitPassVK::AddCopy(BufferView source,
-                         std::shared_ptr<Texture> destination,
-                         std::optional<IRect> destination_region,
-                         std::string_view label,
-                         uint32_t mip_level,
-                         uint32_t slice,
-                         bool convert_to_read) {
+bool BlitPass::AddCopy(BufferView source,
+                       std::shared_ptr<Texture> destination,
+                       std::optional<IRect> destination_region,
+                       std::string_view label,
+                       uint32_t mip_level,
+                       uint32_t slice,
+                       bool convert_to_read) {
   if (!destination) {
     VALIDATION_LOG << "Attempted to add a texture blit with no destination.";
     return false;
@@ -198,8 +198,8 @@ bool BlitPassVK::AddCopy(BufferView source,
                                       mip_level, slice, convert_to_read);
 }
 
-bool BlitPassVK::GenerateMipmap(std::shared_ptr<Texture> texture,
-                                std::string_view label) {
+bool BlitPass::GenerateMipmap(std::shared_ptr<Texture> texture,
+                              std::string_view label) {
   if (!texture) {
     VALIDATION_LOG << "Attempted to add an invalid mipmap generation command "
                       "with no texture.";
@@ -208,18 +208,15 @@ bool BlitPassVK::GenerateMipmap(std::shared_ptr<Texture> texture,
   return OnGenerateMipmapCommand(std::move(texture), label);
 }
 
-
-bool BlitPassVK::IsValid() const {
+bool BlitPass::IsValid() const {
   return true;
 }
 
-
-bool BlitPassVK::EncodeCommands() const {
+bool BlitPass::EncodeCommands() const {
   return true;
 }
 
-
-bool BlitPassVK::OnCopyTextureToTextureCommand(
+bool BlitPass::OnCopyTextureToTextureCommand(
     std::shared_ptr<Texture> source,
     std::shared_ptr<Texture> destination,
     IRect source_region,
@@ -234,7 +231,7 @@ bool BlitPassVK::OnCopyTextureToTextureCommand(
     return false;
   }
 
-  BarrierVK src_barrier;
+  Barrier src_barrier;
   src_barrier.cmd_buffer = cmd_buffer;
   src_barrier.new_layout = vk::ImageLayout::eTransferSrcOptimal;
   src_barrier.src_access = vk::AccessFlagBits::eTransferWrite |
@@ -246,7 +243,7 @@ bool BlitPassVK::OnCopyTextureToTextureCommand(
   src_barrier.dst_access = vk::AccessFlagBits::eTransferRead;
   src_barrier.dst_stage = vk::PipelineStageFlagBits::eTransfer;
 
-  BarrierVK dst_barrier;
+  Barrier dst_barrier;
   dst_barrier.cmd_buffer = cmd_buffer;
   dst_barrier.new_layout = vk::ImageLayout::eTransferDstOptimal;
   dst_barrier.src_access = {};
@@ -290,7 +287,7 @@ bool BlitPassVK::OnCopyTextureToTextureCommand(
     return true;
   }
 
-  BarrierVK barrier;
+  Barrier barrier;
   barrier.cmd_buffer = cmd_buffer;
   barrier.new_layout = vk::ImageLayout::eShaderReadOnlyOptimal;
   barrier.src_access = {};
@@ -301,8 +298,7 @@ bool BlitPassVK::OnCopyTextureToTextureCommand(
   return dst.SetLayout(barrier);
 }
 
-
-bool BlitPassVK::OnCopyTextureToBufferCommand(
+bool BlitPass::OnCopyTextureToBufferCommand(
     std::shared_ptr<Texture> source,
     std::shared_ptr<DeviceBuffer> destination,
     IRect source_region,
@@ -317,7 +313,7 @@ bool BlitPassVK::OnCopyTextureToBufferCommand(
     return false;
   }
 
-  BarrierVK barrier;
+  Barrier barrier;
   barrier.cmd_buffer = cmd_buffer;
   barrier.new_layout = vk::ImageLayout::eTransferSrcOptimal;
   barrier.src_access = vk::AccessFlagBits::eShaderWrite |
@@ -369,11 +365,11 @@ bool BlitPassVK::OnCopyTextureToBufferCommand(
   return true;
 }
 
-bool BlitPassVK::ConvertTextureToShaderRead(
+bool BlitPass::ConvertTextureToShaderRead(
     const std::shared_ptr<Texture>& texture) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
-  BarrierVK barrier;
+  Barrier barrier;
   barrier.cmd_buffer = cmd_buffer;
   barrier.src_access = vk::AccessFlagBits::eTransferWrite;
   barrier.src_stage = vk::PipelineStageFlagBits::eTransfer;
@@ -391,8 +387,7 @@ bool BlitPassVK::ConvertTextureToShaderRead(
   return texture_vk.SetLayout(barrier);
 }
 
-
-bool BlitPassVK::OnCopyBufferToTextureCommand(
+bool BlitPass::OnCopyBufferToTextureCommand(
     BufferView source,
     std::shared_ptr<Texture> destination,
     IRect destination_region,
@@ -412,7 +407,7 @@ bool BlitPassVK::OnCopyBufferToTextureCommand(
     return false;
   }
 
-  BarrierVK dst_barrier;
+  Barrier dst_barrier;
   dst_barrier.cmd_buffer = cmd_buffer;
   dst_barrier.new_layout = vk::ImageLayout::eTransferDstOptimal;
   dst_barrier.src_access = {};
@@ -451,7 +446,7 @@ bool BlitPassVK::OnCopyBufferToTextureCommand(
 
   // Transition to shader-read.
   if (convert_to_read) {
-    BarrierVK barrier;
+    Barrier barrier;
     barrier.cmd_buffer = cmd_buffer;
     barrier.src_access = vk::AccessFlagBits::eTransferWrite;
     barrier.src_stage = vk::PipelineStageFlagBits::eTransfer;
@@ -468,9 +463,8 @@ bool BlitPassVK::OnCopyBufferToTextureCommand(
   return true;
 }
 
-
-bool BlitPassVK::ResizeTexture(const std::shared_ptr<Texture>& source,
-                               const std::shared_ptr<Texture>& destination) {
+bool BlitPass::ResizeTexture(const std::shared_ptr<Texture>& source,
+                             const std::shared_ptr<Texture>& destination) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
   const auto& src = TextureVK::Cast(*source);
@@ -480,7 +474,7 @@ bool BlitPassVK::ResizeTexture(const std::shared_ptr<Texture>& source,
     return false;
   }
 
-  BarrierVK src_barrier;
+  Barrier src_barrier;
   src_barrier.cmd_buffer = cmd_buffer;
   src_barrier.new_layout = vk::ImageLayout::eTransferSrcOptimal;
   src_barrier.src_access = vk::AccessFlagBits::eTransferWrite |
@@ -492,7 +486,7 @@ bool BlitPassVK::ResizeTexture(const std::shared_ptr<Texture>& source,
   src_barrier.dst_access = vk::AccessFlagBits::eTransferRead;
   src_barrier.dst_stage = vk::PipelineStageFlagBits::eTransfer;
 
-  BarrierVK dst_barrier;
+  Barrier dst_barrier;
   dst_barrier.cmd_buffer = cmd_buffer;
   dst_barrier.new_layout = vk::ImageLayout::eTransferDstOptimal;
   dst_barrier.src_access = {};
@@ -540,7 +534,7 @@ bool BlitPassVK::ResizeTexture(const std::shared_ptr<Texture>& source,
 
   // Convert back to shader read
 
-  BarrierVK barrier;
+  Barrier barrier;
   barrier.cmd_buffer = cmd_buffer;
   barrier.new_layout = vk::ImageLayout::eShaderReadOnlyOptimal;
   barrier.src_access = {};
@@ -551,9 +545,8 @@ bool BlitPassVK::ResizeTexture(const std::shared_ptr<Texture>& source,
   return dst.SetLayout(barrier);
 }
 
-
-bool BlitPassVK::OnGenerateMipmapCommand(std::shared_ptr<Texture> texture,
-                                         std::string_view label) {
+bool BlitPass::OnGenerateMipmapCommand(std::shared_ptr<Texture> texture,
+                                       std::string_view label) {
   auto& src = TextureVK::Cast(*texture);
 
   const auto size = src.GetTextureDescriptor().size;

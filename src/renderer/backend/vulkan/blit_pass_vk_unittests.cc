@@ -10,7 +10,7 @@
 
 namespace ogre {
 
-TEST(BlitPassVKTest, MipmapGenerationTransitionsAllLevelsCorrectly) {
+TEST(BlitPassTest, MipmapGenerationTransitionsAllLevelsCorrectly) {
   auto context = testing::MockVulkanContextBuilder().Build();
   ASSERT_TRUE(context->IsValid());
 
@@ -19,8 +19,8 @@ TEST(BlitPassVKTest, MipmapGenerationTransitionsAllLevelsCorrectly) {
   auto blit_pass = cmd_buffer->CreateBlitPass();
   ASSERT_TRUE(blit_pass);
 
-  auto vk_blit_pass = reinterpret_cast<BlitPassVK*>(blit_pass.get());
-  auto vk_cmd_buffer = reinterpret_cast<CommandBufferVK*>(cmd_buffer.get());
+  auto vk_blit_pass = reinterpret_cast<BlitPass*>(blit_pass.get());
+  auto vk_cmd_buffer = reinterpret_cast<CommandBuffer*>(cmd_buffer.get());
 
   TextureDescriptor desc;
   desc.size = ISize(100, 65);

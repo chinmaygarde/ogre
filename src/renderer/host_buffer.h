@@ -27,7 +27,7 @@ static const constexpr size_t kHostBufferArenaSize = 4u;
 class HostBuffer {
  public:
   static std::shared_ptr<HostBuffer> Create(
-      const std::shared_ptr<AllocatorVK>& allocator,
+      const std::shared_ptr<Allocator>& allocator,
       const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
       size_t minimum_uniform_alignment);
 
@@ -158,7 +158,7 @@ class HostBuffer {
 
   [[nodiscard]] BufferView Emplace(const void* buffer, size_t length);
 
-  explicit HostBuffer(const std::shared_ptr<AllocatorVK>& allocator,
+  explicit HostBuffer(const std::shared_ptr<Allocator>& allocator,
                       const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
                       size_t minimum_uniform_alignment);
 
@@ -166,7 +166,7 @@ class HostBuffer {
 
   HostBuffer& operator=(const HostBuffer&) = delete;
 
-  std::shared_ptr<AllocatorVK> allocator_;
+  std::shared_ptr<Allocator> allocator_;
   std::shared_ptr<const IdleWaiterVK> idle_waiter_;
   std::array<std::vector<std::shared_ptr<DeviceBuffer>>, kHostBufferArenaSize>
       device_buffers_;

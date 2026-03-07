@@ -15,7 +15,7 @@
 
 namespace ogre {
 
-class AllocatorVK;
+class Allocator;
 class Context;
 
 struct RenderTargetConfig {
@@ -79,7 +79,7 @@ class RenderTarget final {
 
   void SetupDepthStencilAttachments(
       const Context& context,
-      AllocatorVK& allocator,
+      Allocator& allocator,
       ISize size,
       bool msaa,
       std::string_view label = "Offscreen",
@@ -148,7 +148,7 @@ class RenderTarget final {
 ///        to provide caching of allocated render target textures.
 class RenderTargetAllocator {
  public:
-  explicit RenderTargetAllocator(std::shared_ptr<AllocatorVK> allocator);
+  explicit RenderTargetAllocator(std::shared_ptr<Allocator> allocator);
 
   virtual ~RenderTargetAllocator() = default;
 
@@ -197,7 +197,7 @@ class RenderTargetAllocator {
   virtual void End();
 
  private:
-  std::shared_ptr<AllocatorVK> allocator_;
+  std::shared_ptr<Allocator> allocator_;
 };
 
 }  // namespace ogre
