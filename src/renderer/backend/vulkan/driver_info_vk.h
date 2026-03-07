@@ -192,15 +192,15 @@ MaliGPU GetMaliVersion(std::string_view version);
 ///             and try to get a reviewer buddy to convince you to avoid using
 ///             this.
 ///
-class DriverInfoVK {
+class DriverInfo {
  public:
-  explicit DriverInfoVK(const vk::PhysicalDevice& device);
+  explicit DriverInfo(const vk::PhysicalDevice& device);
 
-  ~DriverInfoVK();
+  ~DriverInfo();
 
-  DriverInfoVK(const DriverInfoVK&) = delete;
+  DriverInfo(const DriverInfo&) = delete;
 
-  DriverInfoVK& operator=(const DriverInfoVK&) = delete;
+  DriverInfo& operator=(const DriverInfo&) = delete;
 
   //----------------------------------------------------------------------------
   /// @brief      Gets the Vulkan API version. Should be at or above Vulkan 1.1

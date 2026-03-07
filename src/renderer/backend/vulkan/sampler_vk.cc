@@ -14,7 +14,7 @@ namespace ogre {
 static vk::UniqueSampler CreateSampler(
     const vk::Device& device,
     const SamplerDescriptor& desc,
-    const std::shared_ptr<YUVConversionVK>& yuv_conversion) {
+    const std::shared_ptr<YUVConversion>& yuv_conversion) {
   const auto min_filter = ToVKSamplerMinMagFilter(desc.min_filter);
   const auto mag_filter = ToVKSamplerMinMagFilter(desc.mag_filter);
 
@@ -100,7 +100,7 @@ static vk::UniqueSampler CreateSampler(
 
 Sampler::Sampler(const vk::Device& device,
                  const SamplerDescriptor& desc,
-                 std::shared_ptr<YUVConversionVK> yuv_conversion)
+                 std::shared_ptr<YUVConversion> yuv_conversion)
     : device_(device),
       desc_(desc),
       sampler_(MakeSharedVK<vk::Sampler>(
@@ -120,14 +120,14 @@ vk::Sampler Sampler::GetSampler() const {
 }
 
 std::shared_ptr<Sampler> Sampler::CreateVariantForConversion(
-    std::shared_ptr<YUVConversionVK> conversion) const {
+    std::shared_ptr<YUVConversion> conversion) const {
   if (!conversion || !is_valid_) {
     return nullptr;
   }
   return std::make_shared<Sampler>(device_, desc_, std::move(conversion));
 }
 
-const std::shared_ptr<YUVConversionVK>& Sampler::GetYUVConversion() const {
+const std::shared_ptr<YUVConversion>& Sampler::GetYUVConversion() const {
   return yuv_conversion_;
 }
 

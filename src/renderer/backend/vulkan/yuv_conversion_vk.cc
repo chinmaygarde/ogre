@@ -12,8 +12,8 @@
 
 namespace ogre {
 
-YUVConversionVK::YUVConversionVK(const vk::Device& device,
-                                 const YUVConversionDescriptor& chain)
+YUVConversion::YUVConversion(const vk::Device& device,
+                             const YUVConversionDescriptor& chain)
     : chain_(chain) {
   auto conversion = device.createSamplerYcbcrConversionUnique(chain_.get());
   if (conversion.result != vk::Result::eSuccess) {
@@ -24,18 +24,18 @@ YUVConversionVK::YUVConversionVK(const vk::Device& device,
   conversion_ = std::move(conversion.value);
 }
 
-YUVConversionVK::~YUVConversionVK() = default;
+YUVConversion::~YUVConversion() = default;
 
-bool YUVConversionVK::IsValid() const {
+bool YUVConversion::IsValid() const {
   return conversion_ && !!conversion_.get();
 }
 
-vk::SamplerYcbcrConversion YUVConversionVK::GetConversion() const {
+vk::SamplerYcbcrConversion YUVConversion::GetConversion() const {
   return conversion_ ? conversion_.get()
                      : static_cast<vk::SamplerYcbcrConversion>(VK_NULL_HANDLE);
 }
 
-const YUVConversionDescriptor& YUVConversionVK::GetDescriptor() const {
+const YUVConversionDescriptor& YUVConversion::GetDescriptor() const {
   return chain_;
 }
 

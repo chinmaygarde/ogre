@@ -48,13 +48,13 @@ class YUVConversionLibrary;
 ///             the top-level context. They may not create their own (the
 ///             constructor is private).
 ///
-class YUVConversionVK final {
+class YUVConversion final {
  public:
-  ~YUVConversionVK();
+  ~YUVConversion();
 
-  YUVConversionVK(const YUVConversionVK&) = delete;
+  YUVConversion(const YUVConversion&) = delete;
 
-  YUVConversionVK& operator=(const YUVConversionVK&) = delete;
+  YUVConversion& operator=(const YUVConversion&) = delete;
 
   //----------------------------------------------------------------------------
   /// @return     `true` if this conversion is valid for use with images and
@@ -78,8 +78,7 @@ class YUVConversionVK final {
   YUVConversionDescriptor chain_;
   vk::UniqueSamplerYcbcrConversion conversion_;
 
-  YUVConversionVK(const vk::Device& device,
-                  const YUVConversionDescriptor& chain);
+  YUVConversion(const vk::Device& device, const YUVConversionDescriptor& chain);
 };
 
 struct YUVConversionDescriptorHash {

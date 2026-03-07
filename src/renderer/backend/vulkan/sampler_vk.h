@@ -12,13 +12,13 @@
 namespace ogre {
 
 class SamplerLibrary;
-class YUVConversionVK;
+class YUVConversion;
 
 class Sampler final {
  public:
   Sampler(const vk::Device& device,
           const SamplerDescriptor&,
-          std::shared_ptr<YUVConversionVK> yuv_conversion = {});
+          std::shared_ptr<YUVConversion> yuv_conversion = {});
 
   ~Sampler();
 
@@ -27,9 +27,9 @@ class Sampler final {
   vk::Sampler GetSampler() const;
 
   std::shared_ptr<Sampler> CreateVariantForConversion(
-      std::shared_ptr<YUVConversionVK> conversion) const;
+      std::shared_ptr<YUVConversion> conversion) const;
 
-  const std::shared_ptr<YUVConversionVK>& GetYUVConversion() const;
+  const std::shared_ptr<YUVConversion>& GetYUVConversion() const;
 
  private:
   friend SamplerLibrary;
@@ -37,7 +37,7 @@ class Sampler final {
   const vk::Device device_;
   SamplerDescriptor desc_;
   SharedHandleVK<vk::Sampler> sampler_;
-  std::shared_ptr<YUVConversionVK> yuv_conversion_;
+  std::shared_ptr<YUVConversion> yuv_conversion_;
   bool mips_disabled_workaround_ = false;
   bool is_valid_ = false;
 

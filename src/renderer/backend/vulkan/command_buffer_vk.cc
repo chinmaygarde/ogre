@@ -22,7 +22,7 @@
 namespace ogre {
 
 CommandBuffer::CommandBuffer(std::weak_ptr<const ContextVK> context,
-                             std::weak_ptr<const DeviceHolderVK> device_holder,
+                             std::weak_ptr<const DeviceHolder> device_holder,
                              std::shared_ptr<TrackedObjects> tracked_objects)
     : context_(std::move(context)),
       device_holder_(std::move(device_holder)),

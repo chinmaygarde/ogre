@@ -18,14 +18,14 @@
 namespace ogre {
 
 PipelineLibrary::PipelineLibrary(
-    const std::shared_ptr<DeviceHolderVK>& device_holder,
+    const std::shared_ptr<DeviceHolder>& device_holder,
     std::shared_ptr<const Capabilities> caps,
     fml::UniqueFD cache_directory,
     std::shared_ptr<fml::ConcurrentTaskRunner> worker_task_runner)
     : device_holder_(device_holder),
-      pso_cache_(std::make_shared<PipelineCacheVK>(std::move(caps),
-                                                   device_holder,
-                                                   std::move(cache_directory))),
+      pso_cache_(std::make_shared<PipelineCache>(std::move(caps),
+                                                 device_holder,
+                                                 std::move(cache_directory))),
       worker_task_runner_(std::move(worker_task_runner)),
       compile_queue_(PipelineCompileQueue::Create(worker_task_runner_)) {
   FML_DCHECK(worker_task_runner_);
@@ -58,7 +58,7 @@ std::unique_ptr<ComputePipeline> PipelineLibrary::CreateComputePipeline(
     return nullptr;
   }
 
-  std::shared_ptr<DeviceHolderVK> strong_device = device_holder_.lock();
+  std::shared_ptr<DeviceHolder> strong_device = device_holder_.lock();
   if (!strong_device) {
     return nullptr;
   }
@@ -292,7 +292,7 @@ void PipelineLibrary::PersistPipelineCacheToDisk() {
       });
 }
 
-const std::shared_ptr<PipelineCacheVK>& PipelineLibrary::GetPSOCache() const {
+const std::shared_ptr<PipelineCache>& PipelineLibrary::GetPSOCache() const {
   return pso_cache_;
 }
 

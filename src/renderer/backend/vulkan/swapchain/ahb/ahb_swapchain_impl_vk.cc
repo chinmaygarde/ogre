@@ -63,18 +63,18 @@ bool AHBFrameSynchronizer::WaitForFence(const vk::Device& device) {
   return true;
 }
 
-std::shared_ptr<AHBSwapchainImplVK> AHBSwapchainImplVK::Create(
+std::shared_ptr<AHBSwapchainImpl> AHBSwapchainImpl::Create(
     const std::weak_ptr<Context>& context,
     std::weak_ptr<android::SurfaceControl> surface_control,
     const CreateTransactionCB& cb,
     const ISize& size,
     bool enable_msaa) {
-  auto impl = std::shared_ptr<AHBSwapchainImplVK>(new AHBSwapchainImplVK(
+  auto impl = std::shared_ptr<AHBSwapchainImpl>(new AHBSwapchainImpl(
       context, std::move(surface_control), cb, size, enable_msaa));
   return impl->IsValid() ? impl : nullptr;
 }
 
-AHBSwapchainImplVK::AHBSwapchainImplVK(
+AHBSwapchainImpl::AHBSwapchainImpl(
     const std::weak_ptr<Context>& context,
     std::weak_ptr<android::SurfaceControl> surface_control,
     const CreateTransactionCB& cb,
@@ -102,22 +102,22 @@ AHBSwapchainImplVK::AHBSwapchainImplVK(
   is_valid_ = control && control->IsValid();
 }
 
-AHBSwapchainImplVK::~AHBSwapchainImplVK() = default;
+AHBSwapchainImpl::~AHBSwapchainImpl() = default;
 
-const ISize& AHBSwapchainImplVK::GetSize() const {
+const ISize& AHBSwapchainImpl::GetSize() const {
   return desc_.size;
 }
 
-bool AHBSwapchainImplVK::IsValid() const {
+bool AHBSwapchainImpl::IsValid() const {
   return is_valid_;
 }
 
-const android::HardwareBufferDescriptor& AHBSwapchainImplVK::GetDescriptor()
+const android::HardwareBufferDescriptor& AHBSwapchainImpl::GetDescriptor()
     const {
   return desc_;
 }
 
-std::unique_ptr<Surface> AHBSwapchainImplVK::AcquireNextDrawable() {
+std::unique_ptr<Surface> AHBSwapchainImpl::AcquireNextDrawable() {
   auto context = transients_->GetContext().lock();
   if (!context) {
     return nullptr;
@@ -172,7 +172,7 @@ std::unique_ptr<Surface> AHBSwapchainImplVK::AcquireNextDrawable() {
   return surface;
 }
 
-bool AHBSwapchainImplVK::Present(
+bool AHBSwapchainImpl::Present(
     const std::shared_ptr<AHBTextureSource>& texture) {
   auto control = surface_control_.lock();
   if (!control || !control->IsValid()) {
@@ -219,13 +219,13 @@ bool AHBSwapchainImplVK::Present(
       });
 }
 
-void AHBSwapchainImplVK::AddFinalCommandBuffer(
+void AHBSwapchainImpl::AddFinalCommandBuffer(
     std::shared_ptr<CommandBuffer> cmd_buffer) {
   frame_data_[frame_index_]->final_cmd_buffer = std::move(cmd_buffer);
 }
 
 std::shared_ptr<ExternalSemaphore>
-AHBSwapchainImplVK::SubmitSignalForPresentReady(
+AHBSwapchainImpl::SubmitSignalForPresentReady(
     const std::shared_ptr<AHBTextureSource>& texture) const {
   auto context = transients_->GetContext().lock();
   if (!context) {
@@ -268,7 +268,7 @@ AHBSwapchainImplVK::SubmitSignalForPresentReady(
   return present_ready;
 }
 
-vk::UniqueSemaphore AHBSwapchainImplVK::CreateRenderReadySemaphore(
+vk::UniqueSemaphore AHBSwapchainImpl::CreateRenderReadySemaphore(
     const std::shared_ptr<fml::UniqueFD>& fd) const {
   if (!fd->is_valid()) {
     return {};
@@ -313,7 +313,7 @@ vk::UniqueSemaphore AHBSwapchainImplVK::CreateRenderReadySemaphore(
   return std::move(signal_wait.value);
 }
 
-bool AHBSwapchainImplVK::ImportRenderReady(
+bool AHBSwapchainImpl::ImportRenderReady(
     const std::shared_ptr<fml::UniqueFD>& render_ready_fence,
     const std::shared_ptr<AHBTextureSource>& texture) {
   auto context = transients_->GetContext().lock();
@@ -338,7 +338,7 @@ bool AHBSwapchainImplVK::ImportRenderReady(
   return true;
 }
 
-void AHBSwapchainImplVK::OnTextureUpdatedOnSurfaceControl(
+void AHBSwapchainImpl::OnTextureUpdatedOnSurfaceControl(
     std::shared_ptr<AHBTextureSource> texture,
     ASurfaceTransactionStats* stats) {
   auto control = surface_control_.lock();

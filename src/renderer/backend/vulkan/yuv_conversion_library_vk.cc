@@ -10,12 +10,12 @@
 namespace ogre {
 
 YUVConversionLibrary::YUVConversionLibrary(
-    std::weak_ptr<DeviceHolderVK> device_holder)
+    std::weak_ptr<DeviceHolder> device_holder)
     : device_holder_(std::move(device_holder)) {}
 
 YUVConversionLibrary::~YUVConversionLibrary() = default;
 
-std::shared_ptr<YUVConversionVK> YUVConversionLibrary::GetConversion(
+std::shared_ptr<YUVConversion> YUVConversionLibrary::GetConversion(
     const YUVConversionDescriptor& desc) {
   Lock lock(conversions_mutex_);
   auto found = conversions_.find(desc);
@@ -27,8 +27,8 @@ std::shared_ptr<YUVConversionVK> YUVConversionLibrary::GetConversion(
     VALIDATION_LOG << "Context loss during creation of YUV conversion.";
     return nullptr;
   }
-  return (conversions_[desc] = std::shared_ptr<YUVConversionVK>(
-              new YUVConversionVK(device_holder->GetDevice(), desc)));
+  return (conversions_[desc] = std::shared_ptr<YUVConversion>(
+              new YUVConversion(device_holder->GetDevice(), desc)));
 }
 
 }  // namespace ogre

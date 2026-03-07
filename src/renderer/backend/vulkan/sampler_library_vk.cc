@@ -9,8 +9,7 @@
 
 namespace ogre {
 
-SamplerLibrary::SamplerLibrary(
-    const std::weak_ptr<DeviceHolderVK>& device_holder)
+SamplerLibrary::SamplerLibrary(const std::weak_ptr<DeviceHolder>& device_holder)
     : device_holder_(device_holder) {}
 
 SamplerLibrary::~SamplerLibrary() = default;

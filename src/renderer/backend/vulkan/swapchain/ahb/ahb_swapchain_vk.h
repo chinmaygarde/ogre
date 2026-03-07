@@ -60,7 +60,7 @@ class AHBSwapchain final : public Swapchain {
   std::shared_ptr<android::SurfaceControl> surface_control_;
   const bool enable_msaa_;
   CreateTransactionCB cb_;
-  std::shared_ptr<AHBSwapchainImplVK> impl_;
+  std::shared_ptr<AHBSwapchainImpl> impl_;
 
   explicit AHBSwapchain(const std::shared_ptr<Context>& context,
                         ANativeWindow* window,

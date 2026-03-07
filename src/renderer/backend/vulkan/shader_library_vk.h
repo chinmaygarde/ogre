@@ -40,14 +40,14 @@ class ShaderLibrary final : public std::enable_shared_from_this<ShaderLibrary> {
 
  private:
   friend class ContextVK;
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   const UniqueID library_id_;
   mutable RWMutex functions_mutex_;
   ShaderFunctionMap functions_ IPLR_GUARDED_BY(functions_mutex_);
   bool is_valid_ = false;
 
   ShaderLibrary(
-      std::weak_ptr<DeviceHolderVK> device_holder,
+      std::weak_ptr<DeviceHolder> device_holder,
       const std::vector<std::shared_ptr<fml::Mapping>>& shader_libraries_data);
 
   bool RegisterFunction(const std::string& name,

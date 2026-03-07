@@ -33,14 +33,14 @@ class FenceWaiter {
  private:
   friend class ContextVK;
 
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   std::unique_ptr<std::thread> waiter_thread_;
   std::mutex wait_set_mutex_;
   std::condition_variable wait_set_cv_;
   WaitSet wait_set_;
   bool terminate_ = false;
 
-  explicit FenceWaiter(std::weak_ptr<DeviceHolderVK> device_holder);
+  explicit FenceWaiter(std::weak_ptr<DeviceHolder> device_holder);
 
   void Main();
 

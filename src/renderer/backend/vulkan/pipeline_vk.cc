@@ -173,7 +173,7 @@ static vk::UniqueRenderPass CreateCompatRenderPassForPipeline(
 namespace {
 fml::StatusOr<vk::UniqueDescriptorSetLayout> MakeDescriptorSetLayout(
     const PipelineDescriptor& desc,
-    const std::shared_ptr<DeviceHolderVK>& device_holder,
+    const std::shared_ptr<DeviceHolder>& device_holder,
     const std::shared_ptr<Sampler>& immutable_sampler) {
   std::vector<vk::DescriptorSetLayoutBinding> set_bindings;
 
@@ -223,7 +223,7 @@ fml::StatusOr<vk::UniqueDescriptorSetLayout> MakeDescriptorSetLayout(
 
 fml::StatusOr<vk::UniquePipelineLayout> MakePipelineLayout(
     const PipelineDescriptor& desc,
-    const std::shared_ptr<DeviceHolderVK>& device_holder,
+    const std::shared_ptr<DeviceHolder>& device_holder,
     const vk::DescriptorSetLayout& descs_layout) {
   vk::PipelineLayoutCreateInfo pipeline_layout_info;
   pipeline_layout_info.setSetLayouts(descs_layout);
@@ -247,8 +247,8 @@ fml::StatusOr<vk::UniquePipelineLayout> MakePipelineLayout(
 
 fml::StatusOr<vk::UniquePipeline> MakePipeline(
     const PipelineDescriptor& desc,
-    const std::shared_ptr<DeviceHolderVK>& device_holder,
-    const std::shared_ptr<PipelineCacheVK>& pso_cache,
+    const std::shared_ptr<DeviceHolder>& device_holder,
+    const std::shared_ptr<PipelineCache>& pso_cache,
     const vk::PipelineLayout& pipeline_layout,
     const vk::RenderPass& render_pass) {
   vk::StructureChain<vk::GraphicsPipelineCreateInfo,
@@ -462,7 +462,7 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
 
 std::unique_ptr<PipelineVK> PipelineVK::Create(
     const PipelineDescriptor& desc,
-    const std::shared_ptr<DeviceHolderVK>& device_holder,
+    const std::shared_ptr<DeviceHolder>& device_holder,
     const std::weak_ptr<PipelineLibrary>& weak_library,
     PipelineKey pipeline_key,
     std::shared_ptr<Sampler> immutable_sampler) {
@@ -521,7 +521,7 @@ std::unique_ptr<PipelineVK> PipelineVK::Create(
   return pipeline_vk;
 }
 
-PipelineVK::PipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
+PipelineVK::PipelineVK(std::weak_ptr<DeviceHolder> device_holder,
                        std::weak_ptr<PipelineLibrary> library,
                        const PipelineDescriptor& desc,
                        vk::UniquePipeline pipeline,

@@ -465,13 +465,13 @@ void ContextVK::Setup(Settings settings) {
 
   // Apply workarounds for broken drivers.
   auto driver_info =
-      std::make_unique<DriverInfoVK>(device_holder->physical_device);
+      std::make_unique<DriverInfo>(device_holder->physical_device);
   workarounds_ = GetWorkaroundsFromDriverInfo(*driver_info);
   caps->ApplyWorkarounds(workarounds_);
   sampler_library->ApplyWorkarounds(workarounds_);
 
   device_holder_ = std::move(device_holder);
-  idle_waiter_vk_ = std::make_shared<IdleWaiterVK>(device_holder_);
+  idle_waiter_vk_ = std::make_shared<IdleWaiter>(device_holder_);
   driver_info_ = std::move(driver_info);
   debug_report_ = std::move(debug_report);
   allocator_ = std::move(allocator);
@@ -726,7 +726,7 @@ ContextVK::GetYUVConversionLibrary() const {
   return yuv_conversion_library_;
 }
 
-const std::unique_ptr<DriverInfoVK>& ContextVK::GetDriverInfo() const {
+const std::unique_ptr<DriverInfo>& ContextVK::GetDriverInfo() const {
   return driver_info_;
 }
 

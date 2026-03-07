@@ -12,17 +12,17 @@
 
 namespace ogre {
 
-class PipelineCacheVK {
+class PipelineCache {
  public:
   // The [device] is passed in directly so that it can be used in the
   // constructor directly. The [device_holder] isn't guaranteed to be valid
-  // at the time of executing `PipelineCacheVK` because of how `ContextVK` does
+  // at the time of executing `PipelineCache` because of how `ContextVK` does
   // initialization.
-  explicit PipelineCacheVK(std::shared_ptr<const Capabilities> caps,
-                           std::shared_ptr<DeviceHolderVK> device_holder,
-                           fml::UniqueFD cache_directory);
+  explicit PipelineCache(std::shared_ptr<const Capabilities> caps,
+                         std::shared_ptr<DeviceHolder> device_holder,
+                         fml::UniqueFD cache_directory);
 
-  ~PipelineCacheVK();
+  ~PipelineCache();
 
   bool IsValid() const;
 
@@ -36,15 +36,15 @@ class PipelineCacheVK {
 
  private:
   const std::shared_ptr<const Capabilities> caps_;
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   const fml::UniqueFD cache_directory_;
   vk::UniquePipelineCache cache_;
   bool is_valid_ = false;
   Mutex persist_mutex_;
 
-  PipelineCacheVK(const PipelineCacheVK&) = delete;
+  PipelineCache(const PipelineCache&) = delete;
 
-  PipelineCacheVK& operator=(const PipelineCacheVK&) = delete;
+  PipelineCache& operator=(const PipelineCache&) = delete;
 };
 
 }  // namespace ogre

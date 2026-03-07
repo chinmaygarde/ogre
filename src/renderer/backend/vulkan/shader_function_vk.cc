@@ -8,12 +8,11 @@
 
 namespace ogre {
 
-ShaderFunction::ShaderFunction(
-    const std::weak_ptr<DeviceHolderVK>& device_holder,
-    UniqueID parent_library_id,
-    std::string name,
-    ShaderStage stage,
-    vk::UniqueShaderModule module)
+ShaderFunction::ShaderFunction(const std::weak_ptr<DeviceHolder>& device_holder,
+                               UniqueID parent_library_id,
+                               std::string name,
+                               ShaderStage stage,
+                               vk::UniqueShaderModule module)
     : parent_library_id_(parent_library_id),
       name_(std::move(name)),
       stage_(stage),
@@ -21,7 +20,7 @@ ShaderFunction::ShaderFunction(
       device_holder_(device_holder) {}
 
 ShaderFunction::~ShaderFunction() {
-  std::shared_ptr<DeviceHolderVK> device_holder = device_holder_.lock();
+  std::shared_ptr<DeviceHolder> device_holder = device_holder_.lock();
   if (device_holder) {
     module_.reset();
   } else {

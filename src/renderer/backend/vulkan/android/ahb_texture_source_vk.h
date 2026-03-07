@@ -57,7 +57,7 @@ class AHBTextureSource final : public TextureSource {
   bool IsSwapchainImage() const override;
 
   // |TextureSource|
-  std::shared_ptr<YUVConversionVK> GetYUVConversion() const override;
+  std::shared_ptr<YUVConversion> GetYUVConversion() const override;
 
   const android::HardwareBuffer* GetBackingStore() const;
 
@@ -81,7 +81,7 @@ class AHBTextureSource final : public TextureSource {
   /// hardware buffer.
   static ImageViewInfo CreateImageViewInfo(
       const vk::Image& image,
-      const std::shared_ptr<YUVConversionVK>& yuv_conversion_wrapper,
+      const std::shared_ptr<YUVConversion>& yuv_conversion_wrapper,
       const AHBProperties& ahb_props,
       const AHardwareBuffer_Desc& ahb_desc);
 
@@ -90,7 +90,7 @@ class AHBTextureSource final : public TextureSource {
   vk::UniqueDeviceMemory device_memory_ = {};
   vk::UniqueImage image_ = {};
   vk::UniqueImageView image_view_ = {};
-  std::shared_ptr<YUVConversionVK> yuv_conversion_ = {};
+  std::shared_ptr<YUVConversion> yuv_conversion_ = {};
   bool needs_yuv_conversion_ = false;
   bool is_swapchain_image_ = false;
   bool is_valid_ = false;

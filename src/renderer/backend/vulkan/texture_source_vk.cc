@@ -14,7 +14,7 @@ const TextureDescriptor& TextureSource::GetTextureDescriptor() const {
   return desc_;
 }
 
-std::shared_ptr<YUVConversionVK> TextureSource::GetYUVConversion() const {
+std::shared_ptr<YUVConversion> TextureSource::GetYUVConversion() const {
   return nullptr;
 }
 

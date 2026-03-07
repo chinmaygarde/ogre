@@ -167,7 +167,7 @@ class ContextVK final : public Context,
     return true;
   }
 
-  std::shared_ptr<DeviceHolderVK> GetDeviceHolder() const {
+  std::shared_ptr<DeviceHolder> GetDeviceHolder() const {
     return device_holder_;
   }
 
@@ -175,7 +175,7 @@ class ContextVK final : public Context,
 
   const vk::Device& GetDevice() const;
 
-  const std::unique_ptr<DriverInfoVK>& GetDriverInfo() const;
+  const std::unique_ptr<DriverInfo>& GetDriverInfo() const;
 
   const std::shared_ptr<fml::ConcurrentTaskRunner>
   GetConcurrentWorkerTaskRunner() const;
@@ -217,12 +217,12 @@ class ContextVK final : public Context,
 
   RuntimeStageBackend GetRuntimeStageBackend() const override;
 
-  std::shared_ptr<const IdleWaiterVK> GetIdleWaiter() const override {
+  std::shared_ptr<const IdleWaiter> GetIdleWaiter() const override {
     return idle_waiter_vk_;
   }
 
  private:
-  struct DeviceHolderImpl : public DeviceHolderVK {
+  struct DeviceHolderImpl : public DeviceHolder {
     // |DeviceHolder|
     const vk::Device& GetDevice() const override { return device.get(); }
     // |DeviceHolder|
@@ -244,7 +244,7 @@ class ContextVK final : public Context,
   };
 
   std::shared_ptr<DeviceHolderImpl> device_holder_;
-  std::unique_ptr<DriverInfoVK> driver_info_;
+  std::unique_ptr<DriverInfo> driver_info_;
   std::unique_ptr<DebugReport> debug_report_;
   std::shared_ptr<Allocator> allocator_;
   std::shared_ptr<ShaderLibrary> shader_library_;
@@ -261,7 +261,7 @@ class ContextVK final : public Context,
   std::shared_ptr<fml::ConcurrentMessageLoop> raster_message_loop_;
   std::shared_ptr<GPUTracer> gpu_tracer_;
   std::shared_ptr<CommandQueue> command_queue_vk_;
-  std::shared_ptr<const IdleWaiterVK> idle_waiter_vk_;
+  std::shared_ptr<const IdleWaiter> idle_waiter_vk_;
   Workarounds workarounds_;
 
   using DescriptorPoolMap =

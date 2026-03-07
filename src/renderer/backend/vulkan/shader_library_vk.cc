@@ -14,7 +14,7 @@
 namespace ogre {
 
 ShaderLibrary::ShaderLibrary(
-    std::weak_ptr<DeviceHolderVK> device_holder,
+    std::weak_ptr<DeviceHolder> device_holder,
     const std::vector<std::shared_ptr<fml::Mapping>>& shader_libraries_data)
     : device_holder_(std::move(device_holder)) {
   TRACE_EVENT0("ogre", "CreateShaderLibrary");

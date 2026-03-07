@@ -15,9 +15,9 @@ namespace ogre {
 ///             and the various components on different threads may need to
 ///             orchestrate safe shutdown.
 ///
-class DeviceHolderVK {
+class DeviceHolder {
  public:
-  virtual ~DeviceHolderVK() = default;
+  virtual ~DeviceHolder() = default;
 
   virtual const vk::Device& GetDevice() const = 0;
 

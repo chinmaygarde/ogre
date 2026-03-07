@@ -111,11 +111,11 @@ class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
   friend class CommandQueue;
 
   std::weak_ptr<const ContextVK> context_;
-  std::weak_ptr<const DeviceHolderVK> device_holder_;
+  std::weak_ptr<const DeviceHolder> device_holder_;
   std::shared_ptr<TrackedObjects> tracked_objects_;
 
   CommandBuffer(std::weak_ptr<const ContextVK> context,
-                std::weak_ptr<const DeviceHolderVK> device_holder,
+                std::weak_ptr<const DeviceHolder> device_holder,
                 std::shared_ptr<TrackedObjects> tracked_objects);
 
   CommandBuffer(const CommandBuffer&) = delete;

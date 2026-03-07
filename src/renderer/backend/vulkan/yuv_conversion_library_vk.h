@@ -9,7 +9,7 @@
 
 namespace ogre {
 
-class DeviceHolderVK;
+class DeviceHolder;
 
 //------------------------------------------------------------------------------
 /// @brief      Due the way the Vulkan spec. treats "identically defined"
@@ -42,22 +42,22 @@ class YUVConversionLibrary {
   ///             present and a new one if not. A newly created conversion is
   ///             cached for subsequent accesses.
   ///
-  std::shared_ptr<YUVConversionVK> GetConversion(
+  std::shared_ptr<YUVConversion> GetConversion(
       const YUVConversionDescriptor& chain);
 
  private:
   friend class ContextVK;
 
   using ConversionsMap = std::unordered_map<YUVConversionDescriptor,
-                                            std::shared_ptr<YUVConversionVK>,
+                                            std::shared_ptr<YUVConversion>,
                                             YUVConversionDescriptorHash,
                                             YUVConversionDescriptorEqual>;
 
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   Mutex conversions_mutex_;
   ConversionsMap conversions_ IPLR_GUARDED_BY(conversions_mutex_);
 
-  explicit YUVConversionLibrary(std::weak_ptr<DeviceHolderVK> device_holder);
+  explicit YUVConversionLibrary(std::weak_ptr<DeviceHolder> device_holder);
 };
 
 }  // namespace ogre

@@ -49,8 +49,8 @@ struct AHBFrameSynchronizer {
 ///             that size to be discarded along with all its caches and
 ///             transients.
 ///
-class AHBSwapchainImplVK final
-    : public std::enable_shared_from_this<AHBSwapchainImplVK> {
+class AHBSwapchainImpl final
+    : public std::enable_shared_from_this<AHBSwapchainImpl> {
  public:
   //----------------------------------------------------------------------------
   /// @brief      Create a swapchain of a specific size whose images will be
@@ -70,18 +70,18 @@ class AHBSwapchainImplVK final
   /// @return     A valid swapchain impl if one can be created. `nullptr`
   ///             otherwise.
   ///
-  static std::shared_ptr<AHBSwapchainImplVK> Create(
+  static std::shared_ptr<AHBSwapchainImpl> Create(
       const std::weak_ptr<Context>& context,
       std::weak_ptr<android::SurfaceControl> surface_control,
       const CreateTransactionCB& cb,
       const ISize& size,
       bool enable_msaa);
 
-  ~AHBSwapchainImplVK();
+  ~AHBSwapchainImpl();
 
-  AHBSwapchainImplVK(const AHBSwapchainImplVK&) = delete;
+  AHBSwapchainImpl(const AHBSwapchainImpl&) = delete;
 
-  AHBSwapchainImplVK& operator=(const AHBSwapchainImplVK&) = delete;
+  AHBSwapchainImpl& operator=(const AHBSwapchainImpl&) = delete;
 
   //----------------------------------------------------------------------------
   /// @return     The size of the swapchain images that will be displayed on the
@@ -133,7 +133,7 @@ class AHBSwapchainImplVK final
   CreateTransactionCB cb_;
   bool is_valid_ = false;
 
-  explicit AHBSwapchainImplVK(
+  explicit AHBSwapchainImpl(
       const std::weak_ptr<Context>& context,
       std::weak_ptr<android::SurfaceControl> surface_control,
       const CreateTransactionCB& cb,

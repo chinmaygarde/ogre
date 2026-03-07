@@ -82,7 +82,7 @@ vk::UniqueDeviceMemory ImportVKDeviceMemoryFromAndroidHarwareBuffer(
   return std::move(device_memory.value);
 }
 
-std::shared_ptr<YUVConversionVK> CreateYUVConversion(
+std::shared_ptr<YUVConversion> CreateYUVConversion(
     const ContextVK& context,
     const AHBProperties& ahb_props) {
   YUVConversionDescriptor conversion_chain;
@@ -239,7 +239,7 @@ AHBTextureSource::AHBTextureSource(const std::shared_ptr<Context>& p_context,
   // Figure out how to perform YUV conversions.
   needs_yuv_conversion_ = ahb_format.format == vk::Format::eUndefined ||
                           RequiresYCBCRConversion(ahb_format.format);
-  std::shared_ptr<YUVConversionVK> yuv_conversion;
+  std::shared_ptr<YUVConversion> yuv_conversion;
   if (needs_yuv_conversion_) {
     yuv_conversion = CreateYUVConversion(context, ahb_props);
     if (!yuv_conversion || !yuv_conversion->IsValid()) {
@@ -317,7 +317,7 @@ bool AHBTextureSource::IsSwapchainImage() const {
 }
 
 // |TextureSource|
-std::shared_ptr<YUVConversionVK> AHBTextureSource::GetYUVConversion() const {
+std::shared_ptr<YUVConversion> AHBTextureSource::GetYUVConversion() const {
   return needs_yuv_conversion_ ? yuv_conversion_ : nullptr;
 }
 
@@ -400,7 +400,7 @@ vk::UniqueImage AHBTextureSource::CreateVKImageWrapperForAndroidHarwareBuffer(
 
 AHBTextureSource::ImageViewInfo AHBTextureSource::CreateImageViewInfo(
     const vk::Image& image,
-    const std::shared_ptr<YUVConversionVK>& yuv_conversion_wrapper,
+    const std::shared_ptr<YUVConversion>& yuv_conversion_wrapper,
     const AHBProperties& ahb_props,
     const AHardwareBuffer_Desc& ahb_desc) {
   const auto& ahb_format =

@@ -38,7 +38,7 @@ struct Workarounds {
   bool broken_mipmap_generation = false;
 };
 
-Workarounds GetWorkaroundsFromDriverInfo(DriverInfoVK& driver_info);
+Workarounds GetWorkaroundsFromDriverInfo(DriverInfo& driver_info);
 
 }  // namespace ogre
 

@@ -15,9 +15,9 @@
 
 namespace ogre {
 
-PipelineCacheVK::PipelineCacheVK(std::shared_ptr<const Capabilities> caps,
-                                 std::shared_ptr<DeviceHolderVK> device_holder,
-                                 fml::UniqueFD cache_directory)
+PipelineCache::PipelineCache(std::shared_ptr<const Capabilities> caps,
+                             std::shared_ptr<DeviceHolder> device_holder,
+                             fml::UniqueFD cache_directory)
     : caps_(std::move(caps)),
       device_holder_(device_holder),
       cache_directory_(std::move(cache_directory)) {
@@ -62,8 +62,8 @@ PipelineCacheVK::PipelineCacheVK(std::shared_ptr<const Capabilities> caps,
   is_valid_ = !!cache_;
 }
 
-PipelineCacheVK::~PipelineCacheVK() {
-  std::shared_ptr<DeviceHolderVK> device_holder = device_holder_.lock();
+PipelineCache::~PipelineCache() {
+  std::shared_ptr<DeviceHolder> device_holder = device_holder_.lock();
   if (device_holder) {
     cache_.reset();
   } else {
@@ -71,13 +71,13 @@ PipelineCacheVK::~PipelineCacheVK() {
   }
 }
 
-bool PipelineCacheVK::IsValid() const {
+bool PipelineCache::IsValid() const {
   return is_valid_;
 }
 
-vk::UniquePipeline PipelineCacheVK::CreatePipeline(
+vk::UniquePipeline PipelineCache::CreatePipeline(
     const vk::GraphicsPipelineCreateInfo& info) {
-  std::shared_ptr<DeviceHolderVK> strong_device = device_holder_.lock();
+  std::shared_ptr<DeviceHolder> strong_device = device_holder_.lock();
   if (!strong_device) {
     return {};
   }
@@ -91,9 +91,9 @@ vk::UniquePipeline PipelineCacheVK::CreatePipeline(
   return std::move(pipeline);
 }
 
-vk::UniquePipeline PipelineCacheVK::CreatePipeline(
+vk::UniquePipeline PipelineCache::CreatePipeline(
     const vk::ComputePipelineCreateInfo& info) {
-  std::shared_ptr<DeviceHolderVK> strong_device = device_holder_.lock();
+  std::shared_ptr<DeviceHolder> strong_device = device_holder_.lock();
   if (!strong_device) {
     return {};
   }
@@ -107,7 +107,7 @@ vk::UniquePipeline PipelineCacheVK::CreatePipeline(
   return std::move(pipeline);
 }
 
-void PipelineCacheVK::PersistCacheToDisk() {
+void PipelineCache::PersistCacheToDisk() {
   // PersistCacheToDisk is run on a worker thread pool.  Calls to
   // PipelineCacheDataPersist should be serialized so that multiple worker
   // threads do not concurrently write to the cache file.
@@ -122,7 +122,7 @@ void PipelineCacheVK::PersistCacheToDisk() {
   );
 }
 
-const Capabilities* PipelineCacheVK::GetCapabilities() const {
+const Capabilities* PipelineCache::GetCapabilities() const {
   return caps_.get();
 }
 

@@ -279,7 +279,7 @@ constexpr DeviceTypeVK ToDeviceType(const vk::PhysicalDeviceType& type) {
   return DeviceTypeVK::kUnknown;
 }
 
-DriverInfoVK::DriverInfoVK(const vk::PhysicalDevice& device) {
+DriverInfo::DriverInfo(const vk::PhysicalDevice& device) {
   auto props = device.getProperties();
   api_version_ = Version{VK_API_VERSION_MAJOR(props.apiVersion),
                          VK_API_VERSION_MINOR(props.apiVersion),
@@ -311,25 +311,25 @@ DriverInfoVK::DriverInfoVK(const vk::PhysicalDevice& device) {
   }
 }
 
-DriverInfoVK::~DriverInfoVK() = default;
+DriverInfo::~DriverInfo() = default;
 
-const Version& DriverInfoVK::GetAPIVersion() const {
+const Version& DriverInfo::GetAPIVersion() const {
   return api_version_;
 }
 
-const VendorVK& DriverInfoVK::GetVendor() const {
+const VendorVK& DriverInfo::GetVendor() const {
   return vendor_;
 }
 
-const DeviceTypeVK& DriverInfoVK::GetDeviceType() const {
+const DeviceTypeVK& DriverInfo::GetDeviceType() const {
   return type_;
 }
 
-const std::string& DriverInfoVK::GetDriverName() const {
+const std::string& DriverInfo::GetDriverName() const {
   return driver_name_;
 }
 
-void DriverInfoVK::DumpToLog() const {
+void DriverInfo::DumpToLog() const {
   std::vector<std::pair<std::string, std::string>> items;
   items.emplace_back("Name", driver_name_);
   items.emplace_back("API Version", api_version_.ToString());
@@ -364,7 +364,7 @@ void DriverInfoVK::DumpToLog() const {
   FML_LOG(IMPORTANT) << stream.str();
 }
 
-bool DriverInfoVK::IsEmulator() const {
+bool DriverInfo::IsEmulator() const {
 #if FML_OS_ANDROID
   // Google SwiftShader on Android.
   if (type_ == DeviceTypeVK::kCPU && vendor_ == VendorVK::kGoogle &&
@@ -375,7 +375,7 @@ bool DriverInfoVK::IsEmulator() const {
   return false;
 }
 
-bool DriverInfoVK::IsKnownBadDriver() const {
+bool DriverInfo::IsKnownBadDriver() const {
 #if FML_OS_ANDROID
   // Pixel 10 is identified by the PowerVR vendor and device ID 0x71061212.
   // The driver version 25.1 or greater is required - which is device specific
@@ -429,15 +429,15 @@ bool DriverInfoVK::IsKnownBadDriver() const {
   return false;
 }
 
-std::optional<MaliGPU> DriverInfoVK::GetMaliGPUInfo() const {
+std::optional<MaliGPU> DriverInfo::GetMaliGPUInfo() const {
   return mali_gpu_;
 }
 
-std::optional<AdrenoGPU> DriverInfoVK::GetAdrenoGPUInfo() const {
+std::optional<AdrenoGPU> DriverInfo::GetAdrenoGPUInfo() const {
   return adreno_gpu_;
 }
 
-std::optional<PowerVRGPU> DriverInfoVK::GetPowerVRGPUInfo() const {
+std::optional<PowerVRGPU> DriverInfo::GetPowerVRGPUInfo() const {
   return powervr_gpu_;
 }
 

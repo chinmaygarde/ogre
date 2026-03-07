@@ -30,7 +30,7 @@ class PipelineVK final
  public:
   static std::unique_ptr<PipelineVK> Create(
       const PipelineDescriptor& desc,
-      const std::shared_ptr<DeviceHolderVK>& device_holder,
+      const std::shared_ptr<DeviceHolder>& device_holder,
       const std::weak_ptr<PipelineLibrary>& weak_library,
       PipelineKey pipeline_key,
       std::shared_ptr<Sampler> immutable_sampler = {});
@@ -58,7 +58,7 @@ class PipelineVK final
                          ComparableHash<ImmutableSamplerKey>,
                          ComparableEqual<ImmutableSamplerKey>>;
 
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   vk::UniquePipeline pipeline_;
   vk::UniqueRenderPass render_pass_;
   vk::UniquePipelineLayout layout_;
@@ -70,7 +70,7 @@ class PipelineVK final
       IPLR_GUARDED_BY(immutable_sampler_variants_mutex_);
   bool is_valid_ = false;
 
-  PipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
+  PipelineVK(std::weak_ptr<DeviceHolder> device_holder,
              std::weak_ptr<PipelineLibrary> library,
              const PipelineDescriptor& desc,
              vk::UniquePipeline pipeline,

@@ -11,14 +11,13 @@
 
 namespace ogre {
 
-class IdleWaiterVK {
+class IdleWaiter {
  public:
-  explicit IdleWaiterVK(std::weak_ptr<DeviceHolderVK> device_holder)
+  explicit IdleWaiter(std::weak_ptr<DeviceHolder> device_holder)
       : device_holder_(std::move(device_holder)) {}
 
   void WaitIdle() const {
-    std::shared_ptr<DeviceHolderVK> strong_device_holder =
-        device_holder_.lock();
+    std::shared_ptr<DeviceHolder> strong_device_holder = device_holder_.lock();
     if (strong_device_holder && strong_device_holder->GetDevice()) {
       [[maybe_unused]] auto result =
           strong_device_holder->GetDevice().waitIdle();
@@ -26,7 +25,7 @@ class IdleWaiterVK {
   }
 
  private:
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
 };
 
 }  // namespace ogre

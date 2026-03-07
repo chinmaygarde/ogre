@@ -37,9 +37,9 @@ class ShaderFunction final : public Comparable<ShaderFunction> {
   std::string name_;
   ShaderStage stage_;
   vk::UniqueShaderModule module_;
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
 
-  ShaderFunction(const std::weak_ptr<DeviceHolderVK>& device_holder,
+  ShaderFunction(const std::weak_ptr<DeviceHolder>& device_holder,
                  UniqueID parent_library_id,
                  std::string name,
                  ShaderStage stage,

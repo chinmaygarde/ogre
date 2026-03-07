@@ -20,7 +20,7 @@ class ComputePipeline final
     : public Pipeline<ComputePipelineDescriptor>,
       public BackendCast<ComputePipeline, Pipeline<ComputePipelineDescriptor>> {
  public:
-  ComputePipeline(std::weak_ptr<DeviceHolderVK> device_holder,
+  ComputePipeline(std::weak_ptr<DeviceHolder> device_holder,
                   std::weak_ptr<PipelineLibrary> library,
                   const ComputePipelineDescriptor& desc,
                   vk::UniquePipeline pipeline,
@@ -44,7 +44,7 @@ class ComputePipeline final
  private:
   friend class PipelineLibrary;
 
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   vk::UniquePipeline pipeline_;
   vk::UniquePipelineLayout layout_;
   vk::UniqueDescriptorSetLayout descriptor_set_layout_;

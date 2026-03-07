@@ -66,11 +66,11 @@ void AHBSwapchain::UpdateSurfaceSize(const ISize& size) {
     return;
   }
   TRACE_EVENT0("ogre", __FUNCTION__);
-  auto impl = AHBSwapchainImplVK::Create(context_,          //
-                                         surface_control_,  //
-                                         cb_,               //
-                                         size,              //
-                                         enable_msaa_       //
+  auto impl = AHBSwapchainImpl::Create(context_,          //
+                                       surface_control_,  //
+                                       cb_,               //
+                                       size,              //
+                                       enable_msaa_       //
   );
   if (!impl || !impl->IsValid()) {
     VALIDATION_LOG << "Could not resize swapchain to size: " << size;

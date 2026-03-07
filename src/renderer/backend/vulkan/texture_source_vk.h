@@ -120,7 +120,7 @@ class TextureSource {
   ///
   /// @return     The sampler conversion.
   ///
-  virtual std::shared_ptr<YUVConversionVK> GetYUVConversion() const;
+  virtual std::shared_ptr<YUVConversion> GetYUVConversion() const;
 
   //----------------------------------------------------------------------------
   /// @brief      Determines if swapchain image. That is, an image used as the

@@ -7,7 +7,7 @@
 
 namespace ogre {
 
-Workarounds GetWorkaroundsFromDriverInfo(DriverInfoVK& driver_info) {
+Workarounds GetWorkaroundsFromDriverInfo(DriverInfo& driver_info) {
   Workarounds workarounds;
 
   const auto& adreno_gpu = driver_info.GetAdrenoGPUInfo();

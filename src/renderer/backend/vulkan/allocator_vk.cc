@@ -101,7 +101,7 @@ static PoolVMA CreateBufferPool(VmaAllocator allocator) {
 Allocator::Allocator(std::weak_ptr<Context> context,
                      uint32_t vulkan_api_version,
                      const vk::PhysicalDevice& physical_device,
-                     const std::shared_ptr<DeviceHolderVK>& device_holder,
+                     const std::shared_ptr<DeviceHolder>& device_holder,
                      const vk::Instance& instance,
                      const Capabilities& capabilities)
     : context_(std::move(context)), device_holder_(device_holder) {
@@ -485,7 +485,7 @@ class AllocatedTextureSource final : public TextureSource {
 
  private:
   struct ImageResource {
-    std::shared_ptr<DeviceHolderVK> device_holder;
+    std::shared_ptr<DeviceHolder> device_holder;
     std::shared_ptr<Allocator> allocator;
     UniqueImageVMA image;
     vk::UniqueImageView image_view;
@@ -497,7 +497,7 @@ class AllocatedTextureSource final : public TextureSource {
                   vk::UniqueImageView p_image_view,
                   vk::UniqueImageView p_rt_image_view,
                   std::shared_ptr<Allocator> allocator,
-                  std::shared_ptr<DeviceHolderVK> device_holder)
+                  std::shared_ptr<DeviceHolder> device_holder)
         : device_holder(std::move(device_holder)),
           allocator(std::move(allocator)),
           image(p_image),

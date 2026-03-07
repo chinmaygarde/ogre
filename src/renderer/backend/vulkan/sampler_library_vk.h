@@ -17,14 +17,14 @@ class SamplerLibrary final {
  public:
   ~SamplerLibrary();
 
-  explicit SamplerLibrary(const std::weak_ptr<DeviceHolderVK>& device_holder);
+  explicit SamplerLibrary(const std::weak_ptr<DeviceHolder>& device_holder);
 
   void ApplyWorkarounds(const Workarounds& workarounds);
 
  private:
   friend class ContextVK;
 
-  std::weak_ptr<DeviceHolderVK> device_holder_;
+  std::weak_ptr<DeviceHolder> device_holder_;
   std::vector<std::pair<uint64_t, std::shared_ptr<const Sampler>>> samplers_;
   bool mips_disabled_workaround_ = false;
 

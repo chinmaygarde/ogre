@@ -24,7 +24,7 @@ class CommandQueue;
 class PipelineLibrary;
 class SamplerLibrary;
 class ShaderLibrary;
-class IdleWaiterVK;
+class IdleWaiter;
 
 /// A wrapper for provided a deferred initialization of ogre to various
 /// engine subsystems.
@@ -245,7 +245,7 @@ class Context {
 
   virtual bool AddTrackingFence(const std::shared_ptr<Texture>& texture) const;
 
-  virtual std::shared_ptr<const IdleWaiterVK> GetIdleWaiter() const;
+  virtual std::shared_ptr<const IdleWaiter> GetIdleWaiter() const;
 
   //----------------------------------------------------------------------------
   /// Resets any thread local state that may interfere with embedders.

@@ -47,7 +47,7 @@ class PipelineLibrary final
 
   void DidAcquireSurfaceFrame();
 
-  const std::shared_ptr<PipelineCacheVK>& GetPSOCache() const;
+  const std::shared_ptr<PipelineCache>& GetPSOCache() const;
 
   const std::shared_ptr<fml::ConcurrentTaskRunner>& GetWorkerTaskRunner() const;
 
@@ -89,8 +89,8 @@ class PipelineLibrary final
  private:
   friend ContextVK;
 
-  std::weak_ptr<DeviceHolderVK> device_holder_;
-  std::shared_ptr<PipelineCacheVK> pso_cache_;
+  std::weak_ptr<DeviceHolder> device_holder_;
+  std::shared_ptr<PipelineCache> pso_cache_;
   std::shared_ptr<fml::ConcurrentTaskRunner> worker_task_runner_;
   Mutex pipelines_mutex_;
   PipelineMap pipelines_ IPLR_GUARDED_BY(pipelines_mutex_);
@@ -113,7 +113,7 @@ class PipelineLibrary final
 #endif
 
   PipelineLibrary(
-      const std::shared_ptr<DeviceHolderVK>& device_holder,
+      const std::shared_ptr<DeviceHolder>& device_holder,
       std::shared_ptr<const Capabilities> caps,
       fml::UniqueFD cache_directory,
       std::shared_ptr<fml::ConcurrentTaskRunner> worker_task_runner);
