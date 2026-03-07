@@ -46,8 +46,8 @@ class TextureVK final : public Texture, public BackendCast<TextureVK, Texture> {
 
   bool IsSwapchainImage() const;
 
-  std::shared_ptr<SamplerVK> GetImmutableSamplerVariant(
-      const SamplerVK& sampler) const;
+  std::shared_ptr<Sampler> GetImmutableSamplerVariant(
+      const Sampler& sampler) const;
 
   /// Store the last framebuffer and render pass object used with this texture.
   ///

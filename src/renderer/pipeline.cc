@@ -15,7 +15,7 @@
 namespace ogre {
 
 template <typename T>
-Pipeline<T>::Pipeline(std::weak_ptr<PipelineLibraryVK> library, const T& desc)
+Pipeline<T>::Pipeline(std::weak_ptr<PipelineLibrary> library, const T& desc)
     : library_(std::move(library)), desc_(std::move(desc)) {}
 
 template <typename T>

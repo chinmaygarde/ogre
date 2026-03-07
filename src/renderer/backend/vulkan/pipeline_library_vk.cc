@@ -17,7 +17,7 @@
 
 namespace ogre {
 
-PipelineLibraryVK::PipelineLibraryVK(
+PipelineLibrary::PipelineLibrary(
     const std::shared_ptr<DeviceHolderVK>& device_holder,
     std::shared_ptr<const Capabilities> caps,
     fml::UniqueFD cache_directory,
@@ -36,14 +36,14 @@ PipelineLibraryVK::PipelineLibraryVK(
   is_valid_ = true;
 }
 
-PipelineLibraryVK::~PipelineLibraryVK() = default;
+PipelineLibrary::~PipelineLibrary() = default;
 
 // |PipelineLibrary|
-bool PipelineLibraryVK::IsValid() const {
+bool PipelineLibrary::IsValid() const {
   return is_valid_;
 }
 
-std::unique_ptr<ComputePipelineVK> PipelineLibraryVK::CreateComputePipeline(
+std::unique_ptr<ComputePipeline> PipelineLibrary::CreateComputePipeline(
     const ComputePipelineDescriptor& desc,
     PipelineKey pipeline_key) {
   TRACE_EVENT0("flutter", __FUNCTION__);
@@ -140,18 +140,17 @@ std::unique_ptr<ComputePipelineVK> PipelineLibraryVK::CreateComputePipeline(
   ContextVK::SetDebugName(strong_device->GetDevice(), *pipeline,
                           "Pipeline " + desc.GetLabel());
 
-  return std::make_unique<ComputePipelineVK>(
-      device_holder_,
-      weak_from_this(),                  //
-      desc,                              //
-      std::move(pipeline),               //
-      std::move(pipeline_layout.value),  //
-      std::move(descs_layout),           //
-      pipeline_key);
+  return std::make_unique<ComputePipeline>(device_holder_,
+                                           weak_from_this(),                  //
+                                           desc,                              //
+                                           std::move(pipeline),               //
+                                           std::move(pipeline_layout.value),  //
+                                           std::move(descs_layout),           //
+                                           pipeline_key);
 }
 
 // |PipelineLibrary|
-PipelineFuture<PipelineDescriptor> PipelineLibraryVK::GetPipeline(
+PipelineFuture<PipelineDescriptor> PipelineLibrary::GetPipeline(
     PipelineDescriptor descriptor,
     bool async,
     bool threadsafe) {
@@ -201,7 +200,7 @@ PipelineFuture<PipelineDescriptor> PipelineLibraryVK::GetPipeline(
 }
 
 // |PipelineLibrary|
-PipelineFuture<ComputePipelineDescriptor> PipelineLibraryVK::GetPipeline(
+PipelineFuture<ComputePipelineDescriptor> PipelineLibrary::GetPipeline(
     ComputePipelineDescriptor descriptor,
     bool async) {
   Lock lock(pipelines_mutex_);
@@ -256,13 +255,13 @@ PipelineFuture<ComputePipelineDescriptor> PipelineLibraryVK::GetPipeline(
 }
 
 // |PipelineLibrary|
-bool PipelineLibraryVK::HasPipeline(const PipelineDescriptor& descriptor) {
+bool PipelineLibrary::HasPipeline(const PipelineDescriptor& descriptor) {
   Lock lock(pipelines_mutex_);
   return pipelines_.find(descriptor) != pipelines_.end();
 }
 
 // |PipelineLibrary|
-void PipelineLibraryVK::RemovePipelinesWithEntryPoint(
+void PipelineLibrary::RemovePipelinesWithEntryPoint(
     std::shared_ptr<const ShaderFunction> function) {
   Lock lock(pipelines_mutex_);
 
@@ -272,7 +271,7 @@ void PipelineLibraryVK::RemovePipelinesWithEntryPoint(
   });
 }
 
-void PipelineLibraryVK::DidAcquireSurfaceFrame() {
+void PipelineLibrary::DidAcquireSurfaceFrame() {
   if (++frames_acquired_ == 50u) {
     if (cache_dirty_) {
       cache_dirty_ = false;
@@ -282,7 +281,7 @@ void PipelineLibraryVK::DidAcquireSurfaceFrame() {
   }
 }
 
-void PipelineLibraryVK::PersistPipelineCacheToDisk() {
+void PipelineLibrary::PersistPipelineCacheToDisk() {
   worker_task_runner_->PostTask(
       [weak_cache = decltype(pso_cache_)::weak_type(pso_cache_)]() {
         auto cache = weak_cache.lock();
@@ -293,20 +292,20 @@ void PipelineLibraryVK::PersistPipelineCacheToDisk() {
       });
 }
 
-const std::shared_ptr<PipelineCacheVK>& PipelineLibraryVK::GetPSOCache() const {
+const std::shared_ptr<PipelineCacheVK>& PipelineLibrary::GetPSOCache() const {
   return pso_cache_;
 }
 
 const std::shared_ptr<fml::ConcurrentTaskRunner>&
-PipelineLibraryVK::GetWorkerTaskRunner() const {
+PipelineLibrary::GetWorkerTaskRunner() const {
   return worker_task_runner_;
 }
 
-PipelineCompileQueue* PipelineLibraryVK::GetPipelineCompileQueue() const {
+PipelineCompileQueue* PipelineLibrary::GetPipelineCompileQueue() const {
   return compile_queue_.get();
 }
 
-PipelineFuture<PipelineDescriptor> PipelineLibraryVK::GetPipeline(
+PipelineFuture<PipelineDescriptor> PipelineLibrary::GetPipeline(
     std::optional<PipelineDescriptor> descriptor,
     bool async) {
   if (descriptor.has_value()) {
@@ -318,7 +317,7 @@ PipelineFuture<PipelineDescriptor> PipelineLibraryVK::GetPipeline(
   return {descriptor, promise->get_future()};
 }
 
-PipelineFuture<ComputePipelineDescriptor> PipelineLibraryVK::GetPipeline(
+PipelineFuture<ComputePipelineDescriptor> PipelineLibrary::GetPipeline(
     std::optional<ComputePipelineDescriptor> descriptor,
     bool async) {
   if (descriptor.has_value()) {
@@ -330,7 +329,7 @@ PipelineFuture<ComputePipelineDescriptor> PipelineLibraryVK::GetPipeline(
   return {descriptor, promise->get_future()};
 }
 
-void PipelineLibraryVK::LogPipelineCreation(const PipelineDescriptor& p) {
+void PipelineLibrary::LogPipelineCreation(const PipelineDescriptor& p) {
 #if FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_DEBUG || \
     FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_PROFILE
   WriterLock lock(pipeline_use_counts_mutex_);
@@ -340,7 +339,7 @@ void PipelineLibraryVK::LogPipelineCreation(const PipelineDescriptor& p) {
 #endif
 }
 
-void PipelineLibraryVK::LogPipelineUsage(const PipelineDescriptor& p) {
+void PipelineLibrary::LogPipelineUsage(const PipelineDescriptor& p) {
 #if FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_DEBUG || \
     FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_PROFILE
   WriterLock lock(pipeline_use_counts_mutex_);
@@ -352,7 +351,7 @@ std::unordered_map<PipelineDescriptor,
                    int,
                    ComparableHash<PipelineDescriptor>,
                    ComparableEqual<PipelineDescriptor>>
-PipelineLibraryVK::GetPipelineUseCounts() const {
+PipelineLibrary::GetPipelineUseCounts() const {
   std::unordered_map<PipelineDescriptor, int,
                      ComparableHash<PipelineDescriptor>,
                      ComparableEqual<PipelineDescriptor>>

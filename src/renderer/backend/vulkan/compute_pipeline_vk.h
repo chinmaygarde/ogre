@@ -14,23 +14,22 @@
 
 namespace ogre {
 
-class PipelineLibraryVK;
+class PipelineLibrary;
 
-class ComputePipelineVK final
+class ComputePipeline final
     : public Pipeline<ComputePipelineDescriptor>,
-      public BackendCast<ComputePipelineVK,
-                         Pipeline<ComputePipelineDescriptor>> {
+      public BackendCast<ComputePipeline, Pipeline<ComputePipelineDescriptor>> {
  public:
-  ComputePipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
-                    std::weak_ptr<PipelineLibraryVK> library,
-                    const ComputePipelineDescriptor& desc,
-                    vk::UniquePipeline pipeline,
-                    vk::UniquePipelineLayout layout,
-                    vk::UniqueDescriptorSetLayout descriptor_set_layout,
-                    PipelineKey pipeline_key);
+  ComputePipeline(std::weak_ptr<DeviceHolderVK> device_holder,
+                  std::weak_ptr<PipelineLibrary> library,
+                  const ComputePipelineDescriptor& desc,
+                  vk::UniquePipeline pipeline,
+                  vk::UniquePipelineLayout layout,
+                  vk::UniqueDescriptorSetLayout descriptor_set_layout,
+                  PipelineKey pipeline_key);
 
   // |Pipeline|
-  ~ComputePipelineVK() override;
+  ~ComputePipeline() override;
 
   const vk::Pipeline& GetPipeline() const;
 
@@ -43,7 +42,7 @@ class ComputePipelineVK final
   PipelineKey GetPipelineKey() const;
 
  private:
-  friend class PipelineLibraryVK;
+  friend class PipelineLibrary;
 
   std::weak_ptr<DeviceHolderVK> device_holder_;
   vk::UniquePipeline pipeline_;
@@ -55,9 +54,9 @@ class ComputePipelineVK final
   // |Pipeline|
   bool IsValid() const override;
 
-  ComputePipelineVK(const ComputePipelineVK&) = delete;
+  ComputePipeline(const ComputePipeline&) = delete;
 
-  ComputePipelineVK& operator=(const ComputePipelineVK&) = delete;
+  ComputePipeline& operator=(const ComputePipeline&) = delete;
 };
 
 }  // namespace ogre

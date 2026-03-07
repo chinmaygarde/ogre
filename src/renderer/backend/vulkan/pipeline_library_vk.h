@@ -40,10 +40,10 @@ using ComputePipelineMap =
                        ComparableHash<ComputePipelineDescriptor>,
                        ComparableEqual<ComputePipelineDescriptor>>;
 
-class PipelineLibraryVK final
-    : public std::enable_shared_from_this<PipelineLibraryVK> {
+class PipelineLibrary final
+    : public std::enable_shared_from_this<PipelineLibrary> {
  public:
-  ~PipelineLibraryVK();
+  ~PipelineLibrary();
 
   void DidAcquireSurfaceFrame();
 
@@ -112,21 +112,21 @@ class PipelineLibraryVK final
       pipeline_use_counts_ IPLR_GUARDED_BY(pipeline_use_counts_mutex_);
 #endif
 
-  PipelineLibraryVK(
+  PipelineLibrary(
       const std::shared_ptr<DeviceHolderVK>& device_holder,
       std::shared_ptr<const Capabilities> caps,
       fml::UniqueFD cache_directory,
       std::shared_ptr<fml::ConcurrentTaskRunner> worker_task_runner);
 
-  std::unique_ptr<ComputePipelineVK> CreateComputePipeline(
+  std::unique_ptr<ComputePipeline> CreateComputePipeline(
       const ComputePipelineDescriptor& desc,
       PipelineKey pipeline_key);
 
   void PersistPipelineCacheToDisk();
 
-  PipelineLibraryVK(const PipelineLibraryVK&) = delete;
+  PipelineLibrary(const PipelineLibrary&) = delete;
 
-  PipelineLibraryVK& operator=(const PipelineLibraryVK&) = delete;
+  PipelineLibrary& operator=(const PipelineLibrary&) = delete;
 };
 
 }  // namespace ogre

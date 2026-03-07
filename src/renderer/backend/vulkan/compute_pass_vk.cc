@@ -13,8 +13,8 @@
 
 namespace ogre {
 
-ComputePassVK::ComputePassVK(std::shared_ptr<const Context> context,
-                             std::shared_ptr<CommandBuffer> command_buffer)
+ComputePass::ComputePass(std::shared_ptr<const Context> context,
+                         std::shared_ptr<CommandBuffer> command_buffer)
     : context_(std::move(context)), command_buffer_(std::move(command_buffer)) {
   // TOOD(dnfield): This should be moved to caps. But for now keeping this
   // in parallel with Metal.
@@ -25,20 +25,20 @@ ComputePassVK::ComputePassVK(std::shared_ptr<const Context> context,
   is_valid_ = true;
 }
 
-ComputePassVK::~ComputePassVK() = default;
+ComputePass::~ComputePass() = default;
 
-bool ComputePassVK::IsValid() const {
+bool ComputePass::IsValid() const {
   return is_valid_;
 }
 
-void ComputePassVK::SetLabel(const std::string& label) {
+void ComputePass::SetLabel(const std::string& label) {
   if (label.empty()) {
     return;
   }
   OnSetLabel(label);
 }
 
-void ComputePassVK::OnSetLabel(const std::string& label) {
+void ComputePass::OnSetLabel(const std::string& label) {
   if (label.empty()) {
     return;
   }
@@ -46,7 +46,7 @@ void ComputePassVK::OnSetLabel(const std::string& label) {
 }
 
 // |RenderPass|
-void ComputePassVK::SetCommandLabel(std::string_view label) {
+void ComputePass::SetCommandLabel(std::string_view label) {
 #ifdef OGRE_DEBUG
   command_buffer_->PushDebugGroup(label);
   has_label_ = true;
@@ -54,9 +54,9 @@ void ComputePassVK::SetCommandLabel(std::string_view label) {
 }
 
 // |ComputePass|
-void ComputePassVK::SetPipeline(
+void ComputePass::SetPipeline(
     const std::shared_ptr<Pipeline<ComputePipelineDescriptor>>& pipeline) {
-  const auto& pipeline_vk = ComputePipelineVK::Cast(*pipeline);
+  const auto& pipeline_vk = ComputePipeline::Cast(*pipeline);
   const vk::CommandBuffer& command_buffer_vk =
       command_buffer_->GetCommandBuffer();
   command_buffer_vk.bindPipeline(vk::PipelineBindPoint::eCompute,
@@ -74,7 +74,7 @@ void ComputePassVK::SetPipeline(
 }
 
 // |ComputePass|
-fml::Status ComputePassVK::Compute(const ISize& grid_size) {
+fml::Status ComputePass::Compute(const ISize& grid_size) {
   if (grid_size.IsEmpty() || !pipeline_valid_) {
     bound_image_offset_ = 0u;
     bound_buffer_offset_ = 0u;
@@ -138,21 +138,21 @@ fml::Status ComputePassVK::Compute(const ISize& grid_size) {
 }
 
 // |ResourceBinder|
-bool ComputePassVK::BindResource(ShaderStage stage,
-                                 DescriptorType type,
-                                 const ShaderUniformSlot& slot,
-                                 const ShaderMetadata* metadata,
-                                 BufferView view) {
+bool ComputePass::BindResource(ShaderStage stage,
+                               DescriptorType type,
+                               const ShaderUniformSlot& slot,
+                               const ShaderMetadata* metadata,
+                               BufferView view) {
   return BindResource(slot.binding, type, view);
 }
 
 // |ResourceBinder|
-bool ComputePassVK::BindResource(ShaderStage stage,
-                                 DescriptorType type,
-                                 const SampledImageSlot& slot,
-                                 const ShaderMetadata* metadata,
-                                 std::shared_ptr<const Texture> texture,
-                                 raw_ptr<const SamplerVK> sampler) {
+bool ComputePass::BindResource(ShaderStage stage,
+                               DescriptorType type,
+                               const SampledImageSlot& slot,
+                               const ShaderMetadata* metadata,
+                               std::shared_ptr<const Texture> texture,
+                               raw_ptr<const Sampler> sampler) {
   if (bound_image_offset_ >= kMaxBindings) {
     return false;
   }
@@ -160,7 +160,7 @@ bool ComputePassVK::BindResource(ShaderStage stage,
     return false;
   }
   const TextureVK& texture_vk = TextureVK::Cast(*texture);
-  const SamplerVK& sampler_vk = *sampler;
+  const Sampler& sampler_vk = *sampler;
 
   if (!command_buffer_->Track(texture)) {
     return false;
@@ -182,9 +182,9 @@ bool ComputePassVK::BindResource(ShaderStage stage,
   return true;
 }
 
-bool ComputePassVK::BindResource(size_t binding,
-                                 DescriptorType type,
-                                 BufferView view) {
+bool ComputePass::BindResource(size_t binding,
+                               DescriptorType type,
+                               BufferView view) {
   if (bound_buffer_offset_ >= kMaxBindings) {
     return false;
   }
@@ -224,7 +224,7 @@ bool ComputePassVK::BindResource(size_t binding,
 // mobile devices will require some experimentation.
 
 // |ComputePass|
-void ComputePassVK::AddBufferMemoryBarrier() {
+void ComputePass::AddBufferMemoryBarrier() {
   vk::MemoryBarrier barrier;
   barrier.srcAccessMask = vk::AccessFlagBits::eShaderWrite;
   barrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
@@ -235,7 +235,7 @@ void ComputePassVK::AddBufferMemoryBarrier() {
 }
 
 // |ComputePass|
-void ComputePassVK::AddTextureMemoryBarrier() {
+void ComputePass::AddTextureMemoryBarrier() {
   vk::MemoryBarrier barrier;
   barrier.srcAccessMask = vk::AccessFlagBits::eShaderWrite;
   barrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
@@ -246,7 +246,7 @@ void ComputePassVK::AddTextureMemoryBarrier() {
 }
 
 // |ComputePass|
-bool ComputePassVK::EncodeCommands() const {
+bool ComputePass::EncodeCommands() const {
   // Since we only use global memory barrier, we don't have to worry about
   // compute to compute dependencies across cmd buffers. Instead, we pessimize
   // here and assume that we wrote to a storage image or buffer and that a

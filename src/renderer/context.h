@@ -21,7 +21,7 @@ class Capabilities;
 class Context;
 class CommandBuffer;
 class CommandQueue;
-class PipelineLibraryVK;
+class PipelineLibrary;
 class SamplerLibrary;
 class ShaderLibrary;
 class IdleWaiterVK;
@@ -168,7 +168,7 @@ class Context {
   /// @return     The pipeline library. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const = 0;
+  virtual std::shared_ptr<PipelineLibrary> GetPipelineLibrary() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Create a new command buffer. Command buffers can be used to

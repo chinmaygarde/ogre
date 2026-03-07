@@ -48,17 +48,16 @@ void CommandBuffer::WaitUntilCompleted() {}
 
 void CommandBuffer::WaitUntilScheduled() {}
 
-std::shared_ptr<RenderPassVK> CommandBuffer::CreateRenderPass(
+std::shared_ptr<RenderPass> CommandBuffer::CreateRenderPass(
     const RenderTarget& render_target) {
   auto context = context_.lock();
   if (!context) {
     return nullptr;
   }
-  auto pass =
-      std::shared_ptr<RenderPassVK>(new RenderPassVK(context,            //
-                                                     render_target,      //
-                                                     shared_from_this()  //
-                                                     ));
+  auto pass = std::shared_ptr<RenderPass>(new RenderPass(context,            //
+                                                         render_target,      //
+                                                         shared_from_this()  //
+                                                         ));
   if (!pass->IsValid()) {
     return nullptr;
   }
@@ -83,7 +82,7 @@ std::shared_ptr<BlitPass> CommandBuffer::CreateBlitPass() {
   return pass;
 }
 
-std::shared_ptr<ComputePassVK> CommandBuffer::CreateComputePass() {
+std::shared_ptr<ComputePass> CommandBuffer::CreateComputePass() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -92,9 +91,9 @@ std::shared_ptr<ComputePassVK> CommandBuffer::CreateComputePass() {
     return nullptr;
   }
   auto pass =
-      std::shared_ptr<ComputePassVK>(new ComputePassVK(context,            //
-                                                       shared_from_this()  //
-                                                       ));
+      std::shared_ptr<ComputePass>(new ComputePass(context,            //
+                                                   shared_from_this()  //
+                                                   ));
   if (!pass->IsValid()) {
     return nullptr;
   }
@@ -123,7 +122,7 @@ vk::CommandBuffer CommandBuffer::GetCommandBuffer() const {
   return {};
 }
 
-bool CommandBuffer::Track(const std::shared_ptr<SharedObjectVK>& object) {
+bool CommandBuffer::Track(const std::shared_ptr<SharedObject>& object) {
   if (!IsValid()) {
     return false;
   }

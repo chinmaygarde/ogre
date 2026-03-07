@@ -98,9 +98,9 @@ static vk::UniqueSampler CreateSampler(
   return std::move(sampler.value);
 }
 
-SamplerVK::SamplerVK(const vk::Device& device,
-                     const SamplerDescriptor& desc,
-                     std::shared_ptr<YUVConversionVK> yuv_conversion)
+Sampler::Sampler(const vk::Device& device,
+                 const SamplerDescriptor& desc,
+                 std::shared_ptr<YUVConversionVK> yuv_conversion)
     : device_(device),
       desc_(desc),
       sampler_(MakeSharedVK<vk::Sampler>(
@@ -109,25 +109,25 @@ SamplerVK::SamplerVK(const vk::Device& device,
   is_valid_ = sampler_ && !!sampler_->Get();
 }
 
-const SamplerDescriptor& SamplerVK::GetDescriptor() const {
+const SamplerDescriptor& Sampler::GetDescriptor() const {
   return desc_;
 }
 
-SamplerVK::~SamplerVK() = default;
+Sampler::~Sampler() = default;
 
-vk::Sampler SamplerVK::GetSampler() const {
+vk::Sampler Sampler::GetSampler() const {
   return *sampler_;
 }
 
-std::shared_ptr<SamplerVK> SamplerVK::CreateVariantForConversion(
+std::shared_ptr<Sampler> Sampler::CreateVariantForConversion(
     std::shared_ptr<YUVConversionVK> conversion) const {
   if (!conversion || !is_valid_) {
     return nullptr;
   }
-  return std::make_shared<SamplerVK>(device_, desc_, std::move(conversion));
+  return std::make_shared<Sampler>(device_, desc_, std::move(conversion));
 }
 
-const std::shared_ptr<YUVConversionVK>& SamplerVK::GetYUVConversion() const {
+const std::shared_ptr<YUVConversionVK>& Sampler::GetYUVConversion() const {
   return yuv_conversion_;
 }
 

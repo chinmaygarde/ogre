@@ -214,8 +214,8 @@ bool TextureVK::IsSwapchainImage() const {
   return source_->IsSwapchainImage();
 }
 
-std::shared_ptr<SamplerVK> TextureVK::GetImmutableSamplerVariant(
-    const SamplerVK& sampler) const {
+std::shared_ptr<Sampler> TextureVK::GetImmutableSamplerVariant(
+    const Sampler& sampler) const {
   if (!source_) {
     return nullptr;
   }

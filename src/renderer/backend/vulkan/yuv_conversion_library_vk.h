@@ -43,15 +43,15 @@ class YUVConversionLibrary {
   ///             cached for subsequent accesses.
   ///
   std::shared_ptr<YUVConversionVK> GetConversion(
-      const YUVConversionDescriptorVK& chain);
+      const YUVConversionDescriptor& chain);
 
  private:
   friend class ContextVK;
 
-  using ConversionsMap = std::unordered_map<YUVConversionDescriptorVK,
+  using ConversionsMap = std::unordered_map<YUVConversionDescriptor,
                                             std::shared_ptr<YUVConversionVK>,
-                                            YUVConversionDescriptorVKHash,
-                                            YUVConversionDescriptorVKEqual>;
+                                            YUVConversionDescriptorHash,
+                                            YUVConversionDescriptorEqual>;
 
   std::weak_ptr<DeviceHolderVK> device_holder_;
   Mutex conversions_mutex_;

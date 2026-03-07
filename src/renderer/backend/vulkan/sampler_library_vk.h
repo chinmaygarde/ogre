@@ -25,10 +25,10 @@ class SamplerLibrary final {
   friend class ContextVK;
 
   std::weak_ptr<DeviceHolderVK> device_holder_;
-  std::vector<std::pair<uint64_t, std::shared_ptr<const SamplerVK>>> samplers_;
+  std::vector<std::pair<uint64_t, std::shared_ptr<const Sampler>>> samplers_;
   bool mips_disabled_workaround_ = false;
 
-  raw_ptr<const SamplerVK> GetSampler(const SamplerDescriptor& descriptor);
+  raw_ptr<const Sampler> GetSampler(const SamplerDescriptor& descriptor);
 
   SamplerLibrary(const SamplerLibrary&) = delete;
 

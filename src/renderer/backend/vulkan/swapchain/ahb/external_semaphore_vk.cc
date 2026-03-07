@@ -10,8 +10,7 @@
 
 namespace ogre {
 
-ExternalSemaphoreVK::ExternalSemaphoreVK(
-    const std::shared_ptr<Context>& context) {
+ExternalSemaphore::ExternalSemaphore(const std::shared_ptr<Context>& context) {
   if (!context) {
     return;
   }
@@ -35,13 +34,13 @@ ExternalSemaphoreVK::ExternalSemaphoreVK(
   semaphore_ = MakeSharedVK(std::move(semaphore));
 }
 
-ExternalSemaphoreVK::~ExternalSemaphoreVK() = default;
+ExternalSemaphore::~ExternalSemaphore() = default;
 
-bool ExternalSemaphoreVK::IsValid() const {
+bool ExternalSemaphore::IsValid() const {
   return !!semaphore_;
 }
 
-fml::UniqueFD ExternalSemaphoreVK::CreateFD() const {
+fml::UniqueFD ExternalSemaphore::CreateFD() const {
   if (!IsValid()) {
     return {};
   }
@@ -58,11 +57,11 @@ fml::UniqueFD ExternalSemaphoreVK::CreateFD() const {
   return fml::UniqueFD{fd};
 }
 
-const vk::Semaphore& ExternalSemaphoreVK::GetHandle() const {
+const vk::Semaphore& ExternalSemaphore::GetHandle() const {
   return semaphore_->Get();
 }
 
-const SharedHandleVK<vk::Semaphore>& ExternalSemaphoreVK::GetSharedHandle()
+const SharedHandleVK<vk::Semaphore>& ExternalSemaphore::GetSharedHandle()
     const {
   return semaphore_;
 }

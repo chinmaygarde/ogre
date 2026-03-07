@@ -9,7 +9,7 @@
 
 namespace ogre {
 
-std::unique_ptr<SurfaceVK> SurfaceVK::WrapSwapchainImage(
+std::unique_ptr<Surface> Surface::WrapSwapchainImage(
     const std::shared_ptr<SwapchainTransients>& transients,
     const std::shared_ptr<TextureSource>& swapchain_image,
     SwapCallback swap_callback) {
@@ -70,11 +70,11 @@ std::unique_ptr<SurfaceVK> SurfaceVK::WrapSwapchainImage(
   );
 
   // The constructor is private. So make_unique may not be used.
-  return std::unique_ptr<SurfaceVK>(
-      new SurfaceVK(render_target_desc, std::move(swap_callback)));
+  return std::unique_ptr<Surface>(
+      new Surface(render_target_desc, std::move(swap_callback)));
 }
 
-SurfaceVK::SurfaceVK(const RenderTarget& target, SwapCallback swap_callback)
+Surface::Surface(const RenderTarget& target, SwapCallback swap_callback)
     : desc_(target), swap_callback_(std::move(swap_callback)) {
   if (auto size = desc_.GetColorAttachmentSize(0u); size.has_value()) {
     size_ = size.value();
@@ -84,21 +84,21 @@ SurfaceVK::SurfaceVK(const RenderTarget& target, SwapCallback swap_callback)
   is_valid_ = true;
 }
 
-SurfaceVK::~SurfaceVK() = default;
+Surface::~Surface() = default;
 
-const ISize& SurfaceVK::GetSize() const {
+const ISize& Surface::GetSize() const {
   return size_;
 }
 
-bool SurfaceVK::IsValid() const {
+bool Surface::IsValid() const {
   return is_valid_;
 }
 
-const RenderTarget& SurfaceVK::GetRenderTarget() const {
+const RenderTarget& Surface::GetRenderTarget() const {
   return desc_;
 }
 
-bool SurfaceVK::Present() const {
+bool Surface::Present() const {
   return swap_callback_ ? swap_callback_() : false;
 }
 

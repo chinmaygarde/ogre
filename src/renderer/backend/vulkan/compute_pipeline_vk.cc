@@ -6,9 +6,9 @@
 
 namespace ogre {
 
-ComputePipelineVK::ComputePipelineVK(
+ComputePipeline::ComputePipeline(
     std::weak_ptr<DeviceHolderVK> device_holder,
-    std::weak_ptr<PipelineLibraryVK> library,
+    std::weak_ptr<PipelineLibrary> library,
     const ComputePipelineDescriptor& desc,
     vk::UniquePipeline pipeline,
     vk::UniquePipelineLayout layout,
@@ -23,7 +23,7 @@ ComputePipelineVK::ComputePipelineVK(
   is_valid_ = pipeline_ && layout_ && descriptor_set_layout_;
 }
 
-ComputePipelineVK::~ComputePipelineVK() {
+ComputePipeline::~ComputePipeline() {
   std::shared_ptr<DeviceHolderVK> device_holder = device_holder_.lock();
   if (device_holder) {
     descriptor_set_layout_.reset();
@@ -36,24 +36,23 @@ ComputePipelineVK::~ComputePipelineVK() {
   }
 }
 
-bool ComputePipelineVK::IsValid() const {
+bool ComputePipeline::IsValid() const {
   return is_valid_;
 }
 
-const vk::Pipeline& ComputePipelineVK::GetPipeline() const {
+const vk::Pipeline& ComputePipeline::GetPipeline() const {
   return *pipeline_;
 }
 
-const vk::PipelineLayout& ComputePipelineVK::GetPipelineLayout() const {
+const vk::PipelineLayout& ComputePipeline::GetPipelineLayout() const {
   return *layout_;
 }
 
-const vk::DescriptorSetLayout& ComputePipelineVK::GetDescriptorSetLayout()
-    const {
+const vk::DescriptorSetLayout& ComputePipeline::GetDescriptorSetLayout() const {
   return *descriptor_set_layout_;
 }
 
-PipelineKey ComputePipelineVK::GetPipelineKey() const {
+PipelineKey ComputePipeline::GetPipelineKey() const {
   return pipeline_key_;
 }
 

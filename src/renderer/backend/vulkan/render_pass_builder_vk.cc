@@ -31,11 +31,11 @@ constexpr auto kSelfDependencyDstAccessMask =
 
 constexpr auto kSelfDependencyFlags = vk::DependencyFlagBits::eByRegion;
 
-RenderPassBuilderVK::RenderPassBuilderVK() = default;
+RenderPassBuilder::RenderPassBuilder() = default;
 
-RenderPassBuilderVK::~RenderPassBuilderVK() = default;
+RenderPassBuilder::~RenderPassBuilder() = default;
 
-RenderPassBuilderVK& RenderPassBuilderVK::SetColorAttachment(
+RenderPassBuilder& RenderPassBuilder::SetColorAttachment(
     size_t index,
     PixelFormat format,
     SampleCount sample_count,
@@ -83,7 +83,7 @@ RenderPassBuilderVK& RenderPassBuilderVK::SetColorAttachment(
   return *this;
 }
 
-RenderPassBuilderVK& RenderPassBuilderVK::SetDepthStencilAttachment(
+RenderPassBuilder& RenderPassBuilder::SetDepthStencilAttachment(
     PixelFormat format,
     SampleCount sample_count,
     LoadAction load_action,
@@ -101,7 +101,7 @@ RenderPassBuilderVK& RenderPassBuilderVK::SetDepthStencilAttachment(
   return *this;
 }
 
-RenderPassBuilderVK& RenderPassBuilderVK::SetStencilAttachment(
+RenderPassBuilder& RenderPassBuilder::SetStencilAttachment(
     PixelFormat format,
     SampleCount sample_count,
     LoadAction load_action,
@@ -119,8 +119,7 @@ RenderPassBuilderVK& RenderPassBuilderVK::SetStencilAttachment(
   return *this;
 }
 
-vk::UniqueRenderPass RenderPassBuilderVK::Build(
-    const vk::Device& device) const {
+vk::UniqueRenderPass RenderPassBuilder::Build(const vk::Device& device) const {
   // This must be less than `VkPhysicalDeviceLimits::maxColorAttachments` but we
   // are not checking.
   auto color_attachments_count =
@@ -272,28 +271,27 @@ void InsertBarrierForInputAttachmentRead(const vk::CommandBuffer& buffer,
 }
 
 const std::map<size_t, vk::AttachmentDescription>&
-RenderPassBuilderVK::GetColorAttachments() const {
+RenderPassBuilder::GetColorAttachments() const {
   return colors_;
 }
 
 const std::map<size_t, vk::AttachmentDescription>&
-RenderPassBuilderVK::GetResolves() const {
+RenderPassBuilder::GetResolves() const {
   return resolves_;
 }
 
 const std::optional<vk::AttachmentDescription>&
-RenderPassBuilderVK::GetDepthStencil() const {
+RenderPassBuilder::GetDepthStencil() const {
   return depth_stencil_;
 }
 
 // Visible for testing.
-std::optional<vk::AttachmentDescription> RenderPassBuilderVK::GetColor0()
-    const {
+std::optional<vk::AttachmentDescription> RenderPassBuilder::GetColor0() const {
   return color0_;
 }
 
 // Visible for testing.
-std::optional<vk::AttachmentDescription> RenderPassBuilderVK::GetColor0Resolve()
+std::optional<vk::AttachmentDescription> RenderPassBuilder::GetColor0Resolve()
     const {
   return color0_resolve_;
 }

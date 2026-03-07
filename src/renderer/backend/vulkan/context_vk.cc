@@ -381,12 +381,12 @@ void ContextVK::Setup(Settings settings) {
   //----------------------------------------------------------------------------
   /// Setup the pipeline library.
   ///
-  auto pipeline_library = std::shared_ptr<PipelineLibraryVK>(
-      new PipelineLibraryVK(device_holder,                         //
-                            caps,                                  //
-                            std::move(settings.cache_directory),   //
-                            raster_message_loop_->GetTaskRunner()  //
-                            ));
+  auto pipeline_library = std::shared_ptr<PipelineLibrary>(new PipelineLibrary(
+      device_holder,                         //
+      caps,                                  //
+      std::move(settings.cache_directory),   //
+      raster_message_loop_->GetTaskRunner()  //
+      ));
 
   if (!pipeline_library->IsValid()) {
     VALIDATION_LOG << "Could not create pipeline library.";
@@ -531,7 +531,7 @@ std::shared_ptr<SamplerLibrary> ContextVK::GetSamplerLibrary() const {
   return sampler_library_;
 }
 
-std::shared_ptr<PipelineLibraryVK> ContextVK::GetPipelineLibrary() const {
+std::shared_ptr<PipelineLibrary> ContextVK::GetPipelineLibrary() const {
   return pipeline_library_;
 }
 
@@ -678,7 +678,7 @@ void ContextVK::InitializeCommonlyUsedShadersIfNeeded() const {
   RenderTarget render_target =
       rt_allocator.CreateOffscreenMSAA(*this, {1, 1}, 1);
 
-  RenderPassBuilderVK builder;
+  RenderPassBuilder builder;
 
   render_target.IterateAllColorAttachments(
       [&builder](size_t index, const ColorAttachment& attachment) -> bool {

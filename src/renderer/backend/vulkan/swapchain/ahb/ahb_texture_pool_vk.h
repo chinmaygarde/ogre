@@ -26,7 +26,7 @@ namespace ogre {
 ///
 ///             Pools are thread-safe.
 ///
-class AHBTexturePoolVK {
+class AHBTexturePool {
  public:
   struct PoolEntry {
     std::shared_ptr<AHBTextureSource> texture;
@@ -52,14 +52,14 @@ class AHBTexturePoolVK {
   /// @param[in]  max_entries    The maximum entries that will remain cached
   ///                            in the pool.
   ///
-  explicit AHBTexturePoolVK(std::weak_ptr<Context> context,
-                            android::HardwareBufferDescriptor desc);
+  explicit AHBTexturePool(std::weak_ptr<Context> context,
+                          android::HardwareBufferDescriptor desc);
 
-  ~AHBTexturePoolVK();
+  ~AHBTexturePool();
 
-  AHBTexturePoolVK(const AHBTexturePoolVK&) = delete;
+  AHBTexturePool(const AHBTexturePool&) = delete;
 
-  AHBTexturePoolVK& operator=(const AHBTexturePoolVK&) = delete;
+  AHBTexturePool& operator=(const AHBTexturePool&) = delete;
 
   //----------------------------------------------------------------------------
   /// @brief      If the pool can create and pool hardware buffer backed texture

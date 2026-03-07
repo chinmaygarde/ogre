@@ -60,7 +60,7 @@ struct TextureAndSampler {
   SampledImageSlot slot;
   ShaderStage stage;
   TextureResource texture;
-  raw_ptr<const SamplerVK> sampler;
+  raw_ptr<const Sampler> sampler;
 };
 
 //------------------------------------------------------------------------------

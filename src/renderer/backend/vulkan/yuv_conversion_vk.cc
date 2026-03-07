@@ -13,7 +13,7 @@
 namespace ogre {
 
 YUVConversionVK::YUVConversionVK(const vk::Device& device,
-                                 const YUVConversionDescriptorVK& chain)
+                                 const YUVConversionDescriptor& chain)
     : chain_(chain) {
   auto conversion = device.createSamplerYcbcrConversionUnique(chain_.get());
   if (conversion.result != vk::Result::eSuccess) {
@@ -35,12 +35,12 @@ vk::SamplerYcbcrConversion YUVConversionVK::GetConversion() const {
                      : static_cast<vk::SamplerYcbcrConversion>(VK_NULL_HANDLE);
 }
 
-const YUVConversionDescriptorVK& YUVConversionVK::GetDescriptor() const {
+const YUVConversionDescriptor& YUVConversionVK::GetDescriptor() const {
   return chain_;
 }
 
-std::size_t YUVConversionDescriptorVKHash::operator()(
-    const YUVConversionDescriptorVK& desc) const {
+std::size_t YUVConversionDescriptorHash::operator()(
+    const YUVConversionDescriptor& desc) const {
   // Hashers in Vulkan HPP hash the pNext member which isn't what we want for
   // these to be stable.
   const auto& conv = desc.get();
@@ -65,9 +65,9 @@ std::size_t YUVConversionDescriptorVKHash::operator()(
   return hash;
 };
 
-bool YUVConversionDescriptorVKEqual::operator()(
-    const YUVConversionDescriptorVK& lhs_desc,
-    const YUVConversionDescriptorVK& rhs_desc) const {
+bool YUVConversionDescriptorEqual::operator()(
+    const YUVConversionDescriptor& lhs_desc,
+    const YUVConversionDescriptor& rhs_desc) const {
   // Default equality checks in Vulkan HPP checks pNext member members by
   // pointer which isn't what we want.
   {
@@ -100,22 +100,22 @@ bool YUVConversionDescriptorVKEqual::operator()(
 #endif  // FML_OS_ANDROID
 }
 
-ImmutableSamplerKeyVK::ImmutableSamplerKeyVK(const SamplerVK& sampler)
+ImmutableSamplerKey::ImmutableSamplerKey(const Sampler& sampler)
     : sampler(sampler.GetDescriptor()) {
   if (const auto& conversion = sampler.GetYUVConversion()) {
     yuv_conversion = conversion->GetDescriptor();
   }
 }
 
-bool ImmutableSamplerKeyVK::IsEqual(const ImmutableSamplerKeyVK& other) const {
+bool ImmutableSamplerKey::IsEqual(const ImmutableSamplerKey& other) const {
   return SamplerDescriptor::ToKey(sampler) ==
              SamplerDescriptor::ToKey(other.sampler) &&
-         YUVConversionDescriptorVKEqual{}(yuv_conversion, other.yuv_conversion);
+         YUVConversionDescriptorEqual{}(yuv_conversion, other.yuv_conversion);
 }
 
-std::size_t ImmutableSamplerKeyVK::GetHash() const {
+std::size_t ImmutableSamplerKey::GetHash() const {
   return fml::HashCombine(SamplerDescriptor::ToKey(sampler),
-                          YUVConversionDescriptorVKHash{}(yuv_conversion));
+                          YUVConversionDescriptorHash{}(yuv_conversion));
 }
 
 }  // namespace ogre

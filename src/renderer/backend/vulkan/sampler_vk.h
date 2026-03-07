@@ -14,19 +14,19 @@ namespace ogre {
 class SamplerLibrary;
 class YUVConversionVK;
 
-class SamplerVK final {
+class Sampler final {
  public:
-  SamplerVK(const vk::Device& device,
-            const SamplerDescriptor&,
-            std::shared_ptr<YUVConversionVK> yuv_conversion = {});
+  Sampler(const vk::Device& device,
+          const SamplerDescriptor&,
+          std::shared_ptr<YUVConversionVK> yuv_conversion = {});
 
-  ~SamplerVK();
+  ~Sampler();
 
   const SamplerDescriptor& GetDescriptor() const;
 
   vk::Sampler GetSampler() const;
 
-  std::shared_ptr<SamplerVK> CreateVariantForConversion(
+  std::shared_ptr<Sampler> CreateVariantForConversion(
       std::shared_ptr<YUVConversionVK> conversion) const;
 
   const std::shared_ptr<YUVConversionVK>& GetYUVConversion() const;
@@ -41,9 +41,9 @@ class SamplerVK final {
   bool mips_disabled_workaround_ = false;
   bool is_valid_ = false;
 
-  SamplerVK(const SamplerVK&) = delete;
+  Sampler(const Sampler&) = delete;
 
-  SamplerVK& operator=(const SamplerVK&) = delete;
+  Sampler& operator=(const Sampler&) = delete;
 };
 
 }  // namespace ogre

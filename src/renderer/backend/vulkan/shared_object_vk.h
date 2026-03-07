@@ -11,19 +11,19 @@
 
 namespace ogre {
 
-class SharedObjectVK {
+class SharedObject {
  public:
-  virtual ~SharedObjectVK() = default;
+  virtual ~SharedObject() = default;
 };
 
 template <class T>
-class SharedObjectVKT : public SharedObjectVK {
+class SharedObjectT : public SharedObject {
  public:
   using Resource = T;
   using UniqueResource =
       vk::UniqueHandle<Resource, VULKAN_HPP_DEFAULT_DISPATCHER_TYPE>;
 
-  explicit SharedObjectVKT(UniqueResource res) : resource_(std::move(res)) {}
+  explicit SharedObjectT(UniqueResource res) : resource_(std::move(res)) {}
 
   // NOLINTNEXTLINE(google-explicit-constructor)
   operator Resource() const { return Get(); }
@@ -35,22 +35,22 @@ class SharedObjectVKT : public SharedObjectVK {
  private:
   UniqueResource resource_;
 
-  SharedObjectVKT(const SharedObjectVKT&) = delete;
+  SharedObjectT(const SharedObjectT&) = delete;
 
-  SharedObjectVKT& operator=(const SharedObjectVKT&) = delete;
+  SharedObjectT& operator=(const SharedObjectT&) = delete;
 };
 
 template <class T>
 auto MakeSharedVK(
     vk::UniqueHandle<T, VULKAN_HPP_DEFAULT_DISPATCHER_TYPE> handle) {
   if (!handle) {
-    return std::shared_ptr<SharedObjectVKT<T>>{nullptr};
+    return std::shared_ptr<SharedObjectT<T>>{nullptr};
   }
-  return std::make_shared<SharedObjectVKT<T>>(std::move(handle));
+  return std::make_shared<SharedObjectT<T>>(std::move(handle));
 }
 
 template <class T>
-using SharedHandleVK = std::shared_ptr<SharedObjectVKT<T>>;
+using SharedHandleVK = std::shared_ptr<SharedObjectT<T>>;
 
 }  // namespace ogre
 

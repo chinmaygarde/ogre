@@ -27,16 +27,16 @@ using CreateTransactionCB = std::function<android::SurfaceTransaction()>;
 
 static constexpr const size_t kMaxPendingPresents = 2u;
 
-struct AHBFrameSynchronizerVK {
+struct AHBFrameSynchronizer {
   vk::UniqueFence acquire;
   vk::UniqueSemaphore render_ready = {};
-  std::shared_ptr<ExternalSemaphoreVK> present_ready;
+  std::shared_ptr<ExternalSemaphore> present_ready;
   std::shared_ptr<CommandBuffer> final_cmd_buffer;
   bool is_valid = false;
 
-  explicit AHBFrameSynchronizerVK(const vk::Device& device);
+  explicit AHBFrameSynchronizer(const vk::Device& device);
 
-  ~AHBFrameSynchronizerVK();
+  ~AHBFrameSynchronizer();
 
   bool IsValid() const;
 
@@ -110,7 +110,7 @@ class AHBSwapchainImplVK final
   /// @return     A surface if one can be created. If one cannot be created, it
   ///             is likely due to resource exhaustion.
   ///
-  std::unique_ptr<SurfaceVK> AcquireNextDrawable();
+  std::unique_ptr<Surface> AcquireNextDrawable();
 
   void AddFinalCommandBuffer(std::shared_ptr<CommandBuffer> cmd_buffer);
 
@@ -119,7 +119,7 @@ class AHBSwapchainImplVK final
 
   std::weak_ptr<android::SurfaceControl> surface_control_;
   android::HardwareBufferDescriptor desc_;
-  std::shared_ptr<AHBTexturePoolVK> pool_;
+  std::shared_ptr<AHBTexturePool> pool_;
   std::shared_ptr<SwapchainTransients> transients_;
 
   // In C++20, this mutex can be replaced by the shared pointer specialization
@@ -128,7 +128,7 @@ class AHBSwapchainImplVK final
   std::shared_ptr<AHBTextureSource> currently_displayed_texture_
       IPLR_GUARDED_BY(currently_displayed_texture_mutex_);
 
-  std::vector<std::unique_ptr<AHBFrameSynchronizerVK>> frame_data_;
+  std::vector<std::unique_ptr<AHBFrameSynchronizer>> frame_data_;
   size_t frame_index_ = 0;
   CreateTransactionCB cb_;
   bool is_valid_ = false;
@@ -149,7 +149,7 @@ class AHBSwapchainImplVK final
       const std::shared_ptr<fml::UniqueFD>& render_ready_fence,
       const std::shared_ptr<AHBTextureSource>& texture);
 
-  std::shared_ptr<ExternalSemaphoreVK> SubmitSignalForPresentReady(
+  std::shared_ptr<ExternalSemaphore> SubmitSignalForPresentReady(
       const std::shared_ptr<AHBTextureSource>& texture) const;
 
   void OnTextureUpdatedOnSurfaceControl(

@@ -41,7 +41,7 @@ class AHBSwapchain final : public Swapchain {
   bool IsValid() const override;
 
   // |Swapchain|
-  std::unique_ptr<SurfaceVK> AcquireNextDrawable() override;
+  std::unique_ptr<Surface> AcquireNextDrawable() override;
 
   // |Swapchain|
   vk::Format GetSurfaceFormat() const override;

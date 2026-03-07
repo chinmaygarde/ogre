@@ -28,7 +28,7 @@ class KHRSwapchain final : public Swapchain {
   bool IsValid() const override;
 
   // |Swapchain|
-  std::unique_ptr<SurfaceVK> AcquireNextDrawable() override;
+  std::unique_ptr<Surface> AcquireNextDrawable() override;
 
   // |Swapchain|
   vk::Format GetSurfaceFormat() const override;
@@ -56,7 +56,7 @@ class KHRSwapchain final : public Swapchain {
 
   KHRSwapchain& operator=(const KHRSwapchain&) = delete;
 
-  std::unique_ptr<SurfaceVK> AcquireNextDrawable(size_t resize_retry_count);
+  std::unique_ptr<Surface> AcquireNextDrawable(size_t resize_retry_count);
 };
 
 }  // namespace ogre

@@ -18,9 +18,9 @@ namespace ogre {
 
 class CommandBuffer;
 
-class ComputePassVK final : public ResourceBinder {
+class ComputePass final : public ResourceBinder {
  public:
-  ~ComputePassVK();
+  ~ComputePass();
 
   bool IsValid() const;
 
@@ -54,7 +54,7 @@ class ComputePassVK final : public ResourceBinder {
                     const SampledImageSlot& slot,
                     const ShaderMetadata* metadata,
                     std::shared_ptr<const Texture> texture,
-                    raw_ptr<const SamplerVK> sampler) override;
+                    raw_ptr<const Sampler> sampler) override;
 
   bool BindResource(size_t binding, DescriptorType type, BufferView view);
 
@@ -80,14 +80,14 @@ class ComputePassVK final : public ResourceBinder {
   vk::DescriptorSet descriptor_set_ = {};
   vk::PipelineLayout pipeline_layout_ = {};
 
-  ComputePassVK(std::shared_ptr<const Context> context,
-                std::shared_ptr<CommandBuffer> command_buffer);
+  ComputePass(std::shared_ptr<const Context> context,
+              std::shared_ptr<CommandBuffer> command_buffer);
 
   void OnSetLabel(const std::string& label);
 
-  ComputePassVK(const ComputePassVK&) = delete;
+  ComputePass(const ComputePass&) = delete;
 
-  ComputePassVK& operator=(const ComputePassVK&) = delete;
+  ComputePass& operator=(const ComputePass&) = delete;
 };
 
 }  // namespace ogre

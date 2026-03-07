@@ -95,7 +95,7 @@ static void ReportPipelineCreationFeedbackToTrace(
   }
   gPipelines++;
   static constexpr int64_t kImpellerPipelineTraceID = 1988;
-  FML_TRACE_COUNTER("ogre",                                   //
+  FML_TRACE_COUNTER("ogre",                                       //
                     "PipelineCache",                              // series name
                     kImpellerPipelineTraceID,                     // series ID
                     "PipelineCacheHits", gPipelineCacheHits,      //
@@ -128,7 +128,7 @@ static void ReportPipelineCreationFeedback(
 static vk::UniqueRenderPass CreateCompatRenderPassForPipeline(
     const vk::Device& device,
     const PipelineDescriptor& desc) {
-  RenderPassBuilderVK builder;
+  RenderPassBuilder builder;
 
   for (const auto& [bind_point, color] : desc.GetColorAttachmentDescriptors()) {
     builder.SetColorAttachment(bind_point,             //
@@ -174,7 +174,7 @@ namespace {
 fml::StatusOr<vk::UniqueDescriptorSetLayout> MakeDescriptorSetLayout(
     const PipelineDescriptor& desc,
     const std::shared_ptr<DeviceHolderVK>& device_holder,
-    const std::shared_ptr<SamplerVK>& immutable_sampler) {
+    const std::shared_ptr<Sampler>& immutable_sampler) {
   std::vector<vk::DescriptorSetLayoutBinding> set_bindings;
 
   vk::Sampler vk_immutable_sampler =
@@ -463,9 +463,9 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
 std::unique_ptr<PipelineVK> PipelineVK::Create(
     const PipelineDescriptor& desc,
     const std::shared_ptr<DeviceHolderVK>& device_holder,
-    const std::weak_ptr<PipelineLibraryVK>& weak_library,
+    const std::weak_ptr<PipelineLibrary>& weak_library,
     PipelineKey pipeline_key,
-    std::shared_ptr<SamplerVK> immutable_sampler) {
+    std::shared_ptr<Sampler> immutable_sampler) {
   TRACE_EVENT1("flutter", "PipelineVK::Create", "Name", desc.GetLabel().data());
 
   auto library = weak_library.lock();
@@ -522,14 +522,14 @@ std::unique_ptr<PipelineVK> PipelineVK::Create(
 }
 
 PipelineVK::PipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
-                       std::weak_ptr<PipelineLibraryVK> library,
+                       std::weak_ptr<PipelineLibrary> library,
                        const PipelineDescriptor& desc,
                        vk::UniquePipeline pipeline,
                        vk::UniqueRenderPass render_pass,
                        vk::UniquePipelineLayout layout,
                        vk::UniqueDescriptorSetLayout descriptor_set_layout,
                        PipelineKey pipeline_key,
-                       std::shared_ptr<SamplerVK> immutable_sampler)
+                       std::shared_ptr<Sampler> immutable_sampler)
     : Pipeline(std::move(library), desc),
       device_holder_(std::move(device_holder)),
       pipeline_(std::move(pipeline)),
@@ -567,11 +567,11 @@ const vk::DescriptorSetLayout& PipelineVK::GetDescriptorSetLayout() const {
 }
 
 std::shared_ptr<PipelineVK> PipelineVK::CreateVariantForImmutableSamplers(
-    const std::shared_ptr<SamplerVK>& immutable_sampler) const {
+    const std::shared_ptr<Sampler>& immutable_sampler) const {
   if (!immutable_sampler) {
     return nullptr;
   }
-  auto cache_key = ImmutableSamplerKeyVK{*immutable_sampler};
+  auto cache_key = ImmutableSamplerKey{*immutable_sampler};
   Lock lock(immutable_sampler_variants_mutex_);
   auto found = immutable_sampler_variants_.find(cache_key);
   if (found != immutable_sampler_variants_.end()) {

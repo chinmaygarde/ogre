@@ -17,7 +17,7 @@ namespace ogre {
 class CommandBuffer;
 class Context;
 class KHRSwapchainImage;
-class SurfaceVK;
+class Surface;
 struct KHRFrameSynchronizer;
 
 //------------------------------------------------------------------------------
@@ -43,13 +43,13 @@ class KHRSwapchainImpl final
   bool IsValid() const;
 
   struct AcquireResult {
-    std::unique_ptr<SurfaceVK> surface;
+    std::unique_ptr<Surface> surface;
     bool out_of_date = false;
 
     explicit AcquireResult(bool p_out_of_date = false)
         : out_of_date(p_out_of_date) {}
 
-    explicit AcquireResult(std::unique_ptr<SurfaceVK> p_surface)
+    explicit AcquireResult(std::unique_ptr<Surface> p_surface)
         : surface(std::move(p_surface)) {}
   };
 

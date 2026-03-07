@@ -18,17 +18,17 @@ static constexpr size_t kMaxColorAttachments = 16;
 static constexpr size_t kMaxAttachments =
     (kMaxColorAttachments * 2) + 1;  // MSAA + resolve plus depth/stencil
 
-class RenderPassBuilderVK {
+class RenderPassBuilder {
  public:
-  RenderPassBuilderVK();
+  RenderPassBuilder();
 
-  ~RenderPassBuilderVK();
+  ~RenderPassBuilder();
 
-  RenderPassBuilderVK(const RenderPassBuilderVK&) = delete;
+  RenderPassBuilder(const RenderPassBuilder&) = delete;
 
-  RenderPassBuilderVK& operator=(const RenderPassBuilderVK&) = delete;
+  RenderPassBuilder& operator=(const RenderPassBuilder&) = delete;
 
-  RenderPassBuilderVK& SetColorAttachment(
+  RenderPassBuilder& SetColorAttachment(
       size_t index,
       PixelFormat format,
       SampleCount sample_count,
@@ -37,15 +37,15 @@ class RenderPassBuilderVK {
       vk::ImageLayout current_layout = vk::ImageLayout::eUndefined,
       bool is_swapchain = false);
 
-  RenderPassBuilderVK& SetDepthStencilAttachment(PixelFormat format,
-                                                 SampleCount sample_count,
-                                                 LoadAction load_action,
-                                                 StoreAction store_action);
+  RenderPassBuilder& SetDepthStencilAttachment(PixelFormat format,
+                                               SampleCount sample_count,
+                                               LoadAction load_action,
+                                               StoreAction store_action);
 
-  RenderPassBuilderVK& SetStencilAttachment(PixelFormat format,
-                                            SampleCount sample_count,
-                                            LoadAction load_action,
-                                            StoreAction store_action);
+  RenderPassBuilder& SetStencilAttachment(PixelFormat format,
+                                          SampleCount sample_count,
+                                          LoadAction load_action,
+                                          StoreAction store_action);
 
   vk::UniqueRenderPass Build(const vk::Device& device) const;
 
@@ -85,7 +85,7 @@ class RenderPassBuilderVK {
 ///
 ///             The type of barrier inserted depends on the subpass setup and
 ///             self-dependencies. Only use this utility method for inserting
-///             barriers in render passes created by `RenderPassBuilderVK`.
+///             barriers in render passes created by `RenderPassBuilder`.
 ///
 /// @param[in]  buffer  The buffer
 /// @param[in]  image   The image

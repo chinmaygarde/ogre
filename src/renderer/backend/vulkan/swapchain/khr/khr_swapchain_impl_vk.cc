@@ -402,7 +402,7 @@ KHRSwapchainImpl::AcquireResult KHRSwapchainImpl::AcquireNextDrawable() {
 
   auto image = images_[index % images_.size()];
   uint32_t image_index = index;
-  return AcquireResult{SurfaceVK::WrapSwapchainImage(
+  return AcquireResult{Surface::WrapSwapchainImage(
       transients_,  // transients
       image,        // swapchain image
       [weak_swapchain = weak_from_this(), image, image_index]() -> bool {

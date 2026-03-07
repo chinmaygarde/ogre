@@ -17,13 +17,13 @@
 namespace ogre {
 
 class BlitPass;
-class ComputePassVK;
+class ComputePass;
 class ContextVK;
 class DescriptorPool;
 class DeviceBuffer;
-class RenderPassVK;
+class RenderPass;
 class RenderTarget;
-class SharedObjectVK;
+class SharedObject;
 class Texture;
 class TextureSource;
 class TrackedObjects;
@@ -48,18 +48,18 @@ class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
 
   void WaitUntilScheduled();
 
-  std::shared_ptr<RenderPassVK> CreateRenderPass(
+  std::shared_ptr<RenderPass> CreateRenderPass(
       const RenderTarget& render_target);
 
   std::shared_ptr<BlitPass> CreateBlitPass();
 
-  std::shared_ptr<ComputePassVK> CreateComputePass();
+  std::shared_ptr<ComputePass> CreateComputePass();
 
   // Encoder Functionality
 
   /// @brief Ensure that [object] is kept alive until this command buffer
   ///        completes execution.
-  bool Track(const std::shared_ptr<SharedObjectVK>& object);
+  bool Track(const std::shared_ptr<SharedObject>& object);
 
   /// @brief Ensure that [buffer] is kept alive until this command buffer
   ///        completes execution.

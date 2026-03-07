@@ -29,11 +29,11 @@ namespace ogre {
 
 class CommandBuffer;
 class Context;
-class SamplerVK;
+class Sampler;
 
-class RenderPassVK final : public ResourceBinder {
+class RenderPass final : public ResourceBinder {
  public:
-  ~RenderPassVK();
+  ~RenderPass();
 
   const std::shared_ptr<const Context>& GetContext() const;
 
@@ -91,14 +91,14 @@ class RenderPassVK final : public ResourceBinder {
                     const SampledImageSlot& slot,
                     const ShaderMetadata* metadata,
                     std::shared_ptr<const Texture> texture,
-                    raw_ptr<const SamplerVK>) override;
+                    raw_ptr<const Sampler>) override;
 
   bool BindDynamicResource(ShaderStage stage,
                            DescriptorType type,
                            const SampledImageSlot& slot,
                            std::unique_ptr<ShaderMetadata> metadata,
                            std::shared_ptr<const Texture> texture,
-                           raw_ptr<const SamplerVK>);
+                           raw_ptr<const Sampler>);
 
   bool BindDynamicResource(ShaderStage stage,
                            DescriptorType type,
@@ -152,11 +152,11 @@ class RenderPassVK final : public ResourceBinder {
   bool has_label_ = false;
   PipelineRef pipeline_ = PipelineRef(nullptr);
   bool pipeline_uses_input_attachments_ = false;
-  std::shared_ptr<SamplerVK> immutable_sampler_;
+  std::shared_ptr<Sampler> immutable_sampler_;
 
-  RenderPassVK(const std::shared_ptr<const Context>& context,
-               const RenderTarget& target,
-               std::shared_ptr<CommandBuffer> command_buffer);
+  RenderPass(const std::shared_ptr<const Context>& context,
+             const RenderTarget& target,
+             std::shared_ptr<CommandBuffer> command_buffer);
 
   static bool ValidateVertexBuffers(const BufferView vertex_buffers[],
                                     size_t vertex_buffer_count);
@@ -180,9 +180,9 @@ class RenderPassVK final : public ResourceBinder {
       const ContextVK& context,
       const vk::RenderPass& pass) const;
 
-  RenderPassVK(const RenderPassVK&) = delete;
+  RenderPass(const RenderPass&) = delete;
 
-  RenderPassVK& operator=(const RenderPassVK&) = delete;
+  RenderPass& operator=(const RenderPass&) = delete;
 };
 
 }  // namespace ogre

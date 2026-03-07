@@ -20,7 +20,7 @@ namespace ogre {
 //------------------------------------------------------------------------------
 /// A descriptor used to create a new YUV conversion in a conversion library.
 ///
-using YUVConversionDescriptorVK =
+using YUVConversionDescriptor =
     vk::StructureChain<vk::SamplerYcbcrConversionCreateInfo
 #if FML_OS_ANDROID
                        // For VK_ANDROID_external_memory_android_hardware_buffer
@@ -39,7 +39,7 @@ class YUVConversionLibrary;
 ///             There are usually only a handful of viable conversions in a
 ///             given context. However, due to the way the Vulkan spec. treats
 ///             "identically defined" conversions, only a single conversion
-///             object is valid for an equivalent `YUVConversionDescriptorVK`.
+///             object is valid for an equivalent `YUVConversionDescriptor`.
 ///             Because of this restriction, it is not possible to just create a
 ///             conversion from a descriptor (as the underlying handles will be
 ///             equivalent but different). Instead, a conversion may only be
@@ -65,7 +65,7 @@ class YUVConversionVK final {
   //----------------------------------------------------------------------------
   /// @brief      Get the descriptor used to create this conversion.
   ///
-  const YUVConversionDescriptorVK& GetDescriptor() const;
+  const YUVConversionDescriptor& GetDescriptor() const;
 
   //----------------------------------------------------------------------------
   /// @return     The Vulkan handle of the YUV conversion.
@@ -75,33 +75,33 @@ class YUVConversionVK final {
  private:
   friend class YUVConversionLibrary;
 
-  YUVConversionDescriptorVK chain_;
+  YUVConversionDescriptor chain_;
   vk::UniqueSamplerYcbcrConversion conversion_;
 
   YUVConversionVK(const vk::Device& device,
-                  const YUVConversionDescriptorVK& chain);
+                  const YUVConversionDescriptor& chain);
 };
 
-struct YUVConversionDescriptorVKHash {
-  std::size_t operator()(const YUVConversionDescriptorVK& object) const;
+struct YUVConversionDescriptorHash {
+  std::size_t operator()(const YUVConversionDescriptor& object) const;
 };
 
-struct YUVConversionDescriptorVKEqual {
-  bool operator()(const YUVConversionDescriptorVK& lhs,
-                  const YUVConversionDescriptorVK& rhs) const;
+struct YUVConversionDescriptorEqual {
+  bool operator()(const YUVConversionDescriptor& lhs,
+                  const YUVConversionDescriptor& rhs) const;
 };
 
-struct ImmutableSamplerKeyVK : public Comparable<ImmutableSamplerKeyVK> {
+struct ImmutableSamplerKey : public Comparable<ImmutableSamplerKey> {
   SamplerDescriptor sampler;
-  YUVConversionDescriptorVK yuv_conversion;
+  YUVConversionDescriptor yuv_conversion;
 
-  explicit ImmutableSamplerKeyVK(const SamplerVK& sampler);
+  explicit ImmutableSamplerKey(const Sampler& sampler);
 
   // |Comparable<ImmutableSamplerKey>|
   std::size_t GetHash() const override;
 
   // |Comparable<ImmutableSamplerKey>|
-  bool IsEqual(const ImmutableSamplerKeyVK& other) const override;
+  bool IsEqual(const ImmutableSamplerKey& other) const override;
 };
 
 }  // namespace ogre

@@ -77,7 +77,7 @@ static size_t GetVKClearValues(
   return offset;
 }
 
-SharedHandleVK<vk::RenderPass> RenderPassVK::CreateVKRenderPass(
+SharedHandleVK<vk::RenderPass> RenderPass::CreateVKRenderPass(
     const ContextVK& context,
     const SharedHandleVK<vk::RenderPass>& recycled_renderpass,
     const std::shared_ptr<CommandBuffer>& command_buffer,
@@ -86,7 +86,7 @@ SharedHandleVK<vk::RenderPass> RenderPassVK::CreateVKRenderPass(
     return recycled_renderpass;
   }
 
-  RenderPassBuilderVK builder;
+  RenderPassBuilder builder;
   render_target_.IterateAllColorAttachments([&](size_t bind_point,
                                                 const ColorAttachment&
                                                     attachment) -> bool {
@@ -130,9 +130,9 @@ SharedHandleVK<vk::RenderPass> RenderPassVK::CreateVKRenderPass(
   return MakeSharedVK(std::move(pass));
 }
 
-RenderPassVK::RenderPassVK(const std::shared_ptr<const Context>& context,
-                           const RenderTarget& target,
-                           std::shared_ptr<CommandBuffer> command_buffer)
+RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
+                       const RenderTarget& target,
+                       std::shared_ptr<CommandBuffer> command_buffer)
     : context_(context),
       sample_count_(target.GetSampleCount()),
       pixel_format_(target.GetRenderTargetPixelFormat()),
@@ -272,52 +272,52 @@ RenderPassVK::RenderPassVK(const std::shared_ptr<const Context>& context,
   is_valid_ = true;
 }
 
-RenderPassVK::~RenderPassVK() = default;
+RenderPass::~RenderPass() = default;
 
-const std::shared_ptr<const Context>& RenderPassVK::GetContext() const {
+const std::shared_ptr<const Context>& RenderPass::GetContext() const {
   return context_;
 }
 
-const RenderTarget& RenderPassVK::GetRenderTarget() const {
+const RenderTarget& RenderPass::GetRenderTarget() const {
   return render_target_;
 }
 
-ISize RenderPassVK::GetRenderTargetSize() const {
+ISize RenderPass::GetRenderTargetSize() const {
   return render_target_size_;
 }
 
-const Matrix& RenderPassVK::GetOrthographicTransform() const {
+const Matrix& RenderPass::GetOrthographicTransform() const {
   return orthographic_;
 }
 
-SampleCount RenderPassVK::GetSampleCount() const {
+SampleCount RenderPass::GetSampleCount() const {
   return sample_count_;
 }
 
-PixelFormat RenderPassVK::GetRenderTargetPixelFormat() const {
+PixelFormat RenderPass::GetRenderTargetPixelFormat() const {
   return pixel_format_;
 }
 
-bool RenderPassVK::HasDepthAttachment() const {
+bool RenderPass::HasDepthAttachment() const {
   return has_depth_attachment_;
 }
 
-bool RenderPassVK::HasStencilAttachment() const {
+bool RenderPass::HasStencilAttachment() const {
   return has_stencil_attachment_;
 }
 
-void RenderPassVK::SetLabel(std::string_view label) {
+void RenderPass::SetLabel(std::string_view label) {
   if (label.empty()) {
     return;
   }
   OnSetLabel(label);
 }
 
-bool RenderPassVK::EncodeCommands() const {
+bool RenderPass::EncodeCommands() const {
   return OnEncodeCommands(*context_);
 }
 
-bool RenderPassVK::SetVertexBuffer(VertexBuffer buffer) {
+bool RenderPass::SetVertexBuffer(VertexBuffer buffer) {
   if (!SetVertexBuffer(&buffer.vertex_buffer, 1u)) {
     return false;
   }
@@ -328,21 +328,21 @@ bool RenderPassVK::SetVertexBuffer(VertexBuffer buffer) {
   return true;
 }
 
-bool RenderPassVK::SetVertexBuffer(BufferView vertex_buffer) {
+bool RenderPass::SetVertexBuffer(BufferView vertex_buffer) {
   return SetVertexBuffer(&vertex_buffer, 1);
 }
 
-bool RenderPassVK::SetVertexBuffer(std::vector<BufferView> vertex_buffers) {
+bool RenderPass::SetVertexBuffer(std::vector<BufferView> vertex_buffers) {
   return SetVertexBuffer(vertex_buffers.data(), vertex_buffers.size());
 }
 
-void RenderPassVK::SetPipeline(
+void RenderPass::SetPipeline(
     const std::shared_ptr<Pipeline<PipelineDescriptor>>& pipeline) {
   SetPipeline(PipelineRef(pipeline));
 }
 
-bool RenderPassVK::ValidateVertexBuffers(const BufferView vertex_buffers[],
-                                         size_t vertex_buffer_count) {
+bool RenderPass::ValidateVertexBuffers(const BufferView vertex_buffers[],
+                                       size_t vertex_buffer_count) {
   if (vertex_buffer_count > kMaxVertexBuffers) {
     VALIDATION_LOG << "Attempted to bind " << vertex_buffer_count
                    << " vertex buffers, but the maximum is "
@@ -358,8 +358,8 @@ bool RenderPassVK::ValidateVertexBuffers(const BufferView vertex_buffers[],
   return true;
 }
 
-bool RenderPassVK::ValidateIndexBuffer(const BufferView& index_buffer,
-                                       IndexType index_type) {
+bool RenderPass::ValidateIndexBuffer(const BufferView& index_buffer,
+                                     IndexType index_type) {
   if (index_type == IndexType::kUnknown) {
     VALIDATION_LOG << "Cannot bind an index buffer with an unknown index type.";
     return false;
@@ -371,17 +371,17 @@ bool RenderPassVK::ValidateIndexBuffer(const BufferView& index_buffer,
   return true;
 }
 
-bool RenderPassVK::IsValid() const {
+bool RenderPass::IsValid() const {
   return is_valid_;
 }
 
-void RenderPassVK::OnSetLabel(std::string_view label) {
+void RenderPass::OnSetLabel(std::string_view label) {
 #ifdef OGRE_DEBUG
   ContextVK::Cast(*context_).SetDebugName(render_pass_->Get(), label.data());
 #endif  // OGRE_DEBUG
 }
 
-SharedHandleVK<vk::Framebuffer> RenderPassVK::CreateVKFramebuffer(
+SharedHandleVK<vk::Framebuffer> RenderPass::CreateVKFramebuffer(
     const ContextVK& context,
     const vk::RenderPass& pass) const {
   vk::FramebufferCreateInfo fb_info;
@@ -437,7 +437,7 @@ SharedHandleVK<vk::Framebuffer> RenderPassVK::CreateVKFramebuffer(
 }
 
 // |RenderPass|
-void RenderPassVK::SetPipeline(PipelineRef pipeline) {
+void RenderPass::SetPipeline(PipelineRef pipeline) {
   pipeline_ = pipeline;
   if (!pipeline_) {
     return;
@@ -469,7 +469,7 @@ void RenderPassVK::SetPipeline(PipelineRef pipeline) {
 }
 
 // |RenderPass|
-void RenderPassVK::SetCommandLabel(std::string_view label) {
+void RenderPass::SetCommandLabel(std::string_view label) {
 #ifdef OGRE_DEBUG
   command_buffer_->PushDebugGroup(label);
   has_label_ = true;
@@ -477,7 +477,7 @@ void RenderPassVK::SetCommandLabel(std::string_view label) {
 }
 
 // |RenderPass|
-void RenderPassVK::SetStencilReference(uint32_t value) {
+void RenderPass::SetStencilReference(uint32_t value) {
   if (current_stencil_ == value) {
     return;
   }
@@ -487,12 +487,12 @@ void RenderPassVK::SetStencilReference(uint32_t value) {
 }
 
 // |RenderPass|
-void RenderPassVK::SetBaseVertex(uint64_t value) {
+void RenderPass::SetBaseVertex(uint64_t value) {
   base_vertex_ = value;
 }
 
 // |RenderPass|
-void RenderPassVK::SetViewport(Viewport viewport) {
+void RenderPass::SetViewport(Viewport viewport) {
   vk::Viewport viewport_vk = vk::Viewport()
                                  .setWidth(viewport.rect.GetWidth())
                                  .setHeight(-viewport.rect.GetHeight())
@@ -503,7 +503,7 @@ void RenderPassVK::SetViewport(Viewport viewport) {
 }
 
 // |RenderPass|
-void RenderPassVK::SetScissor(IRect32 scissor) {
+void RenderPass::SetScissor(IRect32 scissor) {
   vk::Rect2D scissor_vk =
       vk::Rect2D()
           .setOffset(vk::Offset2D(scissor.GetX(), scissor.GetY()))
@@ -512,18 +512,18 @@ void RenderPassVK::SetScissor(IRect32 scissor) {
 }
 
 // |RenderPass|
-void RenderPassVK::SetElementCount(size_t count) {
+void RenderPass::SetElementCount(size_t count) {
   element_count_ = count;
 }
 
 // |RenderPass|
-void RenderPassVK::SetInstanceCount(size_t count) {
+void RenderPass::SetInstanceCount(size_t count) {
   instance_count_ = count;
 }
 
 // |RenderPass|
-bool RenderPassVK::SetVertexBuffer(BufferView vertex_buffers[],
-                                   size_t vertex_buffer_count) {
+bool RenderPass::SetVertexBuffer(BufferView vertex_buffers[],
+                                 size_t vertex_buffer_count) {
   if (!ValidateVertexBuffers(vertex_buffers, vertex_buffer_count)) {
     return false;
   }
@@ -549,8 +549,7 @@ bool RenderPassVK::SetVertexBuffer(BufferView vertex_buffers[],
 }
 
 // |RenderPass|
-bool RenderPassVK::SetIndexBuffer(BufferView index_buffer,
-                                  IndexType index_type) {
+bool RenderPass::SetIndexBuffer(BufferView index_buffer, IndexType index_type) {
   if (!ValidateIndexBuffer(index_buffer, index_type)) {
     return false;
   }
@@ -588,7 +587,7 @@ bool RenderPassVK::SetIndexBuffer(BufferView index_buffer,
 }
 
 // |RenderPass|
-fml::Status RenderPassVK::Draw() {
+fml::Status RenderPass::Draw() {
   if (!pipeline_) {
     return fml::Status(fml::StatusCode::kCancelled,
                        "No valid pipeline is bound to the RenderPass.");
@@ -694,27 +693,27 @@ fml::Status RenderPassVK::Draw() {
   return fml::Status();
 }
 
-// The RenderPassVK binding methods only need the binding, set, and buffer type
+// The RenderPass binding methods only need the binding, set, and buffer type
 // information.
-bool RenderPassVK::BindResource(ShaderStage stage,
-                                DescriptorType type,
-                                const ShaderUniformSlot& slot,
-                                const ShaderMetadata* metadata,
-                                BufferView view) {
+bool RenderPass::BindResource(ShaderStage stage,
+                              DescriptorType type,
+                              const ShaderUniformSlot& slot,
+                              const ShaderMetadata* metadata,
+                              BufferView view) {
   return BindResource(slot.binding, type, view);
 }
 
-bool RenderPassVK::BindDynamicResource(ShaderStage stage,
-                                       DescriptorType type,
-                                       const ShaderUniformSlot& slot,
-                                       std::unique_ptr<ShaderMetadata> metadata,
-                                       BufferView view) {
+bool RenderPass::BindDynamicResource(ShaderStage stage,
+                                     DescriptorType type,
+                                     const ShaderUniformSlot& slot,
+                                     std::unique_ptr<ShaderMetadata> metadata,
+                                     BufferView view) {
   return BindResource(slot.binding, type, view);
 }
 
-bool RenderPassVK::BindResource(size_t binding,
-                                DescriptorType type,
-                                BufferView view) {
+bool RenderPass::BindResource(size_t binding,
+                              DescriptorType type,
+                              BufferView view) {
   if (bound_buffer_offset_ >= kMaxBindings) {
     return false;
   }
@@ -747,21 +746,21 @@ bool RenderPassVK::BindResource(size_t binding,
   return true;
 }
 
-bool RenderPassVK::BindDynamicResource(ShaderStage stage,
-                                       DescriptorType type,
-                                       const SampledImageSlot& slot,
-                                       std::unique_ptr<ShaderMetadata> metadata,
-                                       std::shared_ptr<const Texture> texture,
-                                       raw_ptr<const SamplerVK> sampler) {
+bool RenderPass::BindDynamicResource(ShaderStage stage,
+                                     DescriptorType type,
+                                     const SampledImageSlot& slot,
+                                     std::unique_ptr<ShaderMetadata> metadata,
+                                     std::shared_ptr<const Texture> texture,
+                                     raw_ptr<const Sampler> sampler) {
   return BindResource(stage, type, slot, nullptr, texture, sampler);
 }
 
-bool RenderPassVK::BindResource(ShaderStage stage,
-                                DescriptorType type,
-                                const SampledImageSlot& slot,
-                                const ShaderMetadata* metadata,
-                                std::shared_ptr<const Texture> texture,
-                                raw_ptr<const SamplerVK> sampler) {
+bool RenderPass::BindResource(ShaderStage stage,
+                              DescriptorType type,
+                              const SampledImageSlot& slot,
+                              const ShaderMetadata* metadata,
+                              std::shared_ptr<const Texture> texture,
+                              raw_ptr<const Sampler> sampler) {
   if (bound_buffer_offset_ >= kMaxBindings) {
     return false;
   }
@@ -769,7 +768,7 @@ bool RenderPassVK::BindResource(ShaderStage stage,
     return false;
   }
   const TextureVK& texture_vk = TextureVK::Cast(*texture);
-  const SamplerVK& sampler_vk = *sampler;
+  const Sampler& sampler_vk = *sampler;
 
   if (!command_buffer_->Track(texture)) {
     return false;
@@ -795,7 +794,7 @@ bool RenderPassVK::BindResource(ShaderStage stage,
   return true;
 }
 
-bool RenderPassVK::OnEncodeCommands(const Context& context) const {
+bool RenderPass::OnEncodeCommands(const Context& context) const {
   command_buffer_->GetCommandBuffer().endRenderPass();
   return true;
 }

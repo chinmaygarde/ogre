@@ -18,7 +18,7 @@
 
 namespace ogre {
 
-class PipelineLibraryVK;
+class PipelineLibrary;
 
 // Limit on the total number of buffer and image bindings that allow the Vulkan
 // backend to avoid dynamic heap allocations.
@@ -31,9 +31,9 @@ class PipelineVK final
   static std::unique_ptr<PipelineVK> Create(
       const PipelineDescriptor& desc,
       const std::shared_ptr<DeviceHolderVK>& device_holder,
-      const std::weak_ptr<PipelineLibraryVK>& weak_library,
+      const std::weak_ptr<PipelineLibrary>& weak_library,
       PipelineKey pipeline_key,
-      std::shared_ptr<SamplerVK> immutable_sampler = {});
+      std::shared_ptr<Sampler> immutable_sampler = {});
 
   // |Pipeline|
   ~PipelineVK() override;
@@ -45,25 +45,25 @@ class PipelineVK final
   const vk::DescriptorSetLayout& GetDescriptorSetLayout() const;
 
   std::shared_ptr<PipelineVK> CreateVariantForImmutableSamplers(
-      const std::shared_ptr<SamplerVK>& immutable_sampler) const;
+      const std::shared_ptr<Sampler>& immutable_sampler) const;
 
   PipelineKey GetPipelineKey() const { return pipeline_key_; }
 
  private:
-  friend class PipelineLibraryVK;
+  friend class PipelineLibrary;
 
   using ImmutableSamplerVariants =
-      std::unordered_map<ImmutableSamplerKeyVK,
+      std::unordered_map<ImmutableSamplerKey,
                          std::shared_ptr<PipelineVK>,
-                         ComparableHash<ImmutableSamplerKeyVK>,
-                         ComparableEqual<ImmutableSamplerKeyVK>>;
+                         ComparableHash<ImmutableSamplerKey>,
+                         ComparableEqual<ImmutableSamplerKey>>;
 
   std::weak_ptr<DeviceHolderVK> device_holder_;
   vk::UniquePipeline pipeline_;
   vk::UniqueRenderPass render_pass_;
   vk::UniquePipelineLayout layout_;
   vk::UniqueDescriptorSetLayout descriptor_set_layout_;
-  std::shared_ptr<SamplerVK> immutable_sampler_;
+  std::shared_ptr<Sampler> immutable_sampler_;
   const PipelineKey pipeline_key_;
   mutable Mutex immutable_sampler_variants_mutex_;
   mutable ImmutableSamplerVariants immutable_sampler_variants_
@@ -71,14 +71,14 @@ class PipelineVK final
   bool is_valid_ = false;
 
   PipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
-             std::weak_ptr<PipelineLibraryVK> library,
+             std::weak_ptr<PipelineLibrary> library,
              const PipelineDescriptor& desc,
              vk::UniquePipeline pipeline,
              vk::UniqueRenderPass render_pass,
              vk::UniquePipelineLayout layout,
              vk::UniqueDescriptorSetLayout descriptor_set_layout,
              PipelineKey pipeline_key,
-             std::shared_ptr<SamplerVK> immutable_sampler);
+             std::shared_ptr<Sampler> immutable_sampler);
 
   // |Pipeline|
   bool IsValid() const override;

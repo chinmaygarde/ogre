@@ -35,7 +35,7 @@ struct ResourceBinder {
                             const SampledImageSlot& slot,
                             const ShaderMetadata* metadata,
                             std::shared_ptr<const Texture> texture,
-                            raw_ptr<const SamplerVK>) = 0;
+                            raw_ptr<const Sampler>) = 0;
 };
 
 }  // namespace ogre

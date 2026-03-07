@@ -42,7 +42,7 @@ bool TrackedObjects::IsValid() const {
   return is_valid_;
 }
 
-void TrackedObjects::Track(const std::shared_ptr<SharedObjectVK>& object) {
+void TrackedObjects::Track(const std::shared_ptr<SharedObject>& object) {
   if (!object || (!tracked_objects_.empty() &&
                   object.get() == tracked_objects_.back().get())) {
     return;

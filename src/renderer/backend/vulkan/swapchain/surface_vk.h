@@ -15,7 +15,7 @@
 
 namespace ogre {
 
-class SurfaceVK final {
+class Surface final {
  public:
   using SwapCallback = std::function<bool(void)>;
 
@@ -24,12 +24,12 @@ class SurfaceVK final {
   ///        target by Impeller.
   ///
   ///        This creates the associated MSAA and depth+stencil texture.
-  static std::unique_ptr<SurfaceVK> WrapSwapchainImage(
+  static std::unique_ptr<Surface> WrapSwapchainImage(
       const std::shared_ptr<SwapchainTransients>& transients,
       const std::shared_ptr<TextureSource>& swapchain_image,
       SwapCallback swap_callback);
 
-  ~SurfaceVK();
+  ~Surface();
 
   const ISize& GetSize() const;
 
@@ -45,11 +45,11 @@ class SurfaceVK final {
   bool is_valid_ = false;
   SwapCallback swap_callback_;
 
-  SurfaceVK(const RenderTarget& target, SwapCallback swap_callback);
+  Surface(const RenderTarget& target, SwapCallback swap_callback);
 
-  SurfaceVK(const SurfaceVK&) = delete;
+  Surface(const Surface&) = delete;
 
-  SurfaceVK& operator=(const SurfaceVK&) = delete;
+  Surface& operator=(const Surface&) = delete;
 };
 
 }  // namespace ogre

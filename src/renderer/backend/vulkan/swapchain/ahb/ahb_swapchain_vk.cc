@@ -38,7 +38,7 @@ bool AHBSwapchain::IsValid() const {
 }
 
 // |Swapchain|
-std::unique_ptr<SurfaceVK> AHBSwapchain::AcquireNextDrawable() {
+std::unique_ptr<Surface> AHBSwapchain::AcquireNextDrawable() {
   if (!IsValid()) {
     return nullptr;
   }

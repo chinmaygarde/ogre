@@ -16,7 +16,7 @@ YUVConversionLibrary::YUVConversionLibrary(
 YUVConversionLibrary::~YUVConversionLibrary() = default;
 
 std::shared_ptr<YUVConversionVK> YUVConversionLibrary::GetConversion(
-    const YUVConversionDescriptorVK& desc) {
+    const YUVConversionDescriptor& desc) {
   Lock lock(conversions_mutex_);
   auto found = conversions_.find(desc);
   if (found != conversions_.end()) {

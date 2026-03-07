@@ -24,7 +24,7 @@ namespace ogre {
 ///             signalling operation to a queue before attempted to obtain a
 ///             file descriptor for the fence.
 ///
-class ExternalSemaphoreVK {
+class ExternalSemaphore {
  public:
   //----------------------------------------------------------------------------
   /// @brief      Create a new un-signaled semaphore that can be exported as a
@@ -32,13 +32,13 @@ class ExternalSemaphoreVK {
   ///
   /// @param[in]  context  The device context.
   ///
-  explicit ExternalSemaphoreVK(const std::shared_ptr<Context>& context);
+  explicit ExternalSemaphore(const std::shared_ptr<Context>& context);
 
-  ~ExternalSemaphoreVK();
+  ~ExternalSemaphore();
 
-  ExternalSemaphoreVK(const ExternalSemaphoreVK&) = delete;
+  ExternalSemaphore(const ExternalSemaphore&) = delete;
 
-  ExternalSemaphoreVK& operator=(const ExternalSemaphoreVK&) = delete;
+  ExternalSemaphore& operator=(const ExternalSemaphore&) = delete;
 
   //----------------------------------------------------------------------------
   /// @brief      If a valid fence could be created.

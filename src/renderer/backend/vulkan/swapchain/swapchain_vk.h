@@ -55,7 +55,7 @@ class Swapchain {
 
   virtual bool IsValid() const = 0;
 
-  virtual std::unique_ptr<SurfaceVK> AcquireNextDrawable() = 0;
+  virtual std::unique_ptr<Surface> AcquireNextDrawable() = 0;
 
   virtual vk::Format GetSurfaceFormat() const = 0;
 

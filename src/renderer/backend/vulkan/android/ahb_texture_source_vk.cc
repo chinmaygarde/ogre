@@ -85,7 +85,7 @@ vk::UniqueDeviceMemory ImportVKDeviceMemoryFromAndroidHarwareBuffer(
 std::shared_ptr<YUVConversionVK> CreateYUVConversion(
     const ContextVK& context,
     const AHBProperties& ahb_props) {
-  YUVConversionDescriptorVK conversion_chain;
+  YUVConversionDescriptor conversion_chain;
 
   const auto& ahb_format =
       ahb_props.get<vk::AndroidHardwareBufferFormatPropertiesANDROID>();

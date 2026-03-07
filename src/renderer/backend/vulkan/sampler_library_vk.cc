@@ -19,7 +19,7 @@ void SamplerLibrary::ApplyWorkarounds(const Workarounds& workarounds) {
   mips_disabled_workaround_ = workarounds.broken_mipmap_generation;
 }
 
-raw_ptr<const SamplerVK> SamplerLibrary::GetSampler(
+raw_ptr<const Sampler> SamplerLibrary::GetSampler(
     const SamplerDescriptor& desc) {
   SamplerDescriptor desc_copy = desc;
   if (mips_disabled_workaround_) {
@@ -34,11 +34,10 @@ raw_ptr<const SamplerVK> SamplerLibrary::GetSampler(
   }
   auto device_holder = device_holder_.lock();
   if (!device_holder || !device_holder->GetDevice()) {
-    return raw_ptr<const SamplerVK>(nullptr);
+    return raw_ptr<const Sampler>(nullptr);
   }
   samplers_.push_back(std::make_pair(
-      p_key,
-      std::make_shared<SamplerVK>(device_holder->GetDevice(), desc_copy)));
+      p_key, std::make_shared<Sampler>(device_holder->GetDevice(), desc_copy)));
   return raw_ptr(samplers_.back().second);
 }
 

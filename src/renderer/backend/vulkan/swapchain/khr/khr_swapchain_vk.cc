@@ -45,11 +45,11 @@ void KHRSwapchain::AddFinalCommandBuffer(
   impl_->AddFinalCommandBuffer(std::move(cmd_buffer));
 }
 
-std::unique_ptr<SurfaceVK> KHRSwapchain::AcquireNextDrawable() {
+std::unique_ptr<Surface> KHRSwapchain::AcquireNextDrawable() {
   return AcquireNextDrawable(0u);
 }
 
-std::unique_ptr<SurfaceVK> KHRSwapchain::AcquireNextDrawable(
+std::unique_ptr<Surface> KHRSwapchain::AcquireNextDrawable(
     size_t resize_retry_count) {
   if (!IsValid()) {
     return nullptr;
