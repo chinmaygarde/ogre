@@ -8,3 +8,5 @@ build/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .claude/settings.local.json
+.claude/agent-memory
+

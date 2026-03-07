@@ -24,7 +24,7 @@ just sync
 ```sh
 just setup        # configure (debug)
 just build        # build (debug)
-just test         # build and run tests (debug)
+just test         # run tests (debug)
 ```
 
 Use the `preset` argument to switch configurations:
