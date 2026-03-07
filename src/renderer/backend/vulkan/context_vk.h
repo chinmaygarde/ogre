@@ -180,7 +180,7 @@ class ContextVK final : public Context,
   const std::shared_ptr<fml::ConcurrentTaskRunner>
   GetConcurrentWorkerTaskRunner() const;
 
-  const std::shared_ptr<QueueVK>& GetGraphicsQueue() const;
+  const std::shared_ptr<Queue>& GetGraphicsQueue() const;
 
   vk::PhysicalDevice GetPhysicalDevice() const;
 

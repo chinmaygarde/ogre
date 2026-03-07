@@ -64,7 +64,7 @@ static std::optional<vk::PhysicalDevice> PickPhysicalDevice(
 }
 
 static std::vector<vk::DeviceQueueCreateInfo> GetQueueCreateInfos(
-    std::initializer_list<QueueIndexVK> queues) {
+    std::initializer_list<QueueIndex> queues) {
   std::map<size_t /* family */, size_t /* index */> family_index_map;
   for (const auto& queue : queues) {
     family_index_map[queue.family] = 0;
@@ -86,8 +86,8 @@ static std::vector<vk::DeviceQueueCreateInfo> GetQueueCreateInfos(
   return infos;
 }
 
-static std::optional<QueueIndexVK> PickQueue(const vk::PhysicalDevice& device,
-                                             vk::QueueFlagBits flags) {
+static std::optional<QueueIndex> PickQueue(const vk::PhysicalDevice& device,
+                                           vk::QueueFlagBits flags) {
   // This can be modified to ensure that dedicated queues are returned for each
   // queue type depending on support.
   const auto families = device.getQueueFamilyProperties();
@@ -95,7 +95,7 @@ static std::optional<QueueIndexVK> PickQueue(const vk::PhysicalDevice& device,
     if (!(families[i].queueFlags & flags)) {
       continue;
     }
-    return QueueIndexVK{.family = i, .index = 0};
+    return QueueIndex{.family = i, .index = 0};
   }
   return std::nullopt;
 }
@@ -613,7 +613,7 @@ const std::shared_ptr<const Capabilities>& ContextVK::GetCapabilities() const {
   return device_capabilities_;
 }
 
-const std::shared_ptr<QueueVK>& ContextVK::GetGraphicsQueue() const {
+const std::shared_ptr<Queue>& ContextVK::GetGraphicsQueue() const {
   return queues_.graphics_queue;
 }
 

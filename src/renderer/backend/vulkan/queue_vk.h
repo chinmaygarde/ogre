@@ -12,11 +12,11 @@
 
 namespace ogre {
 
-struct QueueIndexVK {
+struct QueueIndex {
   size_t family = 0;
   size_t index = 0;
 
-  constexpr bool operator==(const QueueIndexVK& other) const {
+  constexpr bool operator==(const QueueIndex& other) const {
     return family == other.family && index == other.index;
   }
 };
@@ -26,15 +26,15 @@ struct QueueIndexVK {
 ///             If multiple objects are created with the same underlying queue,
 ///             then the external synchronization guarantees of Vulkan queues
 ///             cannot be met. So care must be taken the same device queue
-///             doesn't form the basis of multiple `QueueVK`s.
+///             doesn't form the basis of multiple `Queue`s.
 ///
-class QueueVK {
+class Queue {
  public:
-  QueueVK(QueueIndexVK index, vk::Queue queue);
+  Queue(QueueIndex index, vk::Queue queue);
 
-  ~QueueVK();
+  ~Queue();
 
-  const QueueIndexVK& GetIndex() const;
+  const QueueIndex& GetIndex() const;
 
   vk::Result Submit(const vk::SubmitInfo& submit_info,
                     const vk::Fence& fence) const;
@@ -48,12 +48,12 @@ class QueueVK {
  private:
   mutable Mutex queue_mutex_;
 
-  const QueueIndexVK index_;
+  const QueueIndex index_;
   const vk::Queue queue_ IPLR_GUARDED_BY(queue_mutex_);
 
-  QueueVK(const QueueVK&) = delete;
+  Queue(const Queue&) = delete;
 
-  QueueVK& operator=(const QueueVK&) = delete;
+  Queue& operator=(const Queue&) = delete;
 };
 
 //------------------------------------------------------------------------------
@@ -61,23 +61,23 @@ class QueueVK {
 ///             be the same.
 ///
 struct QueuesVK {
-  std::shared_ptr<QueueVK> graphics_queue;
-  std::shared_ptr<QueueVK> compute_queue;
-  std::shared_ptr<QueueVK> transfer_queue;
+  std::shared_ptr<Queue> graphics_queue;
+  std::shared_ptr<Queue> compute_queue;
+  std::shared_ptr<Queue> transfer_queue;
 
   QueuesVK();
 
-  QueuesVK(std::shared_ptr<QueueVK> graphics_queue,
-           std::shared_ptr<QueueVK> compute_queue,
-           std::shared_ptr<QueueVK> transfer_queue);
+  QueuesVK(std::shared_ptr<Queue> graphics_queue,
+           std::shared_ptr<Queue> compute_queue,
+           std::shared_ptr<Queue> transfer_queue);
 
   static QueuesVK FromEmbedderQueue(vk::Queue queue,
                                     uint32_t queue_family_index);
 
   static QueuesVK FromQueueIndices(const vk::Device& device,
-                                   QueueIndexVK graphics,
-                                   QueueIndexVK compute,
-                                   QueueIndexVK transfer);
+                                   QueueIndex graphics,
+                                   QueueIndex compute,
+                                   QueueIndex transfer);
 
   bool IsValid() const;
 };
