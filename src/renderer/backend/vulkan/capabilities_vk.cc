@@ -193,6 +193,7 @@ static const char* GetExtensionName(OptionalAndroidDeviceExtensionVK ext) {
     case OptionalAndroidDeviceExtensionVK::kLast:
       return "Unknown";
   }
+  FML_UNREACHABLE();
 }
 
 static const char* GetExtensionName(OptionalDeviceExtensionVK ext) {

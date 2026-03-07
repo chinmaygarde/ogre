@@ -109,6 +109,15 @@ target_sources(fml PUBLIC
   platform/darwin/string_range_sanitization.h
   platform/darwin/string_range_sanitization.mm
 )
-endif(APPLE)
+elseif (UNIX)
+target_sources(fml PUBLIC
+  concurrent_message_loop_factory.cc
+  platform/linux/message_loop_linux.cc
+  platform/linux/message_loop_linux.h
+  platform/linux/paths_linux.cc
+  platform/linux/timerfd.cc
+  platform/linux/timerfd.h
+)
+endif()
 
 target_include_directories(fml PUBLIC ..)

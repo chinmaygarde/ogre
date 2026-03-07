@@ -457,7 +457,7 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
                           std::format("Pipeline {}", desc.GetLabel()));
 #endif  // OGRE_DEBUG
 
-  return std::move(pipeline);
+  return pipeline;
 }
 }  // namespace
 

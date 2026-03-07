@@ -224,6 +224,7 @@ constexpr const char* LoadActionToString(LoadAction action) {
     case LoadAction::kClear:
       return "Clear";
   }
+  FML_UNREACHABLE();
 }
 
 constexpr const char* StoreActionToString(StoreAction action) {
@@ -237,6 +238,7 @@ constexpr const char* StoreActionToString(StoreAction action) {
     case StoreAction::kStoreAndMultisampleResolve:
       return "StoreAndMultisampleResolve";
   }
+  FML_UNREACHABLE();
 }
 
 constexpr bool CanClearAttachment(LoadAction action) {

@@ -162,6 +162,7 @@ vk::Format ToVertexDescriptorFormat(const ShaderStageIOSlot& input) {
     case ShaderType::kSampler:
       return vk::Format::eUndefined;
   }
+  FML_UNREACHABLE();
 }
 
 }  // namespace ogre

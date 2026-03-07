@@ -40,6 +40,10 @@ jobs:
         restore-keys: |
             ${{ runner.os }}-vcpkg-binary-cache-
 
+    - name: Install Vulkan Runtime (Linux only)
+      if: matrix.os == 'ubuntu-24.04'
+      run: sudo apt-get install -y libvulkan1 mesa-vulkan-drivers
+
     - name: Pull Dependencies
       run: just --no-deps sync
 

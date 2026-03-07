@@ -16,7 +16,9 @@ RUN apt update && apt install -y \
   curl                           \
   git                            \
   gnupg                          \
+  libvulkan1                     \
   lsb-release                    \
+  mesa-vulkan-drivers            \
   ninja-build                    \
   pkg-config                     \
   software-properties-common     \

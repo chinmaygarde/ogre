@@ -21,6 +21,7 @@ constexpr bool StoreActionNeedsResolveTexture(StoreAction action) {
     case StoreAction::kStoreAndMultisampleResolve:
       return true;
   }
+  FML_UNREACHABLE();
 }
 
 bool Attachment::IsValid() const {
