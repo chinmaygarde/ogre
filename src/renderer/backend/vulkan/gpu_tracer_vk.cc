@@ -45,8 +45,8 @@ void GPUTracerVK::InitializeQueryPool(const ContextVK& context) {
     return;
   }
   Lock lock(trace_state_mutex_);
-  std::shared_ptr<CommandBuffer> buffer = context.CreateCommandBuffer();
-  CommandBufferVK& buffer_vk = CommandBufferVK::Cast(*buffer);
+  std::shared_ptr<CommandBufferVK> buffer = context.CreateCommandBuffer();
+  CommandBufferVK& buffer_vk = *buffer;
 
   for (auto i = 0u; i < kTraceStatesSize; i++) {
     vk::QueryPoolCreateInfo info;

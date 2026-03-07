@@ -41,15 +41,15 @@ void KHRSwapchainVK::UpdateSurfaceSize(const ISize& size) {
 }
 
 void KHRSwapchainVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBuffer> cmd_buffer) const {
+    std::shared_ptr<CommandBufferVK> cmd_buffer) const {
   impl_->AddFinalCommandBuffer(std::move(cmd_buffer));
 }
 
-std::unique_ptr<Surface> KHRSwapchainVK::AcquireNextDrawable() {
+std::unique_ptr<SurfaceVK> KHRSwapchainVK::AcquireNextDrawable() {
   return AcquireNextDrawable(0u);
 }
 
-std::unique_ptr<Surface> KHRSwapchainVK::AcquireNextDrawable(
+std::unique_ptr<SurfaceVK> KHRSwapchainVK::AcquireNextDrawable(
     size_t resize_retry_count) {
   if (!IsValid()) {
     return nullptr;

@@ -4,6 +4,8 @@
 
 #include "renderer/backend/vulkan/shader_function_vk.h"
 
+#include "fml/hash_combine.h"
+
 namespace ogre {
 
 ShaderFunctionVK::ShaderFunctionVK(
@@ -12,7 +14,9 @@ ShaderFunctionVK::ShaderFunctionVK(
     std::string name,
     ShaderStage stage,
     vk::UniqueShaderModule module)
-    : ShaderFunction(parent_library_id, std::move(name), stage),
+    : parent_library_id_(parent_library_id),
+      name_(std::move(name)),
+      stage_(stage),
       module_(std::move(module)),
       device_holder_(device_holder) {}
 
@@ -25,8 +29,25 @@ ShaderFunctionVK::~ShaderFunctionVK() {
   }
 }
 
+ShaderStage ShaderFunctionVK::GetStage() const {
+  return stage_;
+}
+
+const std::string& ShaderFunctionVK::GetName() const {
+  return name_;
+}
+
 const vk::ShaderModule& ShaderFunctionVK::GetModule() const {
   return module_.get();
+}
+
+std::size_t ShaderFunctionVK::GetHash() const {
+  return fml::HashCombine(parent_library_id_, name_, stage_);
+}
+
+bool ShaderFunctionVK::IsEqual(const ShaderFunctionVK& other) const {
+  return parent_library_id_ == other.parent_library_id_ &&
+         name_ == other.name_ && stage_ == other.stage_;
 }
 
 }  // namespace ogre

@@ -5,8 +5,7 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_SAMPLER_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_SAMPLER_VK_H_
 
-#include "base/backend_cast.h"
-#include "core/sampler.h"
+#include "core/sampler_descriptor.h"
 #include "renderer/backend/vulkan/shared_object_vk.h"
 #include "renderer/backend/vulkan/vk.h"
 
@@ -15,14 +14,15 @@ namespace ogre {
 class SamplerLibraryVK;
 class YUVConversionVK;
 
-class SamplerVK final : public Sampler, public BackendCast<SamplerVK, Sampler> {
+class SamplerVK final {
  public:
   SamplerVK(const vk::Device& device,
             const SamplerDescriptor&,
             std::shared_ptr<YUVConversionVK> yuv_conversion = {});
 
-  // |Sampler|
-  ~SamplerVK() override;
+  ~SamplerVK();
+
+  const SamplerDescriptor& GetDescriptor() const;
 
   vk::Sampler GetSampler() const;
 
@@ -35,6 +35,7 @@ class SamplerVK final : public Sampler, public BackendCast<SamplerVK, Sampler> {
   friend SamplerLibraryVK;
 
   const vk::Device device_;
+  SamplerDescriptor desc_;
   SharedHandleVK<vk::Sampler> sampler_;
   std::shared_ptr<YUVConversionVK> yuv_conversion_;
   bool mips_disabled_workaround_ = false;

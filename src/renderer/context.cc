@@ -7,6 +7,10 @@
 #include <mutex>
 #include <utility>
 
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
+#include "renderer/backend/vulkan/idle_waiter_vk.h"
+
 namespace ogre {
 
 ImpellerContextFuture::ImpellerContextFuture(
@@ -31,7 +35,7 @@ bool Context::UpdateOffscreenLayerPixelFormat(PixelFormat format) {
 }
 
 bool Context::EnqueueCommandBuffer(
-    std::shared_ptr<CommandBuffer> command_buffer) {
+    std::shared_ptr<CommandBufferVK> command_buffer) {
   return GetCommandQueue()->Submit({std::move(command_buffer)}).ok();
 }
 
@@ -39,7 +43,7 @@ bool Context::FlushCommandBuffers() {
   return true;
 }
 
-std::shared_ptr<const IdleWaiter> Context::GetIdleWaiter() const {
+std::shared_ptr<const IdleWaiterVK> Context::GetIdleWaiter() const {
   return nullptr;
 }
 
@@ -51,7 +55,7 @@ bool Context::AddTrackingFence(const std::shared_ptr<Texture>& texture) const {
   return false;
 }
 
-bool Context::SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) {
+bool Context::SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer) {
   return EnqueueCommandBuffer(std::move(cmd_buffer));
 }
 

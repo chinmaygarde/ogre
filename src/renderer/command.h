@@ -12,10 +12,10 @@
 
 #include "core/buffer_view.h"
 #include "core/formats.h"
-#include "core/sampler.h"
 #include "core/shader_types.h"
 #include "core/texture.h"
 #include "geometry/rect.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
 #include "renderer/pipeline.h"
 
 namespace ogre {
@@ -60,7 +60,7 @@ struct TextureAndSampler {
   SampledImageSlot slot;
   ShaderStage stage;
   TextureResource texture;
-  raw_ptr<const Sampler> sampler;
+  raw_ptr<const SamplerVK> sampler;
 };
 
 //------------------------------------------------------------------------------

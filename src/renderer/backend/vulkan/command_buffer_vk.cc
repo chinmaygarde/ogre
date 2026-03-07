@@ -11,19 +11,21 @@
 #include "renderer/backend/vulkan/blit_pass_vk.h"
 #include "renderer/backend/vulkan/compute_pass_vk.h"
 #include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/descriptor_pool_vk.h"
 #include "renderer/backend/vulkan/gpu_tracer_vk.h"
 #include "renderer/backend/vulkan/render_pass_vk.h"
+#include "renderer/backend/vulkan/texture_source_vk.h"
 #include "renderer/backend/vulkan/texture_vk.h"
-#include "renderer/command_buffer.h"
+#include "renderer/backend/vulkan/tracked_objects_vk.h"
 #include "renderer/render_target.h"
 
 namespace ogre {
 
 CommandBufferVK::CommandBufferVK(
-    std::weak_ptr<const Context> context,
+    std::weak_ptr<const ContextVK> context,
     std::weak_ptr<const DeviceHolderVK> device_holder,
     std::shared_ptr<TrackedObjectsVK> tracked_objects)
-    : CommandBuffer(std::move(context)),
+    : context_(std::move(context)),
       device_holder_(std::move(device_holder)),
       tracked_objects_(std::move(tracked_objects)) {}
 
@@ -35,7 +37,7 @@ void CommandBufferVK::SetLabel(std::string_view label) const {
   if (!context) {
     return;
   }
-  ContextVK::Cast(*context).SetDebugName(GetCommandBuffer(), label);
+  context->SetDebugName(GetCommandBuffer(), label);
 #endif  // OGRE_DEBUG
 }
 
@@ -43,33 +45,29 @@ bool CommandBufferVK::IsValid() const {
   return true;
 }
 
-bool CommandBufferVK::OnSubmitCommands(bool block_on_schedule,
-                                       CompletionCallback callback) {
-  FML_UNREACHABLE()
-}
+void CommandBufferVK::WaitUntilCompleted() {}
 
-void CommandBufferVK::OnWaitUntilCompleted() {}
+void CommandBufferVK::WaitUntilScheduled() {}
 
-void CommandBufferVK::OnWaitUntilScheduled() {}
-
-std::shared_ptr<RenderPass> CommandBufferVK::OnCreateRenderPass(
-    RenderTarget target) {
+std::shared_ptr<RenderPassVK> CommandBufferVK::CreateRenderPass(
+    const RenderTarget& render_target) {
   auto context = context_.lock();
   if (!context) {
     return nullptr;
   }
-  auto pass =
-      std::shared_ptr<RenderPassVK>(new RenderPassVK(context,            //
-                                                     target,             //
-                                                     shared_from_this()  //
-                                                     ));
+  auto pass = std::shared_ptr<RenderPassVK>(
+      new RenderPassVK(context,            //
+                       render_target,      //
+                       shared_from_this()  //
+                       ));
   if (!pass->IsValid()) {
     return nullptr;
   }
+  pass->SetLabel("RenderPass");
   return pass;
 }
 
-std::shared_ptr<BlitPass> CommandBufferVK::OnCreateBlitPass() {
+std::shared_ptr<BlitPassVK> CommandBufferVK::CreateBlitPass() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -77,15 +75,16 @@ std::shared_ptr<BlitPass> CommandBufferVK::OnCreateBlitPass() {
   if (!context) {
     return nullptr;
   }
-  auto pass = std::shared_ptr<BlitPassVK>(new BlitPassVK(
-      shared_from_this(), ContextVK::Cast(*context).GetWorkarounds()));
+  auto pass = std::shared_ptr<BlitPassVK>(
+      new BlitPassVK(shared_from_this(), context->GetWorkarounds()));
   if (!pass->IsValid()) {
     return nullptr;
   }
+  pass->SetLabel("BlitPass");
   return pass;
 }
 
-std::shared_ptr<ComputePass> CommandBufferVK::OnCreateComputePass() {
+std::shared_ptr<ComputePassVK> CommandBufferVK::CreateComputePass() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -93,13 +92,14 @@ std::shared_ptr<ComputePass> CommandBufferVK::OnCreateComputePass() {
   if (!context) {
     return nullptr;
   }
-  auto pass =
-      std::shared_ptr<ComputePassVK>(new ComputePassVK(context,            //
-                                                       shared_from_this()  //
-                                                       ));
+  auto pass = std::shared_ptr<ComputePassVK>(
+      new ComputePassVK(context,            //
+                        shared_from_this()  //
+                        ));
   if (!pass->IsValid()) {
     return nullptr;
   }
+  pass->SetLabel("ComputePass");
   return pass;
 }
 

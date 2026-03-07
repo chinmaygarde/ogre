@@ -3,8 +3,10 @@
 // found in the LICENSE file.
 
 #include "renderer/texture_util.h"
-#include "renderer/blit_pass.h"
-#include "renderer/command_buffer.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/backend/vulkan/blit_pass_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
 
 namespace ogre {
 
@@ -21,8 +23,8 @@ std::shared_ptr<Texture> CreateTexture(
   std::shared_ptr<DeviceBuffer> buffer =
       context->GetResourceAllocator()->CreateBufferWithCopy(*data_mapping);
 
-  std::shared_ptr<CommandBuffer> cmd_buffer = context->CreateCommandBuffer();
-  std::shared_ptr<BlitPass> blit_pass = cmd_buffer->CreateBlitPass();
+  std::shared_ptr<CommandBufferVK> cmd_buffer = context->CreateCommandBuffer();
+  std::shared_ptr<BlitPassVK> blit_pass = cmd_buffer->CreateBlitPass();
   blit_pass->AddCopy(DeviceBuffer::AsBufferView(std::move(buffer)), texture);
 
   if (!blit_pass->EncodeCommands() ||
@@ -35,10 +37,10 @@ std::shared_ptr<Texture> CreateTexture(
 }
 
 fml::Status AddMipmapGeneration(
-    const std::shared_ptr<CommandBuffer>& command_buffer,
+    const std::shared_ptr<CommandBufferVK>& command_buffer,
     const std::shared_ptr<Context>& context,
     const std::shared_ptr<Texture>& texture) {
-  std::shared_ptr<BlitPass> blit_pass = command_buffer->CreateBlitPass();
+  std::shared_ptr<BlitPassVK> blit_pass = command_buffer->CreateBlitPass();
   bool success = blit_pass->GenerateMipmap(texture);
   if (!success) {
     return fml::Status(fml::StatusCode::kUnknown, "");

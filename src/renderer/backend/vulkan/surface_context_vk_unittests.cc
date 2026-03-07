@@ -9,7 +9,7 @@
 #include "gtest/gtest.h"
 #include "renderer/backend/vulkan/surface_context_vk.h"
 #include "renderer/backend/vulkan/test/mock_vulkan.h"
-#include "renderer/surface.h"
+#include "renderer/backend/vulkan/swapchain/surface_vk.h"
 
 namespace ogre {
 namespace testing {

@@ -5,17 +5,20 @@
 #ifndef FLUTTER_OGRE_RENDERER_TESTING_MOCKS_H_
 #define FLUTTER_OGRE_RENDERER_TESTING_MOCKS_H_
 
-#include "core/allocator.h"
 #include "core/runtime_types.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 #include "core/sampler_descriptor.h"
 #include "core/texture.h"
 #include "gmock/gmock.h"
+#include "renderer/backend/vulkan/blit_pass_vk.h"
+#include "renderer/backend/vulkan/compute_pass_vk.h"
+#include "renderer/backend/vulkan/render_pass_vk.h"
+#include "renderer/backend/vulkan/shader_library_vk.h"
 #include "renderer/command_buffer.h"
 #include "renderer/command_queue.h"
 #include "renderer/context.h"
 #include "renderer/pipeline.h"
 #include "renderer/pipeline_library.h"
-#include "renderer/render_pass.h"
 #include "renderer/render_target.h"
 #include "renderer/sampler_library.h"
 
@@ -59,64 +62,6 @@ class MockAllocator : public Allocator {
               (override));
 };
 
-class MockBlitPass : public BlitPass {
- public:
-  MOCK_METHOD(bool, IsValid, (), (const, override));
-  MOCK_METHOD(bool, EncodeCommands, (), (const, override));
-  MOCK_METHOD(void, OnSetLabel, (std::string_view label), (override));
-
-  MOCK_METHOD(bool,
-              ResizeTexture,
-              (const std::shared_ptr<Texture>& source,
-               const std::shared_ptr<Texture>& destination),
-              (override));
-
-  MOCK_METHOD(bool,
-              OnCopyTextureToTextureCommand,
-              (std::shared_ptr<Texture> source,
-               std::shared_ptr<Texture> destination,
-               IRect source_region,
-               IPoint destination_origin,
-               std::string_view label),
-              (override));
-
-  MOCK_METHOD(bool,
-              OnCopyTextureToBufferCommand,
-              (std::shared_ptr<Texture> source,
-               std::shared_ptr<DeviceBuffer> destination,
-               IRect source_region,
-               size_t destination_offset,
-               std::string_view label),
-              (override));
-  MOCK_METHOD(bool,
-              OnCopyBufferToTextureCommand,
-              (BufferView source,
-               std::shared_ptr<Texture> destination,
-               IRect destination_rect,
-               std::string_view label,
-               uint32_t mip_level,
-               uint32_t slice,
-               bool convert_to_read),
-              (override));
-  MOCK_METHOD(bool,
-              OnGenerateMipmapCommand,
-              (std::shared_ptr<Texture> texture, std::string_view label),
-              (override));
-};
-
-class MockRenderPass : public RenderPass {
- public:
-  MockRenderPass(std::shared_ptr<const Context> context,
-                 const RenderTarget& target)
-      : RenderPass(std::move(context), target) {}
-  MOCK_METHOD(bool, IsValid, (), (const, override));
-  MOCK_METHOD(bool,
-              OnEncodeCommands,
-              (const Context& context),
-              (const, override));
-  MOCK_METHOD(void, OnSetLabel, (std::string_view label), (override));
-};
-
 class MockPipelineLibrary : public PipelineLibrary {
  public:
   MOCK_METHOD(bool, IsValid, (), (const, override));
@@ -134,7 +79,7 @@ class MockPipelineLibrary : public PipelineLibrary {
               (override));
   MOCK_METHOD(void,
               RemovePipelinesWithEntryPoint,
-              (std::shared_ptr<const ShaderFunction> function),
+              (std::shared_ptr<const ShaderFunctionVK> function),
               (override));
 };
 
@@ -144,18 +89,18 @@ class MockCommandBuffer : public CommandBuffer {
       : CommandBuffer(std::move(context)) {}
   MOCK_METHOD(bool, IsValid, (), (const, override));
   MOCK_METHOD(void, SetLabel, (std::string_view label), (const, override));
-  MOCK_METHOD(std::shared_ptr<BlitPass>, OnCreateBlitPass, (), (override));
+  MOCK_METHOD(std::shared_ptr<BlitPassVK>, OnCreateBlitPass, (), (override));
   MOCK_METHOD(bool,
               OnSubmitCommands,
               (bool block_on_schedule, CompletionCallback callback),
               (override));
   MOCK_METHOD(void, OnWaitUntilCompleted, (), (override));
   MOCK_METHOD(void, OnWaitUntilScheduled, (), (override));
-  MOCK_METHOD(std::shared_ptr<ComputePass>,
+  MOCK_METHOD(std::shared_ptr<ComputePassVK>,
               OnCreateComputePass,
               (),
               (override));
-  MOCK_METHOD(std::shared_ptr<RenderPass>,
+  MOCK_METHOD(std::shared_ptr<RenderPassVK>,
               OnCreateRenderPass,
               (RenderTarget render_target),
               (override));
@@ -173,12 +118,12 @@ class MockImpellerContext : public Context {
 
   MOCK_METHOD(void, Shutdown, (), (override));
 
-  MOCK_METHOD(std::shared_ptr<Allocator>,
+  MOCK_METHOD(std::shared_ptr<AllocatorVK>,
               GetResourceAllocator,
               (),
               (const, override));
 
-  MOCK_METHOD(std::shared_ptr<ShaderLibrary>,
+  MOCK_METHOD(std::shared_ptr<ShaderLibraryVK>,
               GetShaderLibrary,
               (),
               (const, override));

@@ -5,21 +5,28 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_COMMAND_QUEUE_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_COMMAND_QUEUE_VK_H_
 
-#include "renderer/command_queue.h"
+#include <functional>
+#include <memory>
+#include <vector>
+
+#include "fml/status.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
 
 namespace ogre {
 
 class ContextVK;
 
-class CommandQueueVK : public CommandQueue {
+class CommandQueueVK {
  public:
+  using CompletionCallback = std::function<void(CommandBufferVK::Status)>;
+
   explicit CommandQueueVK(const std::weak_ptr<ContextVK>& context);
 
-  ~CommandQueueVK() override;
+  ~CommandQueueVK();
 
-  fml::Status Submit(const std::vector<std::shared_ptr<CommandBuffer>>& buffers,
+  fml::Status Submit(const std::vector<std::shared_ptr<CommandBufferVK>>& buffers,
                      const CompletionCallback& completion_callback = {},
-                     bool block_on_schedule = false) override;
+                     bool block_on_schedule = false);
 
  private:
   std::weak_ptr<ContextVK> context_;

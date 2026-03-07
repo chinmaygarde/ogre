@@ -328,8 +328,7 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
     vk::PipelineShaderStageCreateInfo info;
     info.setStage(stage.value());
     info.setPName("main");
-    info.setModule(
-        ShaderFunctionVK::Cast(entrypoint.second.get())->GetModule());
+    info.setModule(entrypoint.second->GetModule());
     info.setPSpecializationInfo(&specialization_info);
     shader_stages.push_back(info);
     entrypoint_count++;
@@ -464,7 +463,7 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
 std::unique_ptr<PipelineVK> PipelineVK::Create(
     const PipelineDescriptor& desc,
     const std::shared_ptr<DeviceHolderVK>& device_holder,
-    const std::weak_ptr<PipelineLibrary>& weak_library,
+    const std::weak_ptr<PipelineLibraryVK>& weak_library,
     PipelineKey pipeline_key,
     std::shared_ptr<SamplerVK> immutable_sampler) {
   TRACE_EVENT1("flutter", "PipelineVK::Create", "Name", desc.GetLabel().data());
@@ -475,7 +474,7 @@ std::unique_ptr<PipelineVK> PipelineVK::Create(
     return nullptr;
   }
 
-  const auto& pso_cache = PipelineLibraryVK::Cast(*library).GetPSOCache();
+  const auto& pso_cache = library->GetPSOCache();
 
   fml::StatusOr<vk::UniqueDescriptorSetLayout> descs_layout =
       MakeDescriptorSetLayout(desc, device_holder, immutable_sampler);
@@ -523,7 +522,7 @@ std::unique_ptr<PipelineVK> PipelineVK::Create(
 }
 
 PipelineVK::PipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
-                       std::weak_ptr<PipelineLibrary> library,
+                       std::weak_ptr<PipelineLibraryVK> library,
                        const PipelineDescriptor& desc,
                        vk::UniquePipeline pipeline,
                        vk::UniqueRenderPass render_pass,

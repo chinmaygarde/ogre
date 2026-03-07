@@ -5,7 +5,12 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_ALLOCATOR_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_ALLOCATOR_VK_H_
 
-#include "core/allocator.h"
+#include "base/allocation_size.h"
+#include "core/device_buffer.h"
+#include "core/device_buffer_descriptor.h"
+#include "core/texture.h"
+#include "core/texture_descriptor.h"
+#include "fml/mapping.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/device_buffer_vk.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
@@ -16,13 +21,32 @@
 
 namespace ogre {
 
-class AllocatorVK final : public Allocator {
+class AllocatorVK final {
  public:
   // |Allocator|
-  ~AllocatorVK() override;
+  ~AllocatorVK();
 
-  // |Allocator|
-  Bytes DebugGetHeapUsage() const override;
+  bool IsValid() const;
+
+  std::shared_ptr<DeviceBuffer> CreateBuffer(
+      const DeviceBufferDescriptor& desc);
+
+  std::shared_ptr<Texture> CreateTexture(const TextureDescriptor& desc,
+                                         bool threadsafe = false);
+
+  std::shared_ptr<DeviceBuffer> CreateBufferWithCopy(const uint8_t* buffer,
+                                                     size_t length);
+
+  std::shared_ptr<DeviceBuffer> CreateBufferWithCopy(
+      const fml::Mapping& mapping);
+
+  uint16_t MinimumBytesPerRow(PixelFormat format) const;
+
+  ISize GetMaxTextureSizeSupported() const;
+
+  void DebugTraceMemoryStatistics() const;
+
+  Bytes DebugGetHeapUsage() const;
 
   /// @brief Select a matching memory type for the given
   ///        [memory_type_bits_requirement], or -1 if none is found.
@@ -60,22 +84,11 @@ class AllocatorVK final : public Allocator {
               const vk::Instance& instance,
               const CapabilitiesVK& capabilities);
 
-  // |Allocator|
-  bool IsValid() const;
-
-  // |Allocator|
   std::shared_ptr<DeviceBuffer> OnCreateBuffer(
-      const DeviceBufferDescriptor& desc) override;
+      const DeviceBufferDescriptor& desc);
 
-  // |Allocator|
   std::shared_ptr<Texture> OnCreateTexture(const TextureDescriptor& desc,
-                                           bool threadsafe) override;
-
-  // |Allocator|
-  ISize GetMaxTextureSizeSupported() const override;
-
-  // |Allocator|
-  void DebugTraceMemoryStatistics() const override;
+                                           bool threadsafe);
 
   AllocatorVK(const AllocatorVK&) = delete;
 

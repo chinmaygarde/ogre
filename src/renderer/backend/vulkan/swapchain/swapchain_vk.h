@@ -10,9 +10,9 @@
 #include "fml/build_config.h"
 #include "geometry/size.h"
 #include "renderer/backend/vulkan/vk.h"
-#include "renderer/command_buffer.h"
+#include "renderer/backend/vulkan/swapchain/surface_vk.h"
+#include "renderer/backend/vulkan/command_buffer_vk.h"
 #include "renderer/context.h"
-#include "renderer/surface.h"
 
 #if FML_OS_ANDROID
 #include "toolkit/android/native_window.h"
@@ -55,12 +55,12 @@ class SwapchainVK {
 
   virtual bool IsValid() const = 0;
 
-  virtual std::unique_ptr<Surface> AcquireNextDrawable() = 0;
+  virtual std::unique_ptr<SurfaceVK> AcquireNextDrawable() = 0;
 
   virtual vk::Format GetSurfaceFormat() const = 0;
 
   virtual void AddFinalCommandBuffer(
-      std::shared_ptr<CommandBuffer> cmd_buffer) const = 0;
+      std::shared_ptr<CommandBufferVK> cmd_buffer) const = 0;
 
   /// @brief Mark the current swapchain configuration as dirty, forcing it to be
   ///        recreated on the next frame.

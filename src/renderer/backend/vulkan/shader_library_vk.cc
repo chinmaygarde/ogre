@@ -26,8 +26,7 @@ bool ShaderLibraryVK::IsValid() const {
   return is_valid_;
 }
 
-// |ShaderLibrary|
-std::shared_ptr<const ShaderFunction> ShaderLibraryVK::GetFunction(
+std::shared_ptr<const ShaderFunctionVK> ShaderLibraryVK::GetFunction(
     std::string_view name,
     ShaderStage stage) {
   ReaderLock lock(functions_mutex_);
@@ -40,7 +39,6 @@ std::shared_ptr<const ShaderFunction> ShaderLibraryVK::GetFunction(
   return nullptr;
 }
 
-// |ShaderLibrary|
 void ShaderLibraryVK::RegisterFunction(std::string name,
                                        ShaderStage stage,
                                        std::shared_ptr<fml::Mapping> code,
@@ -111,7 +109,6 @@ bool ShaderLibraryVK::RegisterFunction(
   return true;
 }
 
-// |ShaderLibrary|
 void ShaderLibraryVK::UnregisterFunction(std::string name, ShaderStage stage) {
   WriterLock lock(functions_mutex_);
 

@@ -5,8 +5,7 @@
 #include "renderer/compute_pipeline_descriptor.h"
 
 #include "core/formats.h"
-#include "renderer/shader_function.h"
-#include "renderer/shader_library.h"
+#include "renderer/backend/vulkan/shader_function_vk.h"
 #include "renderer/vertex_descriptor.h"
 
 namespace ogre {
@@ -39,7 +38,7 @@ ComputePipelineDescriptor& ComputePipelineDescriptor::SetLabel(
 }
 
 ComputePipelineDescriptor& ComputePipelineDescriptor::SetStageEntrypoint(
-    std::shared_ptr<const ShaderFunction> function) {
+    std::shared_ptr<const ShaderFunctionVK> function) {
   FML_DCHECK(!function || function->GetStage() == ShaderStage::kCompute);
   if (!function || function->GetStage() != ShaderStage::kCompute) {
     return *this;
@@ -54,7 +53,7 @@ ComputePipelineDescriptor& ComputePipelineDescriptor::SetStageEntrypoint(
   return *this;
 }
 
-std::shared_ptr<const ShaderFunction>
+std::shared_ptr<const ShaderFunctionVK>
 ComputePipelineDescriptor::GetStageEntrypoint() const {
   return entrypoint_;
 }

@@ -2,16 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "fml/status.h"
-
 #include "renderer/backend/vulkan/command_queue_vk.h"
 
 #include "base/validation.h"
-#include "renderer/backend/vulkan/command_buffer_vk.h"
+#include "fml/status.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/fence_waiter_vk.h"
 #include "renderer/backend/vulkan/tracked_objects_vk.h"
-#include "renderer/command_buffer.h"
 
 namespace ogre {
 
@@ -21,7 +18,7 @@ CommandQueueVK::CommandQueueVK(const std::weak_ptr<ContextVK>& context)
 CommandQueueVK::~CommandQueueVK() = default;
 
 fml::Status CommandQueueVK::Submit(
-    const std::vector<std::shared_ptr<CommandBuffer>>& buffers,
+    const std::vector<std::shared_ptr<CommandBufferVK>>& buffers,
     const CompletionCallback& completion_callback,
     bool block_on_schedule) {
   if (buffers.empty()) {
@@ -31,7 +28,7 @@ fml::Status CommandQueueVK::Submit(
   // Success or failure, you only get to submit once.
   fml::ScopedCleanupClosure reset([&]() {
     if (completion_callback) {
-      completion_callback(CommandBuffer::Status::kError);
+      completion_callback(CommandBufferVK::Status::kError);
     }
   });
 
@@ -39,14 +36,13 @@ fml::Status CommandQueueVK::Submit(
   std::vector<std::shared_ptr<TrackedObjectsVK>> tracked_objects;
   vk_buffers.reserve(buffers.size());
   tracked_objects.reserve(buffers.size());
-  for (const std::shared_ptr<CommandBuffer>& buffer : buffers) {
-    CommandBufferVK& command_buffer = CommandBufferVK::Cast(*buffer);
-    if (!command_buffer.EndCommandBuffer()) {
+  for (const std::shared_ptr<CommandBufferVK>& buffer : buffers) {
+    if (!buffer->EndCommandBuffer()) {
       return fml::Status(fml::StatusCode::kCancelled,
                          "Failed to end command buffer.");
     }
-    vk_buffers.push_back(command_buffer.GetCommandBuffer());
-    tracked_objects.push_back(std::move(command_buffer.tracked_objects_));
+    vk_buffers.push_back(buffer->GetCommandBuffer());
+    tracked_objects.push_back(std::move(buffer->tracked_objects_));
   }
 
   auto context = context_.lock();
@@ -77,7 +73,7 @@ fml::Status CommandQueueVK::Submit(
         // callbacks.
         tracked_objects.clear();
         if (completion_callback) {
-          completion_callback(CommandBuffer::Status::kCompleted);
+          completion_callback(CommandBufferVK::Status::kCompleted);
         }
       });
   if (!added_fence) {

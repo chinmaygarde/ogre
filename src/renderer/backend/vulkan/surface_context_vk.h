@@ -10,13 +10,13 @@
 #include "base/backend_cast.h"
 #include "core/runtime_types.h"
 #include "renderer/backend/vulkan/vk.h"
-#include "renderer/command_queue.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
 #include "renderer/context.h"
 
 namespace ogre {
 
 class ContextVK;
-class Surface;
+class SurfaceVK;
 class SwapchainVK;
 
 /// For Vulkan, there is both a ContextVK that implements Context and a
@@ -47,34 +47,34 @@ class SurfaceContextVK : public Context,
   bool IsValid() const override;
 
   // |Context|
-  std::shared_ptr<Allocator> GetResourceAllocator() const override;
+  std::shared_ptr<AllocatorVK> GetResourceAllocator() const override;
 
   // |Context|
-  std::shared_ptr<ShaderLibrary> GetShaderLibrary() const override;
+  std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const override;
 
   // |Context|
-  std::shared_ptr<SamplerLibrary> GetSamplerLibrary() const override;
+  std::shared_ptr<SamplerLibraryVK> GetSamplerLibrary() const override;
 
   // |Context|
-  std::shared_ptr<PipelineLibrary> GetPipelineLibrary() const override;
+  std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const override;
 
   // |Context|
-  std::shared_ptr<CommandBuffer> CreateCommandBuffer() const override;
+  std::shared_ptr<CommandBufferVK> CreateCommandBuffer() const override;
 
   // |Context|
-  const std::shared_ptr<const Capabilities>& GetCapabilities() const override;
+  const std::shared_ptr<const CapabilitiesVK>& GetCapabilities() const override;
 
   // |Context|
-  std::shared_ptr<CommandQueue> GetCommandQueue() const override;
+  std::shared_ptr<CommandQueueVK> GetCommandQueue() const override;
 
   // |Context|
-  std::shared_ptr<const IdleWaiter> GetIdleWaiter() const override;
+  std::shared_ptr<const IdleWaiterVK> GetIdleWaiter() const override;
 
   // |Context|
   RuntimeStageBackend GetRuntimeStageBackend() const override;
 
   // |Context|
-  bool SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) override;
+  bool SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer) override;
 
   // |Context|
   void Shutdown() override;
@@ -84,7 +84,7 @@ class SurfaceContextVK : public Context,
 
   [[nodiscard]] bool SetSwapchain(std::shared_ptr<SwapchainVK> swapchain);
 
-  std::unique_ptr<Surface> AcquireNextSurface();
+  std::unique_ptr<SurfaceVK> AcquireNextSurface();
 
   /// @brief Performs frame incrementing processes like AcquireNextSurface but
   ///        without the surface.
@@ -110,7 +110,7 @@ class SurfaceContextVK : public Context,
   const std::shared_ptr<ContextVK>& GetParent() const;
 
   bool EnqueueCommandBuffer(
-      std::shared_ptr<CommandBuffer> command_buffer) override;
+      std::shared_ptr<CommandBufferVK> command_buffer) override;
 
   bool FlushCommandBuffers() override;
 

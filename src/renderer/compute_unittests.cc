@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/host_buffer.h"
+#include "renderer/host_buffer.h"
 #include "fixtures/sample.comp.h"
 #include "fixtures/stage1.comp.h"
 #include "fixtures/stage2.comp.h"

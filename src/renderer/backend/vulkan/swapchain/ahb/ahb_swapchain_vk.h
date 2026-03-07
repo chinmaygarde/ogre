@@ -41,7 +41,7 @@ class AHBSwapchainVK final : public SwapchainVK {
   bool IsValid() const override;
 
   // |SwapchainVK|
-  std::unique_ptr<Surface> AcquireNextDrawable() override;
+  std::unique_ptr<SurfaceVK> AcquireNextDrawable() override;
 
   // |SwapchainVK|
   vk::Format GetSurfaceFormat() const override;
@@ -51,7 +51,7 @@ class AHBSwapchainVK final : public SwapchainVK {
 
   // |SwapchainVK|
   void AddFinalCommandBuffer(
-      std::shared_ptr<CommandBuffer> cmd_buffer) const override;
+      std::shared_ptr<CommandBufferVK> cmd_buffer) const override;
 
  private:
   friend class SwapchainVK;

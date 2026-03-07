@@ -14,9 +14,10 @@
 
 namespace ogre {
 
+class CommandBufferVK;
 class Context;
 class KHRSwapchainImageVK;
-class Surface;
+class SurfaceVK;
 struct KHRFrameSynchronizerVK;
 
 //------------------------------------------------------------------------------
@@ -42,13 +43,13 @@ class KHRSwapchainImplVK final
   bool IsValid() const;
 
   struct AcquireResult {
-    std::unique_ptr<Surface> surface;
+    std::unique_ptr<SurfaceVK> surface;
     bool out_of_date = false;
 
     explicit AcquireResult(bool p_out_of_date = false)
         : out_of_date(p_out_of_date) {}
 
-    explicit AcquireResult(std::unique_ptr<Surface> p_surface)
+    explicit AcquireResult(std::unique_ptr<SurfaceVK> p_surface)
         : surface(std::move(p_surface)) {}
   };
 
@@ -62,7 +63,7 @@ class KHRSwapchainImplVK final
 
   const ISize& GetSize() const;
 
-  void AddFinalCommandBuffer(std::shared_ptr<CommandBuffer> cmd_buffer);
+  void AddFinalCommandBuffer(std::shared_ptr<CommandBufferVK> cmd_buffer);
 
   std::optional<ISize> GetCurrentUnderlyingSurfaceSize() const;
 

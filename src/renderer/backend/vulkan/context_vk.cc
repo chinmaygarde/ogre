@@ -34,15 +34,14 @@
 #include "renderer/backend/vulkan/capabilities_vk.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
 #include "renderer/backend/vulkan/command_pool_vk.h"
-#include "renderer/backend/vulkan/command_queue_vk.h"
 #include "renderer/backend/vulkan/debug_report_vk.h"
 #include "renderer/backend/vulkan/descriptor_pool_vk.h"
 #include "renderer/backend/vulkan/fence_waiter_vk.h"
 #include "renderer/backend/vulkan/gpu_tracer_vk.h"
 #include "renderer/backend/vulkan/resource_manager_vk.h"
+#include "renderer/backend/vulkan/tracked_objects_vk.h"
 #include "renderer/backend/vulkan/surface_context_vk.h"
 #include "renderer/backend/vulkan/yuv_conversion_library_vk.h"
-#include "renderer/capabilities.h"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
@@ -508,7 +507,7 @@ void ContextVK::Setup(Settings settings) {
 }
 
 void ContextVK::SetOffscreenFormat(PixelFormat pixel_format) {
-  CapabilitiesVK::Cast(*device_capabilities_).SetOffscreenFormat(pixel_format);
+  const_cast<CapabilitiesVK&>(*device_capabilities_).SetOffscreenFormat(pixel_format);
 }
 
 // |Context|
@@ -520,23 +519,23 @@ bool ContextVK::IsValid() const {
   return is_valid_;
 }
 
-std::shared_ptr<Allocator> ContextVK::GetResourceAllocator() const {
+std::shared_ptr<AllocatorVK> ContextVK::GetResourceAllocator() const {
   return allocator_;
 }
 
-std::shared_ptr<ShaderLibrary> ContextVK::GetShaderLibrary() const {
+std::shared_ptr<ShaderLibraryVK> ContextVK::GetShaderLibrary() const {
   return shader_library_;
 }
 
-std::shared_ptr<SamplerLibrary> ContextVK::GetSamplerLibrary() const {
+std::shared_ptr<SamplerLibraryVK> ContextVK::GetSamplerLibrary() const {
   return sampler_library_;
 }
 
-std::shared_ptr<PipelineLibrary> ContextVK::GetPipelineLibrary() const {
+std::shared_ptr<PipelineLibraryVK> ContextVK::GetPipelineLibrary() const {
   return pipeline_library_;
 }
 
-std::shared_ptr<CommandBuffer> ContextVK::CreateCommandBuffer() const {
+std::shared_ptr<CommandBufferVK> ContextVK::CreateCommandBuffer() const {
   const auto& recycler = GetCommandPoolRecycler();
   auto tls_pool = recycler->Get();
   if (!tls_pool) {
@@ -614,7 +613,7 @@ std::shared_ptr<SurfaceContextVK> ContextVK::CreateSurfaceContext() {
   return std::make_shared<SurfaceContextVK>(shared_from_this());
 }
 
-const std::shared_ptr<const Capabilities>& ContextVK::GetCapabilities() const {
+const std::shared_ptr<const CapabilitiesVK>& ContextVK::GetCapabilities() const {
   return device_capabilities_;
 }
 
@@ -648,12 +647,12 @@ std::shared_ptr<DescriptorPoolRecyclerVK> ContextVK::GetDescriptorPoolRecycler()
   return descriptor_pool_recycler_;
 }
 
-std::shared_ptr<CommandQueue> ContextVK::GetCommandQueue() const {
+std::shared_ptr<CommandQueueVK> ContextVK::GetCommandQueue() const {
   return command_queue_vk_;
 }
 
 bool ContextVK::EnqueueCommandBuffer(
-    std::shared_ptr<CommandBuffer> command_buffer) {
+    std::shared_ptr<CommandBufferVK> command_buffer) {
   if (should_batch_cmd_buffers_) {
     pending_command_buffers_.push_back(std::move(command_buffer));
     return true;
@@ -738,15 +737,14 @@ const std::unique_ptr<DriverInfoVK>& ContextVK::GetDriverInfo() const {
 
 bool ContextVK::GetShouldEnableSurfaceControlSwapchain() const {
   return should_enable_surface_control_ &&
-         CapabilitiesVK::Cast(*device_capabilities_)
-             .SupportsExternalSemaphoreExtensions();
+         device_capabilities_->SupportsExternalSemaphoreExtensions();
 }
 
 RuntimeStageBackend ContextVK::GetRuntimeStageBackend() const {
   return RuntimeStageBackend::kVulkan;
 }
 
-bool ContextVK::SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer) {
+bool ContextVK::SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer) {
   return EnqueueCommandBuffer(std::move(cmd_buffer));
 }
 

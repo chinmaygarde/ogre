@@ -15,7 +15,7 @@
 
 namespace ogre {
 
-PipelineCacheVK::PipelineCacheVK(std::shared_ptr<const Capabilities> caps,
+PipelineCacheVK::PipelineCacheVK(std::shared_ptr<const CapabilitiesVK> caps,
                                  std::shared_ptr<DeviceHolderVK> device_holder,
                                  fml::UniqueFD cache_directory)
     : caps_(std::move(caps)),
@@ -25,7 +25,7 @@ PipelineCacheVK::PipelineCacheVK(std::shared_ptr<const Capabilities> caps,
     return;
   }
 
-  const auto& vk_caps = CapabilitiesVK::Cast(*caps_);
+  const auto& vk_caps = *caps_;
 
   auto existing_cache_data = PipelineCacheDataRetrieve(
       cache_directory_, vk_caps.GetPhysicalDeviceProperties());
@@ -115,7 +115,7 @@ void PipelineCacheVK::PersistCacheToDisk() {
   if (!is_valid_) {
     return;
   }
-  const auto& vk_caps = CapabilitiesVK::Cast(*caps_);
+  const auto& vk_caps = *caps_;
   PipelineCacheDataPersist(cache_directory_,                       //
                            vk_caps.GetPhysicalDeviceProperties(),  //
                            cache_                                  //
@@ -123,7 +123,7 @@ void PipelineCacheVK::PersistCacheToDisk() {
 }
 
 const CapabilitiesVK* PipelineCacheVK::GetCapabilities() const {
-  return CapabilitiesVK::Cast(caps_.get());
+  return caps_.get();
 }
 
 }  // namespace ogre

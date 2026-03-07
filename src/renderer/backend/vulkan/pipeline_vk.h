@@ -18,6 +18,8 @@
 
 namespace ogre {
 
+class PipelineLibraryVK;
+
 // Limit on the total number of buffer and image bindings that allow the Vulkan
 // backend to avoid dynamic heap allocations.
 static constexpr size_t kMaxBindings = 32;
@@ -29,7 +31,7 @@ class PipelineVK final
   static std::unique_ptr<PipelineVK> Create(
       const PipelineDescriptor& desc,
       const std::shared_ptr<DeviceHolderVK>& device_holder,
-      const std::weak_ptr<PipelineLibrary>& weak_library,
+      const std::weak_ptr<PipelineLibraryVK>& weak_library,
       PipelineKey pipeline_key,
       std::shared_ptr<SamplerVK> immutable_sampler = {});
 
@@ -69,7 +71,7 @@ class PipelineVK final
   bool is_valid_ = false;
 
   PipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
-             std::weak_ptr<PipelineLibrary> library,
+             std::weak_ptr<PipelineLibraryVK> library,
              const PipelineDescriptor& desc,
              vk::UniquePipeline pipeline,
              vk::UniqueRenderPass render_pass,

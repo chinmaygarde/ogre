@@ -18,7 +18,7 @@ class PipelineCacheVK {
   // constructor directly. The [device_holder] isn't guaranteed to be valid
   // at the time of executing `PipelineCacheVK` because of how `ContextVK` does
   // initialization.
-  explicit PipelineCacheVK(std::shared_ptr<const Capabilities> caps,
+  explicit PipelineCacheVK(std::shared_ptr<const CapabilitiesVK> caps,
                            std::shared_ptr<DeviceHolderVK> device_holder,
                            fml::UniqueFD cache_directory);
 
@@ -35,7 +35,7 @@ class PipelineCacheVK {
   void PersistCacheToDisk();
 
  private:
-  const std::shared_ptr<const Capabilities> caps_;
+  const std::shared_ptr<const CapabilitiesVK> caps_;
   std::weak_ptr<DeviceHolderVK> device_holder_;
   const fml::UniqueFD cache_directory_;
   vk::UniquePipelineCache cache_;

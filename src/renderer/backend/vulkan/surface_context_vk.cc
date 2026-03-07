@@ -5,11 +5,11 @@
 #include "renderer/backend/vulkan/surface_context_vk.h"
 
 #include "core/runtime_types.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/command_pool_vk.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_vk.h"
-#include "renderer/surface.h"
 
 namespace ogre {
 
@@ -30,36 +30,36 @@ bool SurfaceContextVK::IsValid() const {
   return parent_->IsValid();
 }
 
-std::shared_ptr<Allocator> SurfaceContextVK::GetResourceAllocator() const {
+std::shared_ptr<AllocatorVK> SurfaceContextVK::GetResourceAllocator() const {
   return parent_->GetResourceAllocator();
 }
 
-std::shared_ptr<ShaderLibrary> SurfaceContextVK::GetShaderLibrary() const {
+std::shared_ptr<ShaderLibraryVK> SurfaceContextVK::GetShaderLibrary() const {
   return parent_->GetShaderLibrary();
 }
 
-std::shared_ptr<SamplerLibrary> SurfaceContextVK::GetSamplerLibrary() const {
+std::shared_ptr<SamplerLibraryVK> SurfaceContextVK::GetSamplerLibrary() const {
   return parent_->GetSamplerLibrary();
 }
 
-std::shared_ptr<PipelineLibrary> SurfaceContextVK::GetPipelineLibrary() const {
+std::shared_ptr<PipelineLibraryVK> SurfaceContextVK::GetPipelineLibrary() const {
   return parent_->GetPipelineLibrary();
 }
 
-std::shared_ptr<CommandBuffer> SurfaceContextVK::CreateCommandBuffer() const {
+std::shared_ptr<CommandBufferVK> SurfaceContextVK::CreateCommandBuffer() const {
   return parent_->CreateCommandBuffer();
 }
 
-std::shared_ptr<CommandQueue> SurfaceContextVK::GetCommandQueue() const {
+std::shared_ptr<CommandQueueVK> SurfaceContextVK::GetCommandQueue() const {
   return parent_->GetCommandQueue();
 }
 
-const std::shared_ptr<const Capabilities>& SurfaceContextVK::GetCapabilities()
+const std::shared_ptr<const CapabilitiesVK>& SurfaceContextVK::GetCapabilities()
     const {
   return parent_->GetCapabilities();
 }
 
-std::shared_ptr<const IdleWaiter> SurfaceContextVK::GetIdleWaiter() const {
+std::shared_ptr<const IdleWaiterVK> SurfaceContextVK::GetIdleWaiter() const {
   return parent_->GetIdleWaiter();
 }
 
@@ -88,7 +88,7 @@ bool SurfaceContextVK::SetSwapchain(std::shared_ptr<SwapchainVK> swapchain) {
   return true;
 }
 
-std::unique_ptr<Surface> SurfaceContextVK::AcquireNextSurface() {
+std::unique_ptr<SurfaceVK> SurfaceContextVK::AcquireNextSurface() {
   TRACE_EVENT0("ogre", __FUNCTION__);
   auto surface = swapchain_ ? swapchain_->AcquireNextDrawable() : nullptr;
   if (!surface) {
@@ -100,8 +100,7 @@ std::unique_ptr<Surface> SurfaceContextVK::AcquireNextSurface() {
 
 void SurfaceContextVK::MarkFrameEnd() {
   if (auto pipeline_library = parent_->GetPipelineLibrary()) {
-    ogre::PipelineLibraryVK::Cast(*pipeline_library)
-        .DidAcquireSurfaceFrame();
+    pipeline_library->DidAcquireSurfaceFrame();
   }
   parent_->DisposeThreadLocalCachedResources();
   parent_->GetResourceAllocator()->DebugTraceMemoryStatistics();
@@ -128,7 +127,7 @@ const std::shared_ptr<ContextVK>& SurfaceContextVK::GetParent() const {
 }
 
 bool SurfaceContextVK::EnqueueCommandBuffer(
-    std::shared_ptr<CommandBuffer> command_buffer) {
+    std::shared_ptr<CommandBufferVK> command_buffer) {
   return parent_->EnqueueCommandBuffer(std::move(command_buffer));
 }
 
@@ -137,7 +136,7 @@ bool SurfaceContextVK::FlushCommandBuffers() {
 }
 
 bool SurfaceContextVK::SubmitOnscreen(
-    std::shared_ptr<CommandBuffer> cmd_buffer) {
+    std::shared_ptr<CommandBufferVK> cmd_buffer) {
   swapchain_->AddFinalCommandBuffer(std::move(cmd_buffer));
   return true;
 }

@@ -9,8 +9,7 @@
 
 #include "base/comparable.h"
 #include "core/formats.h"
-#include "renderer/shader_function.h"
-#include "renderer/shader_library.h"
+#include "renderer/backend/vulkan/shader_function_vk.h"
 #include "renderer/vertex_descriptor.h"
 
 namespace ogre {
@@ -80,7 +79,7 @@ PipelineDescriptor& PipelineDescriptor::SetSampleCount(SampleCount samples) {
 }
 
 PipelineDescriptor& PipelineDescriptor::AddStageEntrypoint(
-    std::shared_ptr<const ShaderFunction> function) {
+    std::shared_ptr<const ShaderFunctionVK> function) {
   if (!function) {
     return *this;
   }
@@ -219,12 +218,12 @@ PipelineDescriptor::GetVertexDescriptor() const {
   return vertex_descriptor_;
 }
 
-const std::map<ShaderStage, std::shared_ptr<const ShaderFunction>>&
+const std::map<ShaderStage, std::shared_ptr<const ShaderFunctionVK>>&
 PipelineDescriptor::GetStageEntrypoints() const {
   return entrypoints_;
 }
 
-std::shared_ptr<const ShaderFunction> PipelineDescriptor::GetEntrypointForStage(
+std::shared_ptr<const ShaderFunctionVK> PipelineDescriptor::GetEntrypointForStage(
     ShaderStage stage) const {
   if (auto found = entrypoints_.find(stage); found != entrypoints_.end()) {
     return found->second;

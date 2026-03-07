@@ -5,22 +5,63 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_COMPUTE_PASS_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_COMPUTE_PASS_VK_H_
 
+#include <memory>
+#include <string>
+
+#include "renderer/resource_binder.h"
+#include "fml/status.h"
 #include "renderer/backend/vulkan/pipeline_vk.h"
 #include "renderer/backend/vulkan/vk.h"
-#include "renderer/compute_pass.h"
+#include "renderer/context.h"
 
 namespace ogre {
 
 class CommandBufferVK;
 
-class ComputePassVK final : public ComputePass {
+class ComputePassVK final : public ResourceBinder {
  public:
-  // |ComputePass|
-  ~ComputePassVK() override;
+  ~ComputePassVK();
+
+  bool IsValid() const;
+
+  void SetLabel(const std::string& label);
+
+  void SetCommandLabel(std::string_view label);
+
+  void SetPipeline(
+      const std::shared_ptr<Pipeline<ComputePipelineDescriptor>>& pipeline);
+
+  fml::Status Compute(const ISize& grid_size);
+
+  void AddBufferMemoryBarrier();
+
+  void AddTextureMemoryBarrier();
+
+  bool EncodeCommands() const;
+
+  const Context& GetContext() const { return *context_; }
+
+  // |ResourceBinder|
+  bool BindResource(ShaderStage stage,
+                    DescriptorType type,
+                    const ShaderUniformSlot& slot,
+                    const ShaderMetadata* metadata,
+                    BufferView view) override;
+
+  // |ResourceBinder|
+  bool BindResource(ShaderStage stage,
+                    DescriptorType type,
+                    const SampledImageSlot& slot,
+                    const ShaderMetadata* metadata,
+                    std::shared_ptr<const Texture> texture,
+                    raw_ptr<const SamplerVK> sampler) override;
+
+  bool BindResource(size_t binding, DescriptorType type, BufferView view);
 
  private:
   friend class CommandBufferVK;
 
+  const std::shared_ptr<const Context> context_;
   std::shared_ptr<CommandBufferVK> command_buffer_;
   std::string label_;
   std::array<uint32_t, 3> max_wg_size_ = {};
@@ -42,47 +83,11 @@ class ComputePassVK final : public ComputePass {
   ComputePassVK(std::shared_ptr<const Context> context,
                 std::shared_ptr<CommandBufferVK> command_buffer);
 
-  // |ComputePass|
-  bool IsValid() const override;
+  void OnSetLabel(const std::string& label);
 
-  // |ComputePass|
-  void OnSetLabel(const std::string& label) override;
+  ComputePassVK(const ComputePassVK&) = delete;
 
-  // |ComputePass|
-  bool EncodeCommands() const override;
-
-  // |ComputePass|
-  void SetCommandLabel(std::string_view label) override;
-
-  // |ComputePass|
-  void SetPipeline(const std::shared_ptr<Pipeline<ComputePipelineDescriptor>>&
-                       pipeline) override;
-
-  // |ComputePass|
-  void AddBufferMemoryBarrier() override;
-
-  // |ComputePass|
-  void AddTextureMemoryBarrier() override;
-
-  // |ComputePass|
-  fml::Status Compute(const ISize& grid_size) override;
-
-  // |ResourceBinder|
-  bool BindResource(ShaderStage stage,
-                    DescriptorType type,
-                    const ShaderUniformSlot& slot,
-                    const ShaderMetadata* metadata,
-                    BufferView view) override;
-
-  // |ResourceBinder|
-  bool BindResource(ShaderStage stage,
-                    DescriptorType type,
-                    const SampledImageSlot& slot,
-                    const ShaderMetadata* metadata,
-                    std::shared_ptr<const Texture> texture,
-                    raw_ptr<const Sampler> sampler) override;
-
-  bool BindResource(size_t binding, DescriptorType type, BufferView view);
+  ComputePassVK& operator=(const ComputePassVK&) = delete;
 };
 
 }  // namespace ogre

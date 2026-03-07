@@ -11,18 +11,20 @@
 
 #include "base/flags.h"
 #include "base/thread_safety.h"
-#include "core/allocator.h"
 #include "core/formats.h"
+#include "core/runtime_types.h"
 #include "fml/closure.h"
-#include "renderer/capabilities.h"
-#include "renderer/command_queue.h"
-#include "renderer/sampler_library.h"
-
 namespace ogre {
 
-class ShaderLibrary;
-class CommandBuffer;
-class PipelineLibrary;
+class AllocatorVK;
+class CapabilitiesVK;
+class Context;
+class CommandBufferVK;
+class CommandQueueVK;
+class PipelineLibraryVK;
+class SamplerLibraryVK;
+class ShaderLibraryVK;
+class IdleWaiterVK;
 
 /// A wrapper for provided a deferred initialization of ogre to various
 /// engine subsystems.
@@ -126,7 +128,7 @@ class Context {
   ///
   /// @return     The capabilities. Can never be `nullptr` for a valid context.
   ///
-  virtual const std::shared_ptr<const Capabilities>& GetCapabilities()
+  virtual const std::shared_ptr<const CapabilitiesVK>& GetCapabilities()
       const = 0;
 
   // TODO(129920): Refactor and move to capabilities.
@@ -139,7 +141,7 @@ class Context {
   /// @return     The resource allocator. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<Allocator> GetResourceAllocator() const = 0;
+  virtual std::shared_ptr<AllocatorVK> GetResourceAllocator() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Returns the library of shaders used to specify the
@@ -148,7 +150,7 @@ class Context {
   /// @return     The shader library. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<ShaderLibrary> GetShaderLibrary() const = 0;
+  virtual std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Returns the library of combined image samplers used in
@@ -157,7 +159,7 @@ class Context {
   /// @return     The sampler library. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<SamplerLibrary> GetSamplerLibrary() const = 0;
+  virtual std::shared_ptr<SamplerLibraryVK> GetSamplerLibrary() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Returns the library of pipelines used by render or compute
@@ -166,7 +168,7 @@ class Context {
   /// @return     The pipeline library. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<PipelineLibrary> GetPipelineLibrary() const = 0;
+  virtual std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Create a new command buffer. Command buffers can be used to
@@ -179,10 +181,10 @@ class Context {
   ///
   /// @return     A new command buffer.
   ///
-  virtual std::shared_ptr<CommandBuffer> CreateCommandBuffer() const = 0;
+  virtual std::shared_ptr<CommandBufferVK> CreateCommandBuffer() const = 0;
 
   /// @brief Return the graphics queue for submitting command buffers.
-  virtual std::shared_ptr<CommandQueue> GetCommandQueue() const = 0;
+  virtual std::shared_ptr<CommandQueueVK> GetCommandQueue() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Force all pending asynchronous work to finish. This is
@@ -232,7 +234,7 @@ class Context {
   /// Returns true if submission has succeeded. If the buffer is enqueued
   /// then no error may be returned until FlushCommandBuffers is called.
   [[nodiscard]] virtual bool EnqueueCommandBuffer(
-      std::shared_ptr<CommandBuffer> command_buffer);
+      std::shared_ptr<CommandBufferVK> command_buffer);
 
   /// @brief Flush all pending command buffers.
   ///
@@ -243,7 +245,7 @@ class Context {
 
   virtual bool AddTrackingFence(const std::shared_ptr<Texture>& texture) const;
 
-  virtual std::shared_ptr<const IdleWaiter> GetIdleWaiter() const;
+  virtual std::shared_ptr<const IdleWaiterVK> GetIdleWaiter() const;
 
   //----------------------------------------------------------------------------
   /// Resets any thread local state that may interfere with embedders.
@@ -262,7 +264,7 @@ class Context {
   virtual RuntimeStageBackend GetRuntimeStageBackend() const = 0;
 
   /// @brief Submit the command buffer that renders to the onscreen surface.
-  virtual bool SubmitOnscreen(std::shared_ptr<CommandBuffer> cmd_buffer);
+  virtual bool SubmitOnscreen(std::shared_ptr<CommandBufferVK> cmd_buffer);
 
   const Flags& GetFlags() const { return flags_; }
 

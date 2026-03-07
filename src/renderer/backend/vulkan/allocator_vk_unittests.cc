@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #include "base/allocation_size.h"
-#include "core/allocator.h"
 #include "core/device_buffer.h"
 #include "core/device_buffer_descriptor.h"
 #include "core/formats.h"

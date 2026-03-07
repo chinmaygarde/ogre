@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_OGRE_CORE_HOST_BUFFER_H_
-#define FLUTTER_OGRE_CORE_HOST_BUFFER_H_
+#ifndef FLUTTER_OGRE_RENDERER_HOST_BUFFER_H_
+#define FLUTTER_OGRE_RENDERER_HOST_BUFFER_H_
 
 #include <algorithm>
 #include <array>
@@ -11,8 +11,9 @@
 #include <memory>
 #include <type_traits>
 
-#include "core/allocator.h"
 #include "core/buffer_view.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/backend/vulkan/idle_waiter_vk.h"
 
 namespace ogre {
 
@@ -26,8 +27,8 @@ static const constexpr size_t kHostBufferArenaSize = 4u;
 class HostBuffer {
  public:
   static std::shared_ptr<HostBuffer> Create(
-      const std::shared_ptr<Allocator>& allocator,
-      const std::shared_ptr<const IdleWaiter>& idle_waiter,
+      const std::shared_ptr<AllocatorVK>& allocator,
+      const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
       size_t minimum_uniform_alignment);
 
   ~HostBuffer();
@@ -157,16 +158,16 @@ class HostBuffer {
 
   [[nodiscard]] BufferView Emplace(const void* buffer, size_t length);
 
-  explicit HostBuffer(const std::shared_ptr<Allocator>& allocator,
-                      const std::shared_ptr<const IdleWaiter>& idle_waiter,
+  explicit HostBuffer(const std::shared_ptr<AllocatorVK>& allocator,
+                      const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
                       size_t minimum_uniform_alignment);
 
   HostBuffer(const HostBuffer&) = delete;
 
   HostBuffer& operator=(const HostBuffer&) = delete;
 
-  std::shared_ptr<Allocator> allocator_;
-  std::shared_ptr<const IdleWaiter> idle_waiter_;
+  std::shared_ptr<AllocatorVK> allocator_;
+  std::shared_ptr<const IdleWaiterVK> idle_waiter_;
   std::array<std::vector<std::shared_ptr<DeviceBuffer>>, kHostBufferArenaSize>
       device_buffers_;
   size_t current_buffer_ = 0u;
@@ -177,4 +178,4 @@ class HostBuffer {
 
 }  // namespace ogre
 
-#endif  // FLUTTER_OGRE_CORE_HOST_BUFFER_H_
+#endif  // FLUTTER_OGRE_RENDERER_HOST_BUFFER_H_

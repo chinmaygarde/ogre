@@ -9,7 +9,7 @@
 
 #include "base/comparable.h"
 #include "base/thread.h"
-#include "core/sampler.h"
+#include "core/sampler_descriptor.h"
 #include "fml/build_config.h"
 #include "renderer/backend/vulkan/sampler_vk.h"
 #include "renderer/backend/vulkan/shared_object_vk.h"

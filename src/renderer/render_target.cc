@@ -8,10 +8,11 @@
 #include <sstream>
 
 #include "base/validation.h"
-#include "core/allocator.h"
 #include "core/formats.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 #include "core/texture.h"
 #include "core/texture_descriptor.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
 #include "renderer/context.h"
 
 namespace ogre {
@@ -312,7 +313,7 @@ RenderTargetConfig RenderTarget::ToConfig() const {
 }
 
 RenderTargetAllocator::RenderTargetAllocator(
-    std::shared_ptr<Allocator> allocator)
+    std::shared_ptr<AllocatorVK> allocator)
     : allocator_(std::move(allocator)) {}
 
 void RenderTargetAllocator::Start() {}
@@ -480,7 +481,7 @@ RenderTarget RenderTargetAllocator::CreateOffscreenMSAA(
 
 void RenderTarget::SetupDepthStencilAttachments(
     const Context& context,
-    Allocator& allocator,
+    AllocatorVK& allocator,
     ISize size,
     bool msaa,
     std::string_view label,

@@ -12,11 +12,9 @@
 #include <string>
 #include <vector>
 
-#include "base/backend_cast.h"
 #include "core/texture_descriptor.h"
 #include "renderer/backend/vulkan/vk.h"
 #include "renderer/backend/vulkan/workarounds_vk.h"
-#include "renderer/capabilities.h"
 
 namespace ogre {
 
@@ -177,8 +175,7 @@ struct FRCFormatDescriptor {
 //------------------------------------------------------------------------------
 /// @brief      The Vulkan layers and extensions wrangler.
 ///
-class CapabilitiesVK final : public Capabilities,
-                             public BackendCast<CapabilitiesVK, Capabilities> {
+class CapabilitiesVK final {
  public:
   explicit CapabilitiesVK(bool enable_validations,
                           bool fatal_missing_validations = false,
@@ -225,70 +222,70 @@ class CapabilitiesVK final : public Capabilities,
   void SetOffscreenFormat(PixelFormat pixel_format) const;
 
   // |Capabilities|
-  bool SupportsOffscreenMSAA() const override;
+  bool SupportsOffscreenMSAA() const;
 
   // |Capabilities|
-  bool SupportsImplicitResolvingMSAA() const override;
+  bool SupportsImplicitResolvingMSAA() const;
 
   // |Capabilities|
-  bool SupportsSSBO() const override;
+  bool SupportsSSBO() const;
 
   // |Capabilities|
-  bool SupportsTextureToTextureBlits() const override;
+  bool SupportsTextureToTextureBlits() const;
 
   // |Capabilities|
-  bool SupportsFramebufferFetch() const override;
+  bool SupportsFramebufferFetch() const;
 
   // |Capabilities|
-  bool SupportsCompute() const override;
+  bool SupportsCompute() const;
 
   // |Capabilities|
-  bool SupportsComputeSubgroups() const override;
+  bool SupportsComputeSubgroups() const;
 
   // |Capabilities|
-  bool SupportsReadFromResolve() const override;
+  bool SupportsReadFromResolve() const;
 
   // |Capabilities|
-  bool SupportsDecalSamplerAddressMode() const override;
+  bool SupportsDecalSamplerAddressMode() const;
 
   // |Capabilities|
-  bool SupportsDeviceTransientTextures() const override;
+  bool SupportsDeviceTransientTextures() const;
 
   // |Capabilities|
-  bool SupportsTriangleFan() const override;
+  bool SupportsTriangleFan() const;
 
   // |Capabilities|
-  bool SupportsPrimitiveRestart() const override;
+  bool SupportsPrimitiveRestart() const;
 
   // |Capabilities|
-  bool Supports32BitPrimitiveIndices() const override;
+  bool Supports32BitPrimitiveIndices() const;
 
   // |Capabilities|
-  bool SupportsExtendedRangeFormats() const override;
+  bool SupportsExtendedRangeFormats() const;
 
   // |Capabilities|
-  PixelFormat GetDefaultColorFormat() const override;
+  PixelFormat GetDefaultColorFormat() const;
 
   // |Capabilities|
-  PixelFormat GetDefaultStencilFormat() const override;
+  PixelFormat GetDefaultStencilFormat() const;
 
   // |Capabilities|
-  PixelFormat GetDefaultDepthStencilFormat() const override;
+  PixelFormat GetDefaultDepthStencilFormat() const;
 
   // |Capabilities|
-  PixelFormat GetDefaultGlyphAtlasFormat() const override;
+  PixelFormat GetDefaultGlyphAtlasFormat() const;
 
   // |Capabilities|
-  ISize GetMaximumRenderPassAttachmentSize() const override;
+  ISize GetMaximumRenderPassAttachmentSize() const;
 
   // |Capabilities|
-  size_t GetMinimumUniformAlignment() const override;
+  size_t GetMinimumUniformAlignment() const;
 
   // |Capabilities|
-  size_t GetMinimumStorageBufferAlignment() const override;
+  size_t GetMinimumStorageBufferAlignment() const;
 
   // |Capabilities|
-  bool NeedsPartitionedHostBuffer() const override;
+  bool NeedsPartitionedHostBuffer() const;
 
   //----------------------------------------------------------------------------
   /// @return     If fixed-rate compression for non-onscreen surfaces is

@@ -15,7 +15,7 @@
 
 namespace ogre {
 
-class ShaderFunction;
+class ShaderFunctionVK;
 class VertexDescriptor;
 template <typename T>
 class Pipeline;
@@ -35,12 +35,12 @@ class PipelineDescriptor final : public Comparable<PipelineDescriptor> {
   SampleCount GetSampleCount() const { return sample_count_; }
 
   PipelineDescriptor& AddStageEntrypoint(
-      std::shared_ptr<const ShaderFunction> function);
+      std::shared_ptr<const ShaderFunctionVK> function);
 
-  const std::map<ShaderStage, std::shared_ptr<const ShaderFunction>>&
+  const std::map<ShaderStage, std::shared_ptr<const ShaderFunctionVK>>&
   GetStageEntrypoints() const;
 
-  std::shared_ptr<const ShaderFunction> GetEntrypointForStage(
+  std::shared_ptr<const ShaderFunctionVK> GetEntrypointForStage(
       ShaderStage stage) const;
 
   PipelineDescriptor& SetVertexDescriptor(
@@ -133,7 +133,7 @@ class PipelineDescriptor final : public Comparable<PipelineDescriptor> {
   SampleCount sample_count_ = SampleCount::kCount1;
   WindingOrder winding_order_ = WindingOrder::kClockwise;
   CullMode cull_mode_ = CullMode::kNone;
-  std::map<ShaderStage, std::shared_ptr<const ShaderFunction>> entrypoints_;
+  std::map<ShaderStage, std::shared_ptr<const ShaderFunctionVK>> entrypoints_;
   std::map<size_t /* index */, ColorAttachmentDescriptor>
       color_attachment_descriptors_;
   std::shared_ptr<VertexDescriptor> vertex_descriptor_;

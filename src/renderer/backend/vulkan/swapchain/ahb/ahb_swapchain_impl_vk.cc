@@ -117,7 +117,7 @@ const android::HardwareBufferDescriptor& AHBSwapchainImplVK::GetDescriptor()
   return desc_;
 }
 
-std::unique_ptr<Surface> AHBSwapchainImplVK::AcquireNextDrawable() {
+std::unique_ptr<SurfaceVK> AHBSwapchainImplVK::AcquireNextDrawable() {
   auto context = transients_->GetContext().lock();
   if (!context) {
     return nullptr;
@@ -220,7 +220,7 @@ bool AHBSwapchainImplVK::Present(
 }
 
 void AHBSwapchainImplVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBuffer> cmd_buffer) {
+    std::shared_ptr<CommandBufferVK> cmd_buffer) {
   frame_data_[frame_index_]->final_cmd_buffer = std::move(cmd_buffer);
 }
 
@@ -242,9 +242,8 @@ AHBSwapchainImplVK::SubmitSignalForPresentReady(
   if (!command_buffer) {
     return nullptr;
   }
-  CommandBufferVK& command_buffer_vk = CommandBufferVK::Cast(*command_buffer);
-  const auto command_encoder_vk = command_buffer_vk.GetCommandBuffer();
-  if (!command_buffer_vk.EndCommandBuffer()) {
+  const auto command_encoder_vk = command_buffer->GetCommandBuffer();
+  if (!command_buffer->EndCommandBuffer()) {
     return nullptr;
   }
   sync->present_ready = present_ready;

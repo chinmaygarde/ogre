@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "core/allocator.h"
 #include "core/buffer_view.h"
 #include "core/device_buffer_descriptor.h"
 #include "core/range.h"

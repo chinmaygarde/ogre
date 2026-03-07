@@ -14,6 +14,8 @@
 
 namespace ogre {
 
+class Context;
+
 class DeviceBufferVK final : public DeviceBuffer,
                              public BackendCast<DeviceBufferVK, DeviceBuffer> {
  public:

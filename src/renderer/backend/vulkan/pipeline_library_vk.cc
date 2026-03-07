@@ -19,7 +19,7 @@ namespace ogre {
 
 PipelineLibraryVK::PipelineLibraryVK(
     const std::shared_ptr<DeviceHolderVK>& device_holder,
-    std::shared_ptr<const Capabilities> caps,
+    std::shared_ptr<const CapabilitiesVK> caps,
     fml::UniqueFD cache_directory,
     std::shared_ptr<fml::ConcurrentTaskRunner> worker_task_runner)
     : device_holder_(device_holder),
@@ -83,7 +83,7 @@ std::unique_ptr<ComputePipelineVK> PipelineLibraryVK::CreateComputePipeline(
   vk::PipelineShaderStageCreateInfo info;
   info.setStage(vk::ShaderStageFlagBits::eCompute);
   info.setPName("main");
-  info.setModule(ShaderFunctionVK::Cast(entrypoint.get())->GetModule());
+  info.setModule(entrypoint->GetModule());
   info.setPSpecializationInfo(&specialization_info);
   pipeline_info.setStage(info);
 
@@ -184,10 +184,10 @@ PipelineFuture<PipelineDescriptor> PipelineLibraryVK::GetPipeline(
     }
 
     promise->set_value(PipelineVK::Create(
-        descriptor,                                            //
-        PipelineLibraryVK::Cast(*thiz).device_holder_.lock(),  //
-        weak_this,                                             //
-        next_key                                               //
+        descriptor,                  //
+        thiz->device_holder_.lock(), //
+        weak_this,                   //
+        next_key                     //
         ));
   };
 
@@ -237,8 +237,7 @@ PipelineFuture<ComputePipelineDescriptor> PipelineLibraryVK::GetPipeline(
       return;
     }
 
-    auto pipeline = PipelineLibraryVK::Cast(*self).CreateComputePipeline(
-        descriptor, next_key);
+    auto pipeline = self->CreateComputePipeline(descriptor, next_key);
     if (!pipeline) {
       promise->set_value(nullptr);
       VALIDATION_LOG << "Could not create pipeline: " << descriptor.GetLabel();
@@ -265,7 +264,7 @@ bool PipelineLibraryVK::HasPipeline(const PipelineDescriptor& descriptor) {
 
 // |PipelineLibrary|
 void PipelineLibraryVK::RemovePipelinesWithEntryPoint(
-    std::shared_ptr<const ShaderFunction> function) {
+    std::shared_ptr<const ShaderFunctionVK> function) {
   Lock lock(pipelines_mutex_);
 
   fml::erase_if(pipelines_, [&](auto item) {
@@ -306,6 +305,65 @@ PipelineLibraryVK::GetWorkerTaskRunner() const {
 
 PipelineCompileQueue* PipelineLibraryVK::GetPipelineCompileQueue() const {
   return compile_queue_.get();
+}
+
+PipelineFuture<PipelineDescriptor> PipelineLibraryVK::GetPipeline(
+    std::optional<PipelineDescriptor> descriptor,
+    bool async) {
+  if (descriptor.has_value()) {
+    return GetPipeline(descriptor.value(), async);
+  }
+  auto promise = std::make_shared<
+      std::promise<std::shared_ptr<Pipeline<PipelineDescriptor>>>>();
+  promise->set_value(nullptr);
+  return {descriptor, promise->get_future()};
+}
+
+PipelineFuture<ComputePipelineDescriptor> PipelineLibraryVK::GetPipeline(
+    std::optional<ComputePipelineDescriptor> descriptor,
+    bool async) {
+  if (descriptor.has_value()) {
+    return GetPipeline(descriptor.value(), async);
+  }
+  auto promise = std::make_shared<
+      std::promise<std::shared_ptr<Pipeline<ComputePipelineDescriptor>>>>();
+  promise->set_value(nullptr);
+  return {descriptor, promise->get_future()};
+}
+
+void PipelineLibraryVK::LogPipelineCreation(const PipelineDescriptor& p) {
+#if FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_DEBUG || \
+    FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_PROFILE
+  WriterLock lock(pipeline_use_counts_mutex_);
+  if (!pipeline_use_counts_.contains(p)) {
+    pipeline_use_counts_[p] = 0;
+  }
+#endif
+}
+
+void PipelineLibraryVK::LogPipelineUsage(const PipelineDescriptor& p) {
+#if FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_DEBUG || \
+    FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_PROFILE
+  WriterLock lock(pipeline_use_counts_mutex_);
+  ++pipeline_use_counts_[p];
+#endif
+}
+
+std::unordered_map<PipelineDescriptor,
+                   int,
+                   ComparableHash<PipelineDescriptor>,
+                   ComparableEqual<PipelineDescriptor>>
+PipelineLibraryVK::GetPipelineUseCounts() const {
+  std::unordered_map<PipelineDescriptor, int,
+                     ComparableHash<PipelineDescriptor>,
+                     ComparableEqual<PipelineDescriptor>>
+      counts;
+#if FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_DEBUG || \
+    FLUTTER_RUNTIME_MODE == FLUTTER_RUNTIME_MODE_PROFILE
+  ReaderLock lock(pipeline_use_counts_mutex_);
+  counts = pipeline_use_counts_;
+#endif
+  return counts;
 }
 
 }  // namespace ogre

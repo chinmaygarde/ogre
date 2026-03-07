@@ -34,11 +34,11 @@ struct ShaderKey {
   };
 };
 
-class ShaderFunction;
+class ShaderFunctionVK;
 
 using ShaderFunctionMap =
     std::unordered_map<ShaderKey,
-                       std::shared_ptr<const ShaderFunction>,
+                       std::shared_ptr<const ShaderFunctionVK>,
                        ShaderKey::Hash,
                        ShaderKey::Equal>;
 

@@ -5,21 +5,17 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_SAMPLER_LIBRARY_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_SAMPLER_LIBRARY_VK_H_
 
-#include "base/backend_cast.h"
-#include "core/sampler.h"
+#include "core/raw_ptr.h"
 #include "core/sampler_descriptor.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
 #include "renderer/backend/vulkan/workarounds_vk.h"
-#include "renderer/sampler_library.h"
 
 namespace ogre {
 
-class SamplerLibraryVK final
-    : public SamplerLibrary,
-      public BackendCast<SamplerLibraryVK, SamplerLibrary> {
+class SamplerLibraryVK final {
  public:
-  // |SamplerLibrary|
-  ~SamplerLibraryVK() override;
+  ~SamplerLibraryVK();
 
   explicit SamplerLibraryVK(const std::weak_ptr<DeviceHolderVK>& device_holder);
 
@@ -29,12 +25,11 @@ class SamplerLibraryVK final
   friend class ContextVK;
 
   std::weak_ptr<DeviceHolderVK> device_holder_;
-  std::vector<std::pair<uint64_t, std::shared_ptr<const Sampler>>> samplers_;
+  std::vector<std::pair<uint64_t, std::shared_ptr<const SamplerVK>>> samplers_;
   bool mips_disabled_workaround_ = false;
 
-  // |SamplerLibrary|
-  raw_ptr<const Sampler> GetSampler(
-      const SamplerDescriptor& descriptor) override;
+  raw_ptr<const SamplerVK> GetSampler(
+      const SamplerDescriptor& descriptor);
 
   SamplerLibraryVK(const SamplerLibraryVK&) = delete;
 

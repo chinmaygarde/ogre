@@ -6,7 +6,6 @@
 
 #include "core/formats.h"
 #include "renderer/backend/vulkan/texture_vk.h"
-#include "renderer/surface.h"
 
 namespace ogre {
 
@@ -76,9 +75,28 @@ std::unique_ptr<SurfaceVK> SurfaceVK::WrapSwapchainImage(
 }
 
 SurfaceVK::SurfaceVK(const RenderTarget& target, SwapCallback swap_callback)
-    : Surface(target), swap_callback_(std::move(swap_callback)) {}
+    : desc_(target), swap_callback_(std::move(swap_callback)) {
+  if (auto size = desc_.GetColorAttachmentSize(0u); size.has_value()) {
+    size_ = size.value();
+  } else {
+    return;
+  }
+  is_valid_ = true;
+}
 
 SurfaceVK::~SurfaceVK() = default;
+
+const ISize& SurfaceVK::GetSize() const {
+  return size_;
+}
+
+bool SurfaceVK::IsValid() const {
+  return is_valid_;
+}
+
+const RenderTarget& SurfaceVK::GetRenderTarget() const {
+  return desc_;
+}
 
 bool SurfaceVK::Present() const {
   return swap_callback_ ? swap_callback_() : false;

@@ -5,6 +5,8 @@
 #include "renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
 
 #include "fml/trace_event.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
 
 namespace ogre {
 

@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/allocation_size.h"
+#include "base/validation.h"
 #include "core/formats.h"
+#include "core/range.h"
 #include "fml/memory/ref_ptr.h"
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/capabilities_vk.h"
@@ -167,12 +169,66 @@ AllocatorVK::AllocatorVK(std::weak_ptr<Context> context,
 
 AllocatorVK::~AllocatorVK() = default;
 
-// |Allocator|
 bool AllocatorVK::IsValid() const {
   return is_valid_;
 }
 
-// |Allocator|
+std::shared_ptr<DeviceBuffer> AllocatorVK::CreateBuffer(
+    const DeviceBufferDescriptor& desc) {
+  return OnCreateBuffer(desc);
+}
+
+std::shared_ptr<Texture> AllocatorVK::CreateTexture(
+    const TextureDescriptor& desc,
+    bool threadsafe) {
+  const auto max_size = GetMaxTextureSizeSupported();
+  if (desc.size.width > max_size.width || desc.size.height > max_size.height) {
+    VALIDATION_LOG << "Requested texture size " << desc.size
+                   << " exceeds maximum supported size of " << max_size;
+    return nullptr;
+  }
+
+  if (desc.mip_count > desc.size.MipCount()) {
+    VALIDATION_LOG << "Requested mip_count " << desc.mip_count
+                   << " exceeds maximum supported for size " << desc.size;
+    TextureDescriptor corrected_desc = desc;
+    corrected_desc.mip_count = desc.size.MipCount();
+    return OnCreateTexture(corrected_desc, threadsafe);
+  }
+
+  return OnCreateTexture(desc, threadsafe);
+}
+
+std::shared_ptr<DeviceBuffer> AllocatorVK::CreateBufferWithCopy(
+    const uint8_t* buffer,
+    size_t length) {
+  DeviceBufferDescriptor desc;
+  desc.size = length;
+  desc.storage_mode = StorageMode::kHostVisible;
+  auto new_buffer = CreateBuffer(desc);
+
+  if (!new_buffer) {
+    return nullptr;
+  }
+
+  auto entire_range = Range{0, length};
+
+  if (!new_buffer->CopyHostBuffer(buffer, entire_range)) {
+    return nullptr;
+  }
+
+  return new_buffer;
+}
+
+std::shared_ptr<DeviceBuffer> AllocatorVK::CreateBufferWithCopy(
+    const fml::Mapping& mapping) {
+  return CreateBufferWithCopy(mapping.GetMapping(), mapping.GetSize());
+}
+
+uint16_t AllocatorVK::MinimumBytesPerRow(PixelFormat format) const {
+  return BytesPerPixelForPixelFormat(format);
+}
+
 ISize AllocatorVK::GetMaxTextureSizeSupported() const {
   return max_texture_size_;
 }
@@ -318,8 +374,8 @@ class AllocatedTextureSourceVK final : public TextureSourceVK {
         vk::ImageCompressionFixedRateFlagBitsEXT::eNone};
 
     const auto frc_rate =
-        CapabilitiesVK::Cast(*context.GetCapabilities())
-            .GetSupportedFRCRate(desc.compression_type,
+        context.GetCapabilities()
+            ->GetSupportedFRCRate(desc.compression_type,
                                  FRCFormatDescriptor{image_info});
     if (frc_rate.has_value()) {
       // This array must not be in a temporary scope.
@@ -433,7 +489,7 @@ class AllocatedTextureSourceVK final : public TextureSourceVK {
  private:
   struct ImageResource {
     std::shared_ptr<DeviceHolderVK> device_holder;
-    std::shared_ptr<Allocator> allocator;
+    std::shared_ptr<AllocatorVK> allocator;
     UniqueImageVMA image;
     vk::UniqueImageView image_view;
     vk::UniqueImageView rt_image_view;
@@ -443,7 +499,7 @@ class AllocatedTextureSourceVK final : public TextureSourceVK {
     ImageResource(ImageVMA p_image,
                   vk::UniqueImageView p_image_view,
                   vk::UniqueImageView p_rt_image_view,
-                  std::shared_ptr<Allocator> allocator,
+                  std::shared_ptr<AllocatorVK> allocator,
                   std::shared_ptr<DeviceHolderVK> device_holder)
         : device_holder(std::move(device_holder)),
           allocator(std::move(allocator)),
@@ -466,7 +522,6 @@ class AllocatedTextureSourceVK final : public TextureSourceVK {
   AllocatedTextureSourceVK& operator=(const AllocatedTextureSourceVK&) = delete;
 };
 
-// |Allocator|
 std::shared_ptr<Texture> AllocatorVK::OnCreateTexture(
     const TextureDescriptor& desc,
     bool threadsafe) {
@@ -494,7 +549,6 @@ std::shared_ptr<Texture> AllocatorVK::OnCreateTexture(
   return std::make_shared<TextureVK>(context_, std::move(source));
 }
 
-// |Allocator|
 std::shared_ptr<DeviceBuffer> AllocatorVK::OnCreateBuffer(
     const DeviceBufferDescriptor& desc) {
   vk::BufferCreateInfo buffer_info;

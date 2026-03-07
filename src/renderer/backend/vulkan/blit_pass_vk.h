@@ -5,21 +5,62 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_BLIT_PASS_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_BLIT_PASS_VK_H_
 
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <string>
+
 #include "base/config.h"
+#include "core/buffer_view.h"
+#include "core/device_buffer.h"
+#include "core/texture.h"
 #include "fml/macros.h"
+#include "geometry/point.h"
 #include "geometry/rect.h"
 #include "renderer/backend/vulkan/workarounds_vk.h"
-#include "renderer/blit_pass.h"
 
 namespace ogre {
 
 class CommandEncoderVK;
 class CommandBufferVK;
 
-class BlitPassVK final : public BlitPass {
+class BlitPassVK final {
  public:
-  // |BlitPass|
-  ~BlitPassVK() override;
+  ~BlitPassVK();
+
+  bool IsValid() const;
+
+  void SetLabel(std::string_view label);
+
+  bool ConvertTextureToShaderRead(const std::shared_ptr<Texture>& texture);
+
+  bool ResizeTexture(const std::shared_ptr<Texture>& source,
+                     const std::shared_ptr<Texture>& destination);
+
+  bool AddCopy(std::shared_ptr<Texture> source,
+               std::shared_ptr<Texture> destination,
+               std::optional<IRect> source_region = std::nullopt,
+               IPoint destination_origin = {},
+               std::string_view label = "");
+
+  bool AddCopy(std::shared_ptr<Texture> source,
+               std::shared_ptr<DeviceBuffer> destination,
+               std::optional<IRect> source_region = std::nullopt,
+               size_t destination_offset = 0,
+               std::string_view label = "");
+
+  bool AddCopy(BufferView source,
+               std::shared_ptr<Texture> destination,
+               std::optional<IRect> destination_region = std::nullopt,
+               std::string_view label = "",
+               uint32_t mip_level = 0,
+               uint32_t slice = 0,
+               bool convert_to_read = true);
+
+  bool GenerateMipmap(std::shared_ptr<Texture> texture,
+                      std::string_view label = "");
+
+  bool EncodeCommands() const;
 
  private:
   friend class CommandBufferVK;
@@ -32,48 +73,30 @@ class BlitPassVK final : public BlitPass {
   explicit BlitPassVK(std::shared_ptr<CommandBufferVK> command_buffer,
                       const WorkaroundsVK& workarounds);
 
-  // |BlitPass|
-  bool IsValid() const override;
+  void OnSetLabel(std::string_view label);
 
-  // |BlitPass|
-  void OnSetLabel(std::string_view label) override;
-
-  // |BlitPass|
-  bool EncodeCommands() const override;
-
-  // |BlitPass|
-  bool ResizeTexture(const std::shared_ptr<Texture>& source,
-                     const std::shared_ptr<Texture>& destination) override;
-
-  // |BlitPass|
-  bool ConvertTextureToShaderRead(
-      const std::shared_ptr<Texture>& texture) override;
-
-  // |BlitPass|
   bool OnCopyTextureToTextureCommand(std::shared_ptr<Texture> source,
                                      std::shared_ptr<Texture> destination,
                                      IRect source_region,
                                      IPoint destination_origin,
-                                     std::string_view label) override;
+                                     std::string_view label);
 
-  // |BlitPass|
   bool OnCopyTextureToBufferCommand(std::shared_ptr<Texture> source,
                                     std::shared_ptr<DeviceBuffer> destination,
                                     IRect source_region,
                                     size_t destination_offset,
-                                    std::string_view label) override;
+                                    std::string_view label);
 
-  // |BlitPass|
   bool OnCopyBufferToTextureCommand(BufferView source,
                                     std::shared_ptr<Texture> destination,
                                     IRect destination_region,
                                     std::string_view label,
                                     uint32_t mip_level,
                                     uint32_t slice,
-                                    bool convert_to_read) override;
-  // |BlitPass|
+                                    bool convert_to_read);
+
   bool OnGenerateMipmapCommand(std::shared_ptr<Texture> texture,
-                               std::string_view label) override;
+                               std::string_view label);
 
   BlitPassVK(const BlitPassVK&) = delete;
 

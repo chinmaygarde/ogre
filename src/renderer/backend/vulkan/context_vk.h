@@ -22,9 +22,9 @@
 #include "renderer/backend/vulkan/sampler_library_vk.h"
 #include "renderer/backend/vulkan/shader_library_vk.h"
 #include "renderer/backend/vulkan/workarounds_vk.h"
-#include "renderer/capabilities.h"
-#include "renderer/command_buffer.h"
-#include "renderer/command_queue.h"
+#include "renderer/backend/vulkan/idle_waiter_vk.h"
+#include "renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/command_queue_vk.h"
 #include "renderer/context.h"
 
 namespace ogre {
@@ -42,24 +42,6 @@ class GPUTracerVK;
 class DescriptorPoolRecyclerVK;
 class CommandQueueVK;
 class DescriptorPoolVK;
-
-class IdleWaiterVK : public IdleWaiter {
- public:
-  explicit IdleWaiterVK(std::weak_ptr<DeviceHolderVK> device_holder)
-      : device_holder_(std::move(device_holder)) {}
-
-  void WaitIdle() const override {
-    std::shared_ptr<DeviceHolderVK> strong_device_holder_ =
-        device_holder_.lock();
-    if (strong_device_holder_ && strong_device_holder_->GetDevice()) {
-      [[maybe_unused]] auto result =
-          strong_device_holder_->GetDevice().waitIdle();
-    }
-  }
-
- private:
-  std::weak_ptr<DeviceHolderVK> device_holder_;
-};
 
 class ContextVK final : public Context,
                         public BackendCast<ContextVK, Context>,
@@ -116,26 +98,26 @@ class ContextVK final : public Context,
   bool IsValid() const override;
 
   // |Context|
-  std::shared_ptr<Allocator> GetResourceAllocator() const override;
+  std::shared_ptr<AllocatorVK> GetResourceAllocator() const override;
 
   // |Context|
-  std::shared_ptr<ShaderLibrary> GetShaderLibrary() const override;
+  std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const override;
 
   // |Context|
-  std::shared_ptr<SamplerLibrary> GetSamplerLibrary() const override;
+  std::shared_ptr<SamplerLibraryVK> GetSamplerLibrary() const override;
 
   // |Context|
-  std::shared_ptr<PipelineLibrary> GetPipelineLibrary() const override;
+  std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const override;
 
   // |Context|
-  std::shared_ptr<CommandBuffer> CreateCommandBuffer() const override;
+  std::shared_ptr<CommandBufferVK> CreateCommandBuffer() const override;
 
   // |Context|
-  const std::shared_ptr<const Capabilities>& GetCapabilities() const override;
+  const std::shared_ptr<const CapabilitiesVK>& GetCapabilities() const override;
 
   // |Context|
   virtual bool SubmitOnscreen(
-      std::shared_ptr<CommandBuffer> cmd_buffer) override;
+      std::shared_ptr<CommandBufferVK> cmd_buffer) override;
 
   const std::shared_ptr<YUVConversionLibraryVK>& GetYUVConversionLibrary()
       const;
@@ -215,7 +197,7 @@ class ContextVK final : public Context,
 
   std::shared_ptr<DescriptorPoolRecyclerVK> GetDescriptorPoolRecycler() const;
 
-  std::shared_ptr<CommandQueue> GetCommandQueue() const override;
+  std::shared_ptr<CommandQueueVK> GetCommandQueue() const override;
 
   std::shared_ptr<GPUTracerVK> GetGPUTracer() const;
 
@@ -233,14 +215,14 @@ class ContextVK final : public Context,
 
   // | Context |
   bool EnqueueCommandBuffer(
-      std::shared_ptr<CommandBuffer> command_buffer) override;
+      std::shared_ptr<CommandBufferVK> command_buffer) override;
 
   // | Context |
   bool FlushCommandBuffers() override;
 
   RuntimeStageBackend GetRuntimeStageBackend() const override;
 
-  std::shared_ptr<const IdleWaiter> GetIdleWaiter() const override {
+  std::shared_ptr<const IdleWaiterVK> GetIdleWaiter() const override {
     return idle_waiter_vk_;
   }
 
@@ -269,13 +251,13 @@ class ContextVK final : public Context,
   std::shared_ptr<DeviceHolderImpl> device_holder_;
   std::unique_ptr<DriverInfoVK> driver_info_;
   std::unique_ptr<DebugReportVK> debug_report_;
-  std::shared_ptr<Allocator> allocator_;
+  std::shared_ptr<AllocatorVK> allocator_;
   std::shared_ptr<ShaderLibraryVK> shader_library_;
   std::shared_ptr<SamplerLibraryVK> sampler_library_;
   std::shared_ptr<PipelineLibraryVK> pipeline_library_;
   std::shared_ptr<YUVConversionLibraryVK> yuv_conversion_library_;
   QueuesVK queues_;
-  std::shared_ptr<const Capabilities> device_capabilities_;
+  std::shared_ptr<const CapabilitiesVK> device_capabilities_;
   std::shared_ptr<FenceWaiterVK> fence_waiter_;
   std::shared_ptr<ResourceManagerVK> resource_manager_;
   std::shared_ptr<DescriptorPoolRecyclerVK> descriptor_pool_recycler_;
@@ -283,8 +265,8 @@ class ContextVK final : public Context,
   std::string device_name_;
   std::shared_ptr<fml::ConcurrentMessageLoop> raster_message_loop_;
   std::shared_ptr<GPUTracerVK> gpu_tracer_;
-  std::shared_ptr<CommandQueue> command_queue_vk_;
-  std::shared_ptr<const IdleWaiter> idle_waiter_vk_;
+  std::shared_ptr<CommandQueueVK> command_queue_vk_;
+  std::shared_ptr<const IdleWaiterVK> idle_waiter_vk_;
   WorkaroundsVK workarounds_;
 
   using DescriptorPoolMap =
@@ -295,7 +277,7 @@ class ContextVK final : public Context,
       cached_descriptor_pool_;
   bool should_enable_surface_control_ = false;
   bool should_batch_cmd_buffers_ = false;
-  std::vector<std::shared_ptr<CommandBuffer>> pending_command_buffers_;
+  std::vector<std::shared_ptr<CommandBufferVK>> pending_command_buffers_;
 
   const uint64_t hash_;
 

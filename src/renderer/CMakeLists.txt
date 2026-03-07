@@ -1,18 +1,11 @@
 add_library(renderer
+  backend/vulkan/idle_waiter_vk.h
   blit_command.cc
   blit_command.h
-  blit_pass.cc
-  blit_pass.h
-  capabilities.cc
-  capabilities.h
+  host_buffer.cc
+  host_buffer.h
   command.cc
   command.h
-  command_buffer.cc
-  command_buffer.h
-  command_queue.cc
-  command_queue.h
-  compute_pass.cc
-  compute_pass.h
   compute_pipeline_builder.cc
   compute_pipeline_builder.h
   compute_pipeline_descriptor.cc
@@ -25,27 +18,17 @@ add_library(renderer
   pipeline_builder.h
   pipeline_compile_queue.cc
   pipeline_compile_queue.h
+  resource_binder.cc
+  resource_binder.h
   pipeline_descriptor.cc
   pipeline_descriptor.h
-  pipeline_library.cc
-  pipeline_library.h
   pool.h
-  render_pass.cc
-  render_pass.h
   render_target.cc
   render_target.h
-  sampler_library.cc
-  sampler_library.h
-  shader_function.cc
-  shader_function.h
   shader_key.cc
   shader_key.h
-  shader_library.cc
-  shader_library.h
   snapshot.cc
   snapshot.h
-  surface.cc
-  surface.h
   texture_util.cc
   texture_util.h
   vertex_buffer_builder.cc

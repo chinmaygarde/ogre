@@ -5,27 +5,128 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_RENDER_PASS_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_RENDER_PASS_VK_H_
 
+#include <cstddef>
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "core/buffer_view.h"
+#include "core/formats.h"
+#include "core/shader_types.h"
+#include "core/vertex_buffer.h"
+#include "fml/status.h"
+#include "geometry/matrix.h"
+#include "geometry/size.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/pipeline_vk.h"
 #include "renderer/backend/vulkan/shared_object_vk.h"
-#include "renderer/command_buffer.h"
-#include "renderer/render_pass.h"
+#include "renderer/command.h"
 #include "renderer/render_target.h"
+#include "renderer/resource_binder.h"
 
 namespace ogre {
 
 class CommandBufferVK;
+class Context;
 class SamplerVK;
 
-class RenderPassVK final : public RenderPass {
+class RenderPassVK final : public ResourceBinder {
  public:
-  // |RenderPass|
-  ~RenderPassVK() override;
+  ~RenderPassVK();
+
+  const std::shared_ptr<const Context>& GetContext() const;
+
+  const RenderTarget& GetRenderTarget() const;
+
+  ISize GetRenderTargetSize() const;
+
+  const Matrix& GetOrthographicTransform() const;
+
+  bool IsValid() const;
+
+  void SetLabel(std::string_view label);
+
+  void SetPipeline(PipelineRef pipeline);
+
+  void SetPipeline(
+      const std::shared_ptr<Pipeline<PipelineDescriptor>>& pipeline);
+
+  void SetCommandLabel(std::string_view label);
+
+  void SetStencilReference(uint32_t value);
+
+  void SetBaseVertex(uint64_t value);
+
+  void SetViewport(Viewport viewport);
+
+  void SetScissor(IRect32 scissor);
+
+  void SetElementCount(size_t count);
+
+  void SetInstanceCount(size_t count);
+
+  bool SetVertexBuffer(VertexBuffer buffer);
+
+  bool SetVertexBuffer(BufferView vertex_buffer);
+
+  bool SetVertexBuffer(std::vector<BufferView> vertex_buffers);
+
+  bool SetVertexBuffer(BufferView vertex_buffers[], size_t vertex_buffer_count);
+
+  bool SetIndexBuffer(BufferView index_buffer, IndexType index_type);
+
+  fml::Status Draw();
+
+  // |ResourceBinder|
+  bool BindResource(ShaderStage stage,
+                    DescriptorType type,
+                    const ShaderUniformSlot& slot,
+                    const ShaderMetadata* metadata,
+                    BufferView view) override;
+
+  // |ResourceBinder|
+  bool BindResource(ShaderStage stage,
+                    DescriptorType type,
+                    const SampledImageSlot& slot,
+                    const ShaderMetadata* metadata,
+                    std::shared_ptr<const Texture> texture,
+                    raw_ptr<const SamplerVK>) override;
+
+  bool BindDynamicResource(ShaderStage stage,
+                           DescriptorType type,
+                           const SampledImageSlot& slot,
+                           std::unique_ptr<ShaderMetadata> metadata,
+                           std::shared_ptr<const Texture> texture,
+                           raw_ptr<const SamplerVK>);
+
+  bool BindDynamicResource(ShaderStage stage,
+                           DescriptorType type,
+                           const ShaderUniformSlot& slot,
+                           std::unique_ptr<ShaderMetadata> metadata,
+                           BufferView view);
+
+  bool EncodeCommands() const;
+
+  SampleCount GetSampleCount() const;
+
+  PixelFormat GetRenderTargetPixelFormat() const;
+
+  bool HasDepthAttachment() const;
+
+  bool HasStencilAttachment() const;
 
  private:
   friend class CommandBufferVK;
 
+  const std::shared_ptr<const Context> context_;
+  const SampleCount sample_count_;
+  const PixelFormat pixel_format_;
+  const bool has_depth_attachment_;
+  const bool has_stencil_attachment_;
+  const ISize render_target_size_;
+  RenderTarget render_target_;
+  const Matrix orthographic_;
   std::shared_ptr<CommandBufferVK> command_buffer_;
   std::string debug_label_;
   SharedHandleVK<vk::RenderPass> render_pass_;
@@ -57,80 +158,17 @@ class RenderPassVK final : public RenderPass {
                const RenderTarget& target,
                std::shared_ptr<CommandBufferVK> command_buffer);
 
-  // |RenderPass|
-  void SetPipeline(PipelineRef pipeline) override;
+  static bool ValidateVertexBuffers(const BufferView vertex_buffers[],
+                                    size_t vertex_buffer_count);
 
-  // |RenderPass|
-  void SetCommandLabel(std::string_view label) override;
+  static bool ValidateIndexBuffer(const BufferView& index_buffer,
+                                  IndexType index_type);
 
-  // |RenderPass|
-  void SetStencilReference(uint32_t value) override;
+  void OnSetLabel(std::string_view label);
 
-  // |RenderPass|
-  void SetBaseVertex(uint64_t value) override;
-
-  // |RenderPass|
-  void SetViewport(Viewport viewport) override;
-
-  // |RenderPass|
-  void SetScissor(IRect32 scissor) override;
-
-  // |RenderPass|
-  void SetElementCount(size_t count) override;
-
-  // |RenderPass|
-  void SetInstanceCount(size_t count) override;
-
-  // |RenderPass|
-  bool SetVertexBuffer(BufferView vertex_buffers[],
-                       size_t vertex_buffer_count) override;
-
-  // |RenderPass|
-  bool SetIndexBuffer(BufferView index_buffer, IndexType index_type) override;
-
-  // |RenderPass|
-  fml::Status Draw() override;
-
-  // |ResourceBinder|
-  bool BindResource(ShaderStage stage,
-                    DescriptorType type,
-                    const ShaderUniformSlot& slot,
-                    const ShaderMetadata* metadata,
-                    BufferView view) override;
-
-  // |ResourceBinder|
-  bool BindResource(ShaderStage stage,
-                    DescriptorType type,
-                    const SampledImageSlot& slot,
-                    const ShaderMetadata* metadata,
-                    std::shared_ptr<const Texture> texture,
-                    raw_ptr<const Sampler> sampler) override;
-
-  // |RenderPass|
-  bool BindDynamicResource(ShaderStage stage,
-                           DescriptorType type,
-                           const ShaderUniformSlot& slot,
-                           std::unique_ptr<ShaderMetadata> metadata,
-                           BufferView view) override;
-
-  // |RenderPass|
-  bool BindDynamicResource(ShaderStage stage,
-                           DescriptorType type,
-                           const SampledImageSlot& slot,
-                           std::unique_ptr<ShaderMetadata> metadata,
-                           std::shared_ptr<const Texture> texture,
-                           raw_ptr<const Sampler> sampler) override;
+  bool OnEncodeCommands(const Context& context) const;
 
   bool BindResource(size_t binding, DescriptorType type, BufferView view);
-
-  // |RenderPass|
-  bool IsValid() const override;
-
-  // |RenderPass|
-  void OnSetLabel(std::string_view label) override;
-
-  // |RenderPass|
-  bool OnEncodeCommands(const Context& context) const override;
 
   SharedHandleVK<vk::RenderPass> CreateVKRenderPass(
       const ContextVK& context,

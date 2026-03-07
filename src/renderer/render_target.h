@@ -9,13 +9,13 @@
 #include <map>
 #include <optional>
 
-#include "core/allocator.h"
 #include "core/formats.h"
 #include "fml/hash_combine.h"
 #include "geometry/size.h"
 
 namespace ogre {
 
+class AllocatorVK;
 class Context;
 
 struct RenderTargetConfig {
@@ -79,7 +79,7 @@ class RenderTarget final {
 
   void SetupDepthStencilAttachments(
       const Context& context,
-      Allocator& allocator,
+      AllocatorVK& allocator,
       ISize size,
       bool msaa,
       std::string_view label = "Offscreen",
@@ -148,7 +148,7 @@ class RenderTarget final {
 ///        to provide caching of allocated render target textures.
 class RenderTargetAllocator {
  public:
-  explicit RenderTargetAllocator(std::shared_ptr<Allocator> allocator);
+  explicit RenderTargetAllocator(std::shared_ptr<AllocatorVK> allocator);
 
   virtual ~RenderTargetAllocator() = default;
 
@@ -197,7 +197,7 @@ class RenderTargetAllocator {
   virtual void End();
 
  private:
-  std::shared_ptr<Allocator> allocator_;
+  std::shared_ptr<AllocatorVK> allocator_;
 };
 
 }  // namespace ogre

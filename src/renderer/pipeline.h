@@ -21,7 +21,7 @@ namespace ogre {
 
 using PipelineKey = int64_t;
 
-class PipelineLibrary;
+class PipelineLibraryVK;
 template <typename PipelineDescriptor_>
 class Pipeline;
 
@@ -70,11 +70,11 @@ class Pipeline {
       const std::function<void(T& desc)>& descriptor_callback) const;
 
  protected:
-  const std::weak_ptr<PipelineLibrary> library_;
+  const std::weak_ptr<PipelineLibraryVK> library_;
 
   const T desc_;
 
-  Pipeline(std::weak_ptr<PipelineLibrary> library, const T& desc);
+  Pipeline(std::weak_ptr<PipelineLibraryVK> library, const T& desc);
 
  private:
   Pipeline(const Pipeline&) = delete;

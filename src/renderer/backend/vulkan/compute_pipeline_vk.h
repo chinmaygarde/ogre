@@ -14,13 +14,15 @@
 
 namespace ogre {
 
+class PipelineLibraryVK;
+
 class ComputePipelineVK final
     : public Pipeline<ComputePipelineDescriptor>,
       public BackendCast<ComputePipelineVK,
                          Pipeline<ComputePipelineDescriptor>> {
  public:
   ComputePipelineVK(std::weak_ptr<DeviceHolderVK> device_holder,
-                    std::weak_ptr<PipelineLibrary> library,
+                    std::weak_ptr<PipelineLibraryVK> library,
                     const ComputePipelineDescriptor& desc,
                     vk::UniquePipeline pipeline,
                     vk::UniquePipelineLayout layout,

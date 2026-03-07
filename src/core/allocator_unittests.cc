@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #include <memory>
-#include "core/allocator.h"
 #include "core/formats.h"
 #include "core/texture_descriptor.h"
 #include "flutter/testing/testing.h"

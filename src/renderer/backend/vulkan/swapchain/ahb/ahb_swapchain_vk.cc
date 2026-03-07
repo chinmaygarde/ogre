@@ -38,7 +38,7 @@ bool AHBSwapchainVK::IsValid() const {
 }
 
 // |SwapchainVK|
-std::unique_ptr<Surface> AHBSwapchainVK::AcquireNextDrawable() {
+std::unique_ptr<SurfaceVK> AHBSwapchainVK::AcquireNextDrawable() {
   if (!IsValid()) {
     return nullptr;
   }
@@ -56,7 +56,7 @@ vk::Format AHBSwapchainVK::GetSurfaceFormat() const {
 
 // |SwapchainVK|
 void AHBSwapchainVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBuffer> cmd_buffer) const {
+    std::shared_ptr<CommandBufferVK> cmd_buffer) const {
   return impl_->AddFinalCommandBuffer(cmd_buffer);
 }
 

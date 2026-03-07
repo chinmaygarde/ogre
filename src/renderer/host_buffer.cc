@@ -2,13 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/host_buffer.h"
+#include "renderer/host_buffer.h"
 
 #include <cstring>
 #include <tuple>
 
 #include "base/validation.h"
-#include "core/allocator.h"
 #include "core/buffer_view.h"
 #include "core/device_buffer.h"
 #include "core/device_buffer_descriptor.h"
@@ -19,15 +18,15 @@ namespace ogre {
 constexpr size_t kAllocatorBlockSize = 1024000;  // 1024 Kb.
 
 std::shared_ptr<HostBuffer> HostBuffer::Create(
-    const std::shared_ptr<Allocator>& allocator,
-    const std::shared_ptr<const IdleWaiter>& idle_waiter,
+    const std::shared_ptr<AllocatorVK>& allocator,
+    const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
     size_t minimum_uniform_alignment) {
   return std::shared_ptr<HostBuffer>(
       new HostBuffer(allocator, idle_waiter, minimum_uniform_alignment));
 }
 
-HostBuffer::HostBuffer(const std::shared_ptr<Allocator>& allocator,
-                       const std::shared_ptr<const IdleWaiter>& idle_waiter,
+HostBuffer::HostBuffer(const std::shared_ptr<AllocatorVK>& allocator,
+                       const std::shared_ptr<const IdleWaiterVK>& idle_waiter,
                        size_t minimum_uniform_alignment)
     : allocator_(allocator),
       idle_waiter_(idle_waiter),

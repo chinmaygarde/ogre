@@ -7,14 +7,15 @@
 
 #include <memory>
 
+#include "geometry/size.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/swapchain/swapchain_transients_vk.h"
 #include "renderer/backend/vulkan/texture_source_vk.h"
-#include "renderer/surface.h"
+#include "renderer/render_target.h"
 
 namespace ogre {
 
-class SurfaceVK final : public Surface {
+class SurfaceVK final {
  public:
   using SwapCallback = std::function<bool(void)>;
 
@@ -28,16 +29,23 @@ class SurfaceVK final : public Surface {
       const std::shared_ptr<TextureSourceVK>& swapchain_image,
       SwapCallback swap_callback);
 
-  // |Surface|
-  ~SurfaceVK() override;
+  ~SurfaceVK();
+
+  const ISize& GetSize() const;
+
+  bool IsValid() const;
+
+  const RenderTarget& GetRenderTarget() const;
+
+  bool Present() const;
 
  private:
+  RenderTarget desc_;
+  ISize size_;
+  bool is_valid_ = false;
   SwapCallback swap_callback_;
 
   SurfaceVK(const RenderTarget& target, SwapCallback swap_callback);
-
-  // |Surface|
-  bool Present() const override;
 
   SurfaceVK(const SurfaceVK&) = delete;
 

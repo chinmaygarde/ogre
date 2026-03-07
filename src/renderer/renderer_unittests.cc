@@ -4,7 +4,7 @@
 
 #include "core/device_buffer_descriptor.h"
 #include "core/formats.h"
-#include "core/host_buffer.h"
+#include "renderer/host_buffer.h"
 #include "core/sampler_descriptor.h"
 #include "fixtures/array.frag.h"
 #include "fixtures/array.vert.h"

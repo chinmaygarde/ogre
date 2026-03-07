@@ -8,7 +8,7 @@ namespace ogre {
 
 ComputePipelineVK::ComputePipelineVK(
     std::weak_ptr<DeviceHolderVK> device_holder,
-    std::weak_ptr<PipelineLibrary> library,
+    std::weak_ptr<PipelineLibraryVK> library,
     const ComputePipelineDescriptor& desc,
     vk::UniquePipeline pipeline,
     vk::UniquePipelineLayout layout,

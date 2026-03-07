@@ -101,12 +101,16 @@ static vk::UniqueSampler CreateSampler(
 SamplerVK::SamplerVK(const vk::Device& device,
                      const SamplerDescriptor& desc,
                      std::shared_ptr<YUVConversionVK> yuv_conversion)
-    : Sampler(desc),
-      device_(device),
+    : device_(device),
+      desc_(desc),
       sampler_(MakeSharedVK<vk::Sampler>(
           CreateSampler(device, desc_, yuv_conversion))),
       yuv_conversion_(std::move(yuv_conversion)) {
   is_valid_ = sampler_ && !!sampler_->Get();
+}
+
+const SamplerDescriptor& SamplerVK::GetDescriptor() const {
+  return desc_;
 }
 
 SamplerVK::~SamplerVK() = default;

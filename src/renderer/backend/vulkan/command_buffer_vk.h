@@ -5,29 +5,56 @@
 #ifndef FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_COMMAND_BUFFER_VK_H_
 #define FLUTTER_OGRE_RENDERER_BACKEND_VULKAN_COMMAND_BUFFER_VK_H_
 
-#include "base/backend_cast.h"
+#include <functional>
+#include <memory>
+#include <string>
+
 #include "fml/status_or.h"
-#include "renderer/backend/vulkan/command_queue_vk.h"
-#include "renderer/backend/vulkan/descriptor_pool_vk.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
-#include "renderer/backend/vulkan/texture_source_vk.h"
-#include "renderer/backend/vulkan/tracked_objects_vk.h"
 #include "renderer/backend/vulkan/vk.h"
-#include "renderer/command_buffer.h"
+#include "renderer/pipeline.h"
 
 namespace ogre {
 
+class BlitPassVK;
+class ComputePassVK;
 class ContextVK;
-class CommandEncoderFactoryVK;
-class CommandEncoderVK;
+class DescriptorPoolVK;
+class DeviceBuffer;
+class RenderPassVK;
+class RenderTarget;
+class SharedObjectVK;
+class Texture;
+class TextureSourceVK;
+class TrackedObjectsVK;
 
 class CommandBufferVK final
-    : public CommandBuffer,
-      public BackendCast<CommandBufferVK, CommandBuffer>,
-      public std::enable_shared_from_this<CommandBufferVK> {
+    : public std::enable_shared_from_this<CommandBufferVK> {
  public:
-  // |CommandBuffer|
-  ~CommandBufferVK() override;
+  enum class Status {
+    kPending,
+    kError,
+    kCompleted,
+  };
+
+  using CompletionCallback = std::function<void(Status)>;
+
+  ~CommandBufferVK();
+
+  bool IsValid() const;
+
+  void SetLabel(std::string_view label) const;
+
+  void WaitUntilCompleted();
+
+  void WaitUntilScheduled();
+
+  std::shared_ptr<RenderPassVK> CreateRenderPass(
+      const RenderTarget& render_target);
+
+  std::shared_ptr<BlitPassVK> CreateBlitPass();
+
+  std::shared_ptr<ComputePassVK> CreateComputePass();
 
   // Encoder Functionality
 
@@ -84,37 +111,13 @@ class CommandBufferVK final
   friend class ContextVK;
   friend class CommandQueueVK;
 
+  std::weak_ptr<const ContextVK> context_;
   std::weak_ptr<const DeviceHolderVK> device_holder_;
   std::shared_ptr<TrackedObjectsVK> tracked_objects_;
 
-  CommandBufferVK(std::weak_ptr<const Context> context,
+  CommandBufferVK(std::weak_ptr<const ContextVK> context,
                   std::weak_ptr<const DeviceHolderVK> device_holder,
                   std::shared_ptr<TrackedObjectsVK> tracked_objects);
-
-  // |CommandBuffer|
-  void SetLabel(std::string_view label) const override;
-
-  // |CommandBuffer|
-  bool IsValid() const override;
-
-  // |CommandBuffer|
-  bool OnSubmitCommands(bool block_on_schedule,
-                        CompletionCallback callback) override;
-
-  // |CommandBuffer|
-  void OnWaitUntilCompleted() override;
-
-  // |CommandBuffer|
-  void OnWaitUntilScheduled() override;
-
-  // |CommandBuffer|
-  std::shared_ptr<RenderPass> OnCreateRenderPass(RenderTarget target) override;
-
-  // |CommandBuffer|
-  std::shared_ptr<BlitPass> OnCreateBlitPass() override;
-
-  // |CommandBuffer|
-  std::shared_ptr<ComputePass> OnCreateComputePass() override;
 
   CommandBufferVK(const CommandBufferVK&) = delete;
 

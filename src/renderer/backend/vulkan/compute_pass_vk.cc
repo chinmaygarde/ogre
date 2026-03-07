@@ -15,7 +15,7 @@ namespace ogre {
 
 ComputePassVK::ComputePassVK(std::shared_ptr<const Context> context,
                              std::shared_ptr<CommandBufferVK> command_buffer)
-    : ComputePass(std::move(context)),
+    : context_(std::move(context)),
       command_buffer_(std::move(command_buffer)) {
   // TOOD(dnfield): This should be moved to caps. But for now keeping this
   // in parallel with Metal.
@@ -30,6 +30,13 @@ ComputePassVK::~ComputePassVK() = default;
 
 bool ComputePassVK::IsValid() const {
   return is_valid_;
+}
+
+void ComputePassVK::SetLabel(const std::string& label) {
+  if (label.empty()) {
+    return;
+  }
+  OnSetLabel(label);
 }
 
 void ComputePassVK::OnSetLabel(const std::string& label) {
@@ -146,7 +153,7 @@ bool ComputePassVK::BindResource(ShaderStage stage,
                                  const SampledImageSlot& slot,
                                  const ShaderMetadata* metadata,
                                  std::shared_ptr<const Texture> texture,
-                                 raw_ptr<const Sampler> sampler) {
+                                 raw_ptr<const SamplerVK> sampler) {
   if (bound_image_offset_ >= kMaxBindings) {
     return false;
   }
@@ -154,7 +161,7 @@ bool ComputePassVK::BindResource(ShaderStage stage,
     return false;
   }
   const TextureVK& texture_vk = TextureVK::Cast(*texture);
-  const SamplerVK& sampler_vk = SamplerVK::Cast(*sampler);
+  const SamplerVK& sampler_vk = *sampler;
 
   if (!command_buffer_->Track(texture)) {
     return false;

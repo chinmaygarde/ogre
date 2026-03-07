@@ -112,7 +112,7 @@ TEST(ContextVKTest, DeletePipelineAfterContext) {
 }
 
 TEST(ContextVKTest, DeleteShaderFunctionAfterContext) {
-  std::shared_ptr<const ShaderFunction> shader_function;
+  std::shared_ptr<const ShaderFunctionVK> shader_function;
   std::shared_ptr<std::vector<std::string>> functions;
   {
     std::shared_ptr<ContextVK> context = MockVulkanContextBuilder().Build();

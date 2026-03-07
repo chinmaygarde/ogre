@@ -5,6 +5,7 @@
 #include "renderer/backend/vulkan/texture_vk.h"
 
 #include "core/formats.h"
+#include "renderer/backend/vulkan/allocator_vk.h"
 #include "core/texture_descriptor.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
 #include "renderer/backend/vulkan/formats_vk.h"
@@ -87,13 +88,11 @@ bool TextureVK::OnSetContents(const uint8_t* contents,
     return false;
   }
 
-  auto& cmd_buffer_vk = CommandBufferVK::Cast(*cmd_buffer);
-
-  if (!cmd_buffer_vk.Track(staging_buffer) || !cmd_buffer_vk.Track(source_)) {
+  if (!cmd_buffer->Track(staging_buffer) || !cmd_buffer->Track(source_)) {
     return false;
   }
 
-  const auto& vk_cmd_buffer = cmd_buffer_vk.GetCommandBuffer();
+  const auto& vk_cmd_buffer = cmd_buffer->GetCommandBuffer();
 
   BarrierVK barrier;
   barrier.cmd_buffer = vk_cmd_buffer;

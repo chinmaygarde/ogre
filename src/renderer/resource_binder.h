@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_OGRE_CORE_RESOURCE_BINDER_H_
-#define FLUTTER_OGRE_CORE_RESOURCE_BINDER_H_
+#ifndef FLUTTER_OGRE_RENDERER_RESOURCE_BINDER_H_
+#define FLUTTER_OGRE_RENDERER_RESOURCE_BINDER_H_
 
 #include <memory>
 
 #include "core/buffer_view.h"
 #include "core/formats.h"
 #include "core/raw_ptr.h"
-#include "core/sampler.h"
 #include "core/shader_types.h"
 #include "core/texture.h"
+#include "renderer/backend/vulkan/sampler_vk.h"
 
 namespace ogre {
 
@@ -35,9 +35,9 @@ struct ResourceBinder {
                             const SampledImageSlot& slot,
                             const ShaderMetadata* metadata,
                             std::shared_ptr<const Texture> texture,
-                            raw_ptr<const Sampler>) = 0;
+                            raw_ptr<const SamplerVK>) = 0;
 };
 
 }  // namespace ogre
 
-#endif  // FLUTTER_OGRE_CORE_RESOURCE_BINDER_H_
+#endif  // FLUTTER_OGRE_RENDERER_RESOURCE_BINDER_H_

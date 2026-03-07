@@ -8,9 +8,9 @@
 #include <format>
 
 #include "base/validation.h"
+#include "renderer/backend/vulkan/shader_library_vk.h"
 #include "renderer/compute_pipeline_descriptor.h"
 #include "renderer/context.h"
-#include "renderer/shader_library.h"
 
 namespace ogre {
 

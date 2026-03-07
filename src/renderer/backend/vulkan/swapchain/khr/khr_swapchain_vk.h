@@ -11,7 +11,6 @@
 #include "renderer/backend/vulkan/swapchain/swapchain_vk.h"
 #include "renderer/backend/vulkan/vk.h"
 #include "renderer/context.h"
-#include "renderer/surface.h"
 
 namespace ogre {
 
@@ -29,7 +28,7 @@ class KHRSwapchainVK final : public SwapchainVK {
   bool IsValid() const override;
 
   // |SwapchainVK|
-  std::unique_ptr<Surface> AcquireNextDrawable() override;
+  std::unique_ptr<SurfaceVK> AcquireNextDrawable() override;
 
   // |SwapchainVK|
   vk::Format GetSurfaceFormat() const override;
@@ -39,7 +38,7 @@ class KHRSwapchainVK final : public SwapchainVK {
 
   // |SwapchainVK|
   void AddFinalCommandBuffer(
-      std::shared_ptr<CommandBuffer> cmd_buffer) const override;
+      std::shared_ptr<CommandBufferVK> cmd_buffer) const override;
 
  private:
   friend class SwapchainVK;
@@ -57,7 +56,7 @@ class KHRSwapchainVK final : public SwapchainVK {
 
   KHRSwapchainVK& operator=(const KHRSwapchainVK&) = delete;
 
-  std::unique_ptr<Surface> AcquireNextDrawable(size_t resize_retry_count);
+  std::unique_ptr<SurfaceVK> AcquireNextDrawable(size_t resize_retry_count);
 };
 
 }  // namespace ogre

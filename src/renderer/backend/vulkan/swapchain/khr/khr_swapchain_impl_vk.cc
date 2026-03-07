@@ -23,7 +23,7 @@ static constexpr size_t kMaxFramesInFlight = 2u;
 struct KHRFrameSynchronizerVK {
   vk::UniqueFence acquire;
   vk::UniqueSemaphore render_ready;
-  std::shared_ptr<CommandBuffer> final_cmd_buffer;
+  std::shared_ptr<CommandBufferVK> final_cmd_buffer;
   bool is_valid = false;
   // Whether the renderer attached an onscreen command buffer to render to.
   bool has_onscreen = false;
@@ -418,7 +418,7 @@ KHRSwapchainImplVK::AcquireResult KHRSwapchainImplVK::AcquireNextDrawable() {
 }
 
 void KHRSwapchainImplVK::AddFinalCommandBuffer(
-    std::shared_ptr<CommandBuffer> cmd_buffer) {
+    std::shared_ptr<CommandBufferVK> cmd_buffer) {
   const auto& sync = synchronizers_[current_frame_];
   sync->final_cmd_buffer = std::move(cmd_buffer);
   sync->has_onscreen = true;
@@ -448,7 +448,7 @@ bool KHRSwapchainImplVK::Present(
   }
 
   auto vk_final_cmd_buffer =
-      CommandBufferVK::Cast(*sync->final_cmd_buffer).GetCommandBuffer();
+      sync->final_cmd_buffer->GetCommandBuffer();
   {
     BarrierVK barrier;
     barrier.new_layout = vk::ImageLayout::ePresentSrcKHR;
