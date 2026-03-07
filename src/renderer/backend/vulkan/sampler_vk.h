@@ -11,7 +11,7 @@
 
 namespace ogre {
 
-class SamplerLibraryVK;
+class SamplerLibrary;
 class YUVConversionVK;
 
 class SamplerVK final {
@@ -32,7 +32,7 @@ class SamplerVK final {
   const std::shared_ptr<YUVConversionVK>& GetYUVConversion() const;
 
  private:
-  friend SamplerLibraryVK;
+  friend SamplerLibrary;
 
   const vk::Device device_;
   SamplerDescriptor desc_;

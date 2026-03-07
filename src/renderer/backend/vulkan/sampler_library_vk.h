@@ -13,11 +13,11 @@
 
 namespace ogre {
 
-class SamplerLibraryVK final {
+class SamplerLibrary final {
  public:
-  ~SamplerLibraryVK();
+  ~SamplerLibrary();
 
-  explicit SamplerLibraryVK(const std::weak_ptr<DeviceHolderVK>& device_holder);
+  explicit SamplerLibrary(const std::weak_ptr<DeviceHolderVK>& device_holder);
 
   void ApplyWorkarounds(const Workarounds& workarounds);
 
@@ -30,9 +30,9 @@ class SamplerLibraryVK final {
 
   raw_ptr<const SamplerVK> GetSampler(const SamplerDescriptor& descriptor);
 
-  SamplerLibraryVK(const SamplerLibraryVK&) = delete;
+  SamplerLibrary(const SamplerLibrary&) = delete;
 
-  SamplerLibraryVK& operator=(const SamplerLibraryVK&) = delete;
+  SamplerLibrary& operator=(const SamplerLibrary&) = delete;
 };
 
 }  // namespace ogre

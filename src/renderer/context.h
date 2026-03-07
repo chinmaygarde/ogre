@@ -22,8 +22,8 @@ class Context;
 class CommandBuffer;
 class CommandQueue;
 class PipelineLibraryVK;
-class SamplerLibraryVK;
-class ShaderLibraryVK;
+class SamplerLibrary;
+class ShaderLibrary;
 class IdleWaiterVK;
 
 /// A wrapper for provided a deferred initialization of ogre to various
@@ -150,7 +150,7 @@ class Context {
   /// @return     The shader library. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const = 0;
+  virtual std::shared_ptr<ShaderLibrary> GetShaderLibrary() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Returns the library of combined image samplers used in
@@ -159,7 +159,7 @@ class Context {
   /// @return     The sampler library. Can never be `nullptr` for a valid
   ///             context.
   ///
-  virtual std::shared_ptr<SamplerLibraryVK> GetSamplerLibrary() const = 0;
+  virtual std::shared_ptr<SamplerLibrary> GetSamplerLibrary() const = 0;
 
   //----------------------------------------------------------------------------
   /// @brief      Returns the library of pipelines used by render or compute

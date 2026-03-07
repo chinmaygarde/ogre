@@ -9,17 +9,17 @@
 
 namespace ogre {
 
-SamplerLibraryVK::SamplerLibraryVK(
+SamplerLibrary::SamplerLibrary(
     const std::weak_ptr<DeviceHolderVK>& device_holder)
     : device_holder_(device_holder) {}
 
-SamplerLibraryVK::~SamplerLibraryVK() = default;
+SamplerLibrary::~SamplerLibrary() = default;
 
-void SamplerLibraryVK::ApplyWorkarounds(const Workarounds& workarounds) {
+void SamplerLibrary::ApplyWorkarounds(const Workarounds& workarounds) {
   mips_disabled_workaround_ = workarounds.broken_mipmap_generation;
 }
 
-raw_ptr<const SamplerVK> SamplerLibraryVK::GetSampler(
+raw_ptr<const SamplerVK> SamplerLibrary::GetSampler(
     const SamplerDescriptor& desc) {
   SamplerDescriptor desc_copy = desc;
   if (mips_disabled_workaround_) {

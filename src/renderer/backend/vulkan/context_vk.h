@@ -99,10 +99,10 @@ class ContextVK final : public Context,
   std::shared_ptr<Allocator> GetResourceAllocator() const override;
 
   // |Context|
-  std::shared_ptr<ShaderLibraryVK> GetShaderLibrary() const override;
+  std::shared_ptr<ShaderLibrary> GetShaderLibrary() const override;
 
   // |Context|
-  std::shared_ptr<SamplerLibraryVK> GetSamplerLibrary() const override;
+  std::shared_ptr<SamplerLibrary> GetSamplerLibrary() const override;
 
   // |Context|
   std::shared_ptr<PipelineLibraryVK> GetPipelineLibrary() const override;
@@ -247,8 +247,8 @@ class ContextVK final : public Context,
   std::unique_ptr<DriverInfoVK> driver_info_;
   std::unique_ptr<DebugReport> debug_report_;
   std::shared_ptr<Allocator> allocator_;
-  std::shared_ptr<ShaderLibraryVK> shader_library_;
-  std::shared_ptr<SamplerLibraryVK> sampler_library_;
+  std::shared_ptr<ShaderLibrary> shader_library_;
+  std::shared_ptr<SamplerLibrary> sampler_library_;
   std::shared_ptr<PipelineLibraryVK> pipeline_library_;
   std::shared_ptr<YUVConversionLibrary> yuv_conversion_library_;
   QueuesVK queues_;

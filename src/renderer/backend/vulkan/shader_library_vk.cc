@@ -13,20 +13,20 @@
 
 namespace ogre {
 
-ShaderLibraryVK::ShaderLibraryVK(
+ShaderLibrary::ShaderLibrary(
     std::weak_ptr<DeviceHolderVK> device_holder,
     const std::vector<std::shared_ptr<fml::Mapping>>& shader_libraries_data)
     : device_holder_(std::move(device_holder)) {
   TRACE_EVENT0("ogre", "CreateShaderLibrary");
 }
 
-ShaderLibraryVK::~ShaderLibraryVK() = default;
+ShaderLibrary::~ShaderLibrary() = default;
 
-bool ShaderLibraryVK::IsValid() const {
+bool ShaderLibrary::IsValid() const {
   return is_valid_;
 }
 
-std::shared_ptr<const ShaderFunction> ShaderLibraryVK::GetFunction(
+std::shared_ptr<const ShaderFunction> ShaderLibrary::GetFunction(
     std::string_view name,
     ShaderStage stage) {
   ReaderLock lock(functions_mutex_);
@@ -39,10 +39,10 @@ std::shared_ptr<const ShaderFunction> ShaderLibraryVK::GetFunction(
   return nullptr;
 }
 
-void ShaderLibraryVK::RegisterFunction(std::string name,
-                                       ShaderStage stage,
-                                       std::shared_ptr<fml::Mapping> code,
-                                       RegistrationCallback callback) {
+void ShaderLibrary::RegisterFunction(std::string name,
+                                     ShaderStage stage,
+                                     std::shared_ptr<fml::Mapping> code,
+                                     RegistrationCallback callback) {
   const auto result = RegisterFunction(name, stage, code);
   if (callback) {
     callback(result);
@@ -60,7 +60,7 @@ static bool IsMappingSPIRV(const fml::Mapping& mapping) {
   return magic == kSPIRVMagic;
 }
 
-bool ShaderLibraryVK::RegisterFunction(
+bool ShaderLibrary::RegisterFunction(
     const std::string& name,
     ShaderStage stage,
     const std::shared_ptr<fml::Mapping>& code) {
@@ -109,7 +109,7 @@ bool ShaderLibraryVK::RegisterFunction(
   return true;
 }
 
-void ShaderLibraryVK::UnregisterFunction(std::string name, ShaderStage stage) {
+void ShaderLibrary::UnregisterFunction(std::string name, ShaderStage stage) {
   WriterLock lock(functions_mutex_);
 
   const auto key = ShaderKey{name, stage};

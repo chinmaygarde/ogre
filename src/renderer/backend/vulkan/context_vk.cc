@@ -394,11 +394,11 @@ void ContextVK::Setup(Settings settings) {
   }
 
   auto sampler_library =
-      std::shared_ptr<SamplerLibraryVK>(new SamplerLibraryVK(device_holder));
+      std::shared_ptr<SamplerLibrary>(new SamplerLibrary(device_holder));
 
-  auto shader_library = std::shared_ptr<ShaderLibraryVK>(
-      new ShaderLibraryVK(device_holder,                   //
-                          settings.shader_libraries_data)  //
+  auto shader_library = std::shared_ptr<ShaderLibrary>(
+      new ShaderLibrary(device_holder,                   //
+                        settings.shader_libraries_data)  //
   );
 
   // if (!shader_library->IsValid()) {
@@ -523,11 +523,11 @@ std::shared_ptr<Allocator> ContextVK::GetResourceAllocator() const {
   return allocator_;
 }
 
-std::shared_ptr<ShaderLibraryVK> ContextVK::GetShaderLibrary() const {
+std::shared_ptr<ShaderLibrary> ContextVK::GetShaderLibrary() const {
   return shader_library_;
 }
 
-std::shared_ptr<SamplerLibraryVK> ContextVK::GetSamplerLibrary() const {
+std::shared_ptr<SamplerLibrary> ContextVK::GetSamplerLibrary() const {
   return sampler_library_;
 }
 

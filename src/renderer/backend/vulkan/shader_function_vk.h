@@ -31,7 +31,7 @@ class ShaderFunction final : public Comparable<ShaderFunction> {
   bool IsEqual(const ShaderFunction& other) const override;
 
  private:
-  friend class ShaderLibraryVK;
+  friend class ShaderLibrary;
 
   UniqueID parent_library_id_;
   std::string name_;

@@ -21,10 +21,9 @@
 
 namespace ogre {
 
-class ShaderLibraryVK final
-    : public std::enable_shared_from_this<ShaderLibraryVK> {
+class ShaderLibrary final : public std::enable_shared_from_this<ShaderLibrary> {
  public:
-  ~ShaderLibraryVK();
+  ~ShaderLibrary();
 
   bool IsValid() const;
 
@@ -47,7 +46,7 @@ class ShaderLibraryVK final
   ShaderFunctionMap functions_ IPLR_GUARDED_BY(functions_mutex_);
   bool is_valid_ = false;
 
-  ShaderLibraryVK(
+  ShaderLibrary(
       std::weak_ptr<DeviceHolderVK> device_holder,
       const std::vector<std::shared_ptr<fml::Mapping>>& shader_libraries_data);
 
@@ -55,9 +54,9 @@ class ShaderLibraryVK final
                         ShaderStage stage,
                         const std::shared_ptr<fml::Mapping>& code);
 
-  ShaderLibraryVK(const ShaderLibraryVK&) = delete;
+  ShaderLibrary(const ShaderLibrary&) = delete;
 
-  ShaderLibraryVK& operator=(const ShaderLibraryVK&) = delete;
+  ShaderLibrary& operator=(const ShaderLibrary&) = delete;
 };
 
 }  // namespace ogre
