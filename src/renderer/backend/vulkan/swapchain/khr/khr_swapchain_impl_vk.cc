@@ -5,7 +5,7 @@
 #include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_impl_vk.h"
 
 #include <absl/log/check.h>
-#include "base/validation.h"
+
 #include "core/formats.h"
 #include "fml/synchronization/semaphore.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
@@ -34,7 +34,7 @@ struct KHRFrameSynchronizer {
     auto render_res = device.createSemaphoreUnique({});
     if (acquire_res.result != vk::Result::eSuccess ||
         render_res.result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Could not create synchronizer.";
+      LOG(ERROR) << "Could not create synchronizer.";
       return;
     }
     acquire = std::move(acquire_res.value);
@@ -51,12 +51,12 @@ struct KHRFrameSynchronizer {
             std::numeric_limits<uint64_t>::max()  // timeout (ns)
         );
         result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Fence wait failed: " << vk::to_string(result);
+      LOG(ERROR) << "Fence wait failed: " << vk::to_string(result);
       return false;
     }
     if (auto result = device.resetFences(*acquire);
         result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Could not reset fence: " << vk::to_string(result);
+      LOG(ERROR) << "Could not reset fence: " << vk::to_string(result);
       return false;
     }
     return true;
@@ -124,7 +124,7 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
                                    bool enable_msaa,
                                    vk::SwapchainKHR old_swapchain) {
   if (!context) {
-    VALIDATION_LOG << "Cannot create a swapchain without a context.";
+    LOG(ERROR) << "Cannot create a swapchain without a context.";
     return;
   }
 
@@ -133,23 +133,23 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
   const auto [caps_result, surface_caps] =
       vk_context.GetPhysicalDevice().getSurfaceCapabilitiesKHR(*surface);
   if (caps_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not get surface capabilities: "
-                   << vk::to_string(caps_result);
+    LOG(ERROR) << "Could not get surface capabilities: "
+               << vk::to_string(caps_result);
     return;
   }
 
   auto [formats_result, formats] =
       vk_context.GetPhysicalDevice().getSurfaceFormatsKHR(*surface);
   if (formats_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not get surface formats: "
-                   << vk::to_string(formats_result);
+    LOG(ERROR) << "Could not get surface formats: "
+               << vk::to_string(formats_result);
     return;
   }
 
   const auto format = ChooseSurfaceFormat(
       formats, vk_context.GetCapabilities()->GetDefaultColorFormat());
   if (!format.has_value()) {
-    VALIDATION_LOG << "Swapchain has no supported formats.";
+    LOG(ERROR) << "Swapchain has no supported formats.";
     return;
   }
   vk_context.SetOffscreenFormat(ToPixelFormat(format.value().format));
@@ -157,7 +157,7 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
   const auto composite =
       ChooseAlphaCompositionMode(surface_caps.supportedCompositeAlpha);
   if (!composite.has_value()) {
-    VALIDATION_LOG << "No composition mode supported.";
+    LOG(ERROR) << "No composition mode supported.";
     return;
   }
 
@@ -200,15 +200,15 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
   auto [swapchain_result, swapchain] =
       vk_context.GetDevice().createSwapchainKHRUnique(swapchain_info);
   if (swapchain_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create swapchain: "
-                   << vk::to_string(swapchain_result);
+    LOG(ERROR) << "Could not create swapchain: "
+               << vk::to_string(swapchain_result);
     return;
   }
 
   auto [images_result, images] =
       vk_context.GetDevice().getSwapchainImagesKHR(*swapchain);
   if (images_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not get swapchain images.";
+    LOG(ERROR) << "Could not get swapchain images.";
     return;
   }
 
@@ -228,7 +228,7 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
                                             image                    // image
         );
     if (!swapchain_image->IsValid()) {
-      VALIDATION_LOG << "Could not create swapchain image.";
+      LOG(ERROR) << "Could not create swapchain image.";
       return;
     }
     Context::SetDebugName(
@@ -242,7 +242,7 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
 
     auto present_res = vk_context.GetDevice().createSemaphoreUnique({});
     if (present_res.result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Could not create presentation semaphore.";
+      LOG(ERROR) << "Could not create presentation semaphore.";
       return;
     }
     present_semaphores.push_back(std::move(present_res.value));
@@ -252,7 +252,7 @@ KHRSwapchainImpl::KHRSwapchainImpl(const std::shared_ptr<Context>& context,
   for (size_t i = 0u; i < kMaxFramesInFlight; i++) {
     auto sync = std::make_unique<KHRFrameSynchronizer>(vk_context.GetDevice());
     if (!sync->is_valid) {
-      VALIDATION_LOG << "Could not create frame synchronizers.";
+      LOG(ERROR) << "Could not create frame synchronizers.";
       return;
     }
     synchronizers.emplace_back(std::move(sync));
@@ -357,7 +357,7 @@ KHRSwapchainImpl::AcquireResult KHRSwapchainImpl::AcquireNextDrawable() {
   /// Wait on the host for the synchronizer fence.
   ///
   if (!sync->WaitForFence(context.GetDevice())) {
-    VALIDATION_LOG << "Could not wait for fence.";
+    LOG(ERROR) << "Could not wait for fence.";
     return KHRSwapchainImpl::AcquireResult{};
   }
 
@@ -386,13 +386,13 @@ KHRSwapchainImpl::AcquireResult KHRSwapchainImpl::AcquireNextDrawable() {
       break;
     default:
       // An unrecoverable error.
-      VALIDATION_LOG << "Could not acquire next swapchain image: "
-                     << vk::to_string(acq_result);
+      LOG(ERROR) << "Could not acquire next swapchain image: "
+                 << vk::to_string(acq_result);
       return AcquireResult{false /* out of date */};
   }
 
   if (index >= images_.size()) {
-    VALIDATION_LOG << "Swapchain returned an invalid image index.";
+    LOG(ERROR) << "Swapchain returned an invalid image index.";
     return KHRSwapchainImpl::AcquireResult{};
   }
 
@@ -476,8 +476,8 @@ bool KHRSwapchainImpl::Present(const std::shared_ptr<KHRSwapchainImage>& image,
     auto result =
         context.GetGraphicsQueue()->Submit(submit_info, *sync->acquire);
     if (result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Could not wait on render semaphore: "
-                     << vk::to_string(result);
+      LOG(ERROR) << "Could not wait on render semaphore: "
+                 << vk::to_string(result);
       return false;
     }
   }
@@ -511,7 +511,7 @@ bool KHRSwapchainImpl::Present(const std::shared_ptr<KHRSwapchainImage>& image,
     case vk::Result::eSuccess:
       break;
     default:
-      VALIDATION_LOG << "Could not present queue: " << vk::to_string(result);
+      LOG(ERROR) << "Could not present queue: " << vk::to_string(result);
       break;
   }
 

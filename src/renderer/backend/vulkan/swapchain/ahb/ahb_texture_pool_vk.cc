@@ -12,7 +12,7 @@ AHBTexturePool::AHBTexturePool(std::weak_ptr<Context> context,
                                android::HardwareBufferDescriptor desc)
     : context_(std::move(context)), desc_(desc) {
   if (!desc_.IsAllocatable()) {
-    VALIDATION_LOG << "Swapchain image is not allocatable.";
+    LOG(ERROR) << "Swapchain image is not allocatable.";
     return;
   }
   is_valid_ = true;
@@ -47,23 +47,22 @@ std::shared_ptr<AHBTextureSource> AHBTexturePool::CreateTexture() const {
   TRACE_EVENT0("ogre", "CreateSwapchainTexture");
   auto context = context_.lock();
   if (!context) {
-    VALIDATION_LOG << "Context died before image could be created.";
+    LOG(ERROR) << "Context died before image could be created.";
     return nullptr;
   }
 
   auto ahb = std::make_unique<android::HardwareBuffer>(desc_);
   if (!ahb->IsValid()) {
-    VALIDATION_LOG << "Could not create hardware buffer of size: "
-                   << desc_.size;
+    LOG(ERROR) << "Could not create hardware buffer of size: " << desc_.size;
     return nullptr;
   }
 
   auto ahb_texture_source =
       std::make_shared<AHBTextureSource>(context, std::move(ahb), true);
   if (!ahb_texture_source->IsValid()) {
-    VALIDATION_LOG << "Could not create hardware buffer texture source for "
-                      "swapchain image of size: "
-                   << desc_.size;
+    LOG(ERROR) << "Could not create hardware buffer texture source for "
+                  "swapchain image of size: "
+               << desc_.size;
     return nullptr;
   }
 

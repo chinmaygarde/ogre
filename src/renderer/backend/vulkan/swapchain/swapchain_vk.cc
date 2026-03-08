@@ -23,7 +23,7 @@ std::shared_ptr<Swapchain> Swapchain::Create(
   auto swapchain = std::shared_ptr<KHRSwapchain>(
       new KHRSwapchain(context, std::move(surface), size, enable_msaa));
   if (!swapchain->IsValid()) {
-    VALIDATION_LOG << "Could not create valid swapchain.";
+    LOG(ERROR) << "Could not create valid swapchain.";
     return nullptr;
   }
   return swapchain;
@@ -61,7 +61,7 @@ std::shared_ptr<Swapchain> Swapchain::Create(
     if (ahb_swapchain->IsValid()) {
       return ahb_swapchain;
     } else {
-      VALIDATION_LOG
+      LOG(ERROR)
           << "Could not create AHB swapchain. Falling back to KHR variant.";
     }
   }
@@ -71,8 +71,8 @@ std::shared_ptr<Swapchain> Swapchain::Create(
   auto [result, surface] =
       (*context).GetInstance().createAndroidSurfaceKHRUnique(surface_info);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create KHR Android Surface: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not create KHR Android Surface: "
+               << vk::to_string(result);
     return nullptr;
   }
 

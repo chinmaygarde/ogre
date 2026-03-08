@@ -5,7 +5,7 @@
 #include "fml/platform/android/scoped_java_ref.h"
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/platform/android/jni_util.h"
 
 namespace fml {

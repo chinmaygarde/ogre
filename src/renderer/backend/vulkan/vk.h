@@ -4,13 +4,13 @@
 
 #pragma once
 
+#include <absl/log/check.h>
 #include "fml/build_config.h"
-#include "fml/logging.h"
 
 #define VK_NO_PROTOTYPES
 
 #if !defined(NDEBUG)
-#define VULKAN_HPP_ASSERT FML_CHECK
+#define VULKAN_HPP_ASSERT CHECK
 #else
 #define VULKAN_HPP_ASSERT(ignored) \
   {                                \

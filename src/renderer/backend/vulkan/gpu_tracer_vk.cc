@@ -10,8 +10,7 @@
 #include <utility>
 
 #include <absl/log/check.h>
-#include "base/validation.h"
-#include "fml/logging.h"
+
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
 #include "renderer/backend/vulkan/command_queue_vk.h"
@@ -56,7 +55,7 @@ void GPUTracer::InitializeQueryPool(const Context& context) {
 
     auto [status, pool] = context.GetDevice().createQueryPoolUnique(info);
     if (status != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Failed to create query pool.";
+      LOG(ERROR) << "Failed to create query pool.";
       return;
     }
     trace_states_[i].query_pool = std::move(pool);
@@ -64,7 +63,7 @@ void GPUTracer::InitializeQueryPool(const Context& context) {
         trace_states_[i].query_pool.get(), 0, kPoolSize);
   }
   if (!context.GetCommandQueue()->Submit({buffer}).ok()) {
-    VALIDATION_LOG << "Failed to reset query pool for trace events.";
+    LOG(ERROR) << "Failed to reset query pool for trace events.";
     enabled_ = false;
   }
 }

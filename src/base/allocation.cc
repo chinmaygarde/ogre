@@ -7,8 +7,6 @@
 #include <algorithm>
 #include <cstring>
 
-#include "base/validation.h"
-
 namespace ogre {
 
 Allocation::Allocation() = default;
@@ -70,7 +68,7 @@ bool Allocation::Reserve(Bytes reserved) {
     // If new length is zero, a minimum non-zero sized allocation is returned.
     // So this check will not trip and this routine will indicate success as
     // expected.
-    VALIDATION_LOG << "Allocation failed. Out of host memory.";
+    LOG(ERROR) << "Allocation failed. Out of host memory.";
     return false;
   }
 

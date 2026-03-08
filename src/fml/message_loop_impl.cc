@@ -13,7 +13,6 @@
 #include <absl/log/log.h>
 
 #include "fml/build_config.h"
-#include "fml/logging.h"
 
 #if FML_OS_MACOSX
 #include "fml/platform/darwin/message_loop_darwin.h"

@@ -5,7 +5,6 @@
 #include "fml/ascii_trie.h"
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
 
 namespace fml {
 typedef AsciiTrie::TrieNode TrieNode;

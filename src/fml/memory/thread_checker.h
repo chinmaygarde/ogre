@@ -8,7 +8,7 @@
 #pragma once
 
 #include "fml/build_config.h"
-#include "fml/logging.h"
+
 #include "fml/macros.h"
 
 #if defined(FML_OS_WIN)

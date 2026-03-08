@@ -4,7 +4,6 @@
 
 #include "renderer/backend/vulkan/swapchain/ahb/ahb_swapchain_impl_vk.h"
 
-#include "base/validation.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
 #include "renderer/backend/vulkan/swapchain/ahb/ahb_formats.h"
 #include "renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
@@ -32,7 +31,7 @@ AHBFrameSynchronizer::AHBFrameSynchronizer(const vk::Device& device) {
   auto acquire_res = device.createFenceUnique(
       vk::FenceCreateInfo{vk::FenceCreateFlagBits::eSignaled});
   if (acquire_res.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create synchronizer.";
+    LOG(ERROR) << "Could not create synchronizer.";
     return;
   }
   acquire = std::move(acquire_res.value);
@@ -52,12 +51,12 @@ bool AHBFrameSynchronizer::WaitForFence(const vk::Device& device) {
           std::numeric_limits<uint64_t>::max()  // timeout (ns)
       );
       result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Fence wait failed: " << vk::to_string(result);
+    LOG(ERROR) << "Fence wait failed: " << vk::to_string(result);
     return false;
   }
   if (auto result = device.resetFences(*acquire);
       result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not reset fence: " << vk::to_string(result);
+    LOG(ERROR) << "Could not reset fence: " << vk::to_string(result);
     return false;
   }
   return true;
@@ -136,14 +135,14 @@ std::unique_ptr<Surface> AHBSwapchainImpl::AcquireNextDrawable() {
   auto pool_entry = pool_->Pop();
 
   if (!pool_entry.IsValid()) {
-    VALIDATION_LOG << "Could not create AHB texture source.";
+    LOG(ERROR) << "Could not create AHB texture source.";
     return nullptr;
   }
 
   // Import the render ready semaphore that will block onscreen rendering until
   // it is ready.
   if (!ImportRenderReady(pool_entry.render_ready_fence, pool_entry.texture)) {
-    VALIDATION_LOG << "Could wait on render ready fence.";
+    LOG(ERROR) << "Could wait on render ready fence.";
     return nullptr;
   }
 
@@ -158,7 +157,7 @@ std::unique_ptr<Surface> AHBSwapchainImpl::AcquireNextDrawable() {
       [weak = weak_from_this(), texture = pool_entry.texture]() {
         auto thiz = weak.lock();
         if (!thiz) {
-          VALIDATION_LOG << "Swapchain died before image could be presented.";
+          LOG(ERROR) << "Swapchain died before image could be presented.";
           return false;
         }
         return thiz->Present(texture);
@@ -175,8 +174,8 @@ bool AHBSwapchainImpl::Present(
     const std::shared_ptr<AHBTextureSource>& texture) {
   auto control = surface_control_.lock();
   if (!control || !control->IsValid()) {
-    VALIDATION_LOG << "Surface control died before swapchain image could be "
-                      "presented.";
+    LOG(ERROR) << "Surface control died before swapchain image could be "
+                  "presented.";
     return false;
   }
 
@@ -194,7 +193,7 @@ bool AHBSwapchainImpl::Present(
   auto present_ready = SubmitSignalForPresentReady(texture);
 
   if (!present_ready) {
-    VALIDATION_LOG << "Could not submit completion signal.";
+    LOG(ERROR) << "Could not submit completion signal.";
     return false;
   }
 
@@ -204,8 +203,8 @@ bool AHBSwapchainImpl::Present(
                                texture->GetBackingStore(),  //
                                present_ready->CreateFD()    //
                                )) {
-    VALIDATION_LOG << "Could not set swapchain image contents on the surface "
-                      "control.";
+    LOG(ERROR) << "Could not set swapchain image contents on the surface "
+                  "control.";
     return false;
   }
   return transaction.Apply(
@@ -298,8 +297,8 @@ vk::UniqueSemaphore AHBSwapchainImpl::CreateRenderReadySemaphore(
   const auto import_result = device.importSemaphoreFdKHR(import_info);
 
   if (import_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not import semaphore FD: "
-                   << vk::to_string(import_result);
+    LOG(ERROR) << "Could not import semaphore FD: "
+               << vk::to_string(import_result);
     return {};
   }
 

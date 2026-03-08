@@ -9,7 +9,6 @@
 #include <atomic>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
 #include "fml/macros.h"
 
 namespace fml {

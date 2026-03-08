@@ -7,7 +7,6 @@
 #include <atomic>
 
 #include "fml/build_config.h"
-#include "fml/logging.h"
 
 #if defined(OS_FUCHSIA)
 #include <zircon/syscalls.h>

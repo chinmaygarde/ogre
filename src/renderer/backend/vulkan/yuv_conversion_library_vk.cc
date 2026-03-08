@@ -4,7 +4,6 @@
 
 #include "renderer/backend/vulkan/yuv_conversion_library_vk.h"
 
-#include "base/validation.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
 
 namespace ogre {
@@ -24,7 +23,7 @@ std::shared_ptr<YUVConversion> YUVConversionLibrary::GetConversion(
   }
   auto device_holder = device_holder_.lock();
   if (!device_holder) {
-    VALIDATION_LOG << "Context loss during creation of YUV conversion.";
+    LOG(ERROR) << "Context loss during creation of YUV conversion.";
     return nullptr;
   }
   return (conversions_[desc] = std::shared_ptr<YUVConversion>(

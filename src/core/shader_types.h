@@ -13,7 +13,7 @@
 #include <absl/log/log.h>
 #include "core/runtime_types.h"
 #include "fml/hash_combine.h"
-#include "fml/logging.h"
+
 #include "geometry/half.h"
 #include "geometry/matrix.h"
 

@@ -73,7 +73,7 @@ void AHBSwapchain::UpdateSurfaceSize(const ISize& size) {
                                        enable_msaa_       //
   );
   if (!impl || !impl->IsValid()) {
-    VALIDATION_LOG << "Could not resize swapchain to size: " << size;
+    LOG(ERROR) << "Could not resize swapchain to size: " << size;
     return;
   }
   impl_ = std::move(impl);

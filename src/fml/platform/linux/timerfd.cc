@@ -11,7 +11,6 @@
 #include <absl/log/log.h>
 
 #include "fml/eintr_wrapper.h"
-#include "fml/logging.h"
 
 #if FML_TIMERFD_AVAILABLE == 0
 #include <asm/unistd.h>

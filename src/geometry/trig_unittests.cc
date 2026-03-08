@@ -4,7 +4,6 @@
 
 #include <math.h>
 
-#include "fml/logging.h"
 #include "gtest/gtest.h"
 
 #include "geometry/trig.h"

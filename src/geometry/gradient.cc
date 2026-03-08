@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "geometry/gradient.h"
 
 namespace ogre {

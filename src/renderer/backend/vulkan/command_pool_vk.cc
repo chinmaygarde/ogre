@@ -276,7 +276,7 @@ void CommandPoolRecycler::Reclaim(
   }
   const auto result = device.resetCommandPool(pool.get(), flags);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not reset command pool: " << vk::to_string(result);
+    LOG(ERROR) << "Could not reset command pool: " << vk::to_string(result);
   }
 
   // Move the pool to the recycled list.

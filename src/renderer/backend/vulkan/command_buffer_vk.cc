@@ -7,7 +7,6 @@
 #include <memory>
 #include <utility>
 
-#include "fml/logging.h"
 #include "renderer/backend/vulkan/blit_pass_vk.h"
 #include "renderer/backend/vulkan/compute_pass_vk.h"
 #include "renderer/backend/vulkan/context_vk.h"
@@ -109,7 +108,7 @@ bool CommandBuffer::EndCommandBuffer() const {
 
   auto status = command_buffer.end();
   if (status != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Failed to end command buffer: " << vk::to_string(status);
+    LOG(ERROR) << "Failed to end command buffer: " << vk::to_string(status);
     return false;
   }
   return true;

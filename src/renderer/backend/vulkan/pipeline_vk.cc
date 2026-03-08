@@ -158,8 +158,8 @@ static vk::UniqueRenderPass CreateCompatRenderPassForPipeline(
 
   auto pass = builder.Build(device);
   if (!pass) {
-    VALIDATION_LOG << "Failed to create render pass for pipeline: "
-                   << desc.GetLabel();
+    LOG(ERROR) << "Failed to create render pass for pipeline: "
+               << desc.GetLabel();
     return {};
   }
 
@@ -208,7 +208,7 @@ fml::StatusOr<vk::UniqueDescriptorSetLayout> MakeDescriptorSetLayout(
       device_holder->GetDevice().createDescriptorSetLayoutUnique(
           desc_set_layout_info);
   if (descs_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "unable to create uniform descriptors";
+    LOG(ERROR) << "unable to create uniform descriptors";
     return {fml::Status(fml::StatusCode::kUnknown,
                         "unable to create uniform descriptors")};
   }
@@ -231,9 +231,9 @@ fml::StatusOr<vk::UniquePipelineLayout> MakePipelineLayout(
   auto pipeline_layout = device_holder->GetDevice().createPipelineLayoutUnique(
       pipeline_layout_info);
   if (pipeline_layout.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create pipeline layout for pipeline "
-                   << desc.GetLabel() << ": "
-                   << vk::to_string(pipeline_layout.result);
+    LOG(ERROR) << "Could not create pipeline layout for pipeline "
+               << desc.GetLabel() << ": "
+               << vk::to_string(pipeline_layout.result);
     return {fml::Status(fml::StatusCode::kUnknown,
                         "Could not create pipeline layout for pipeline.")};
   }
@@ -304,8 +304,7 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
   for (const auto& entrypoint : desc.GetStageEntrypoints()) {
     auto stage = ToVKShaderStageFlagBits(entrypoint.first);
     if (!stage.has_value()) {
-      VALIDATION_LOG << "Unsupported shader type in pipeline: "
-                     << desc.GetLabel();
+      LOG(ERROR) << "Unsupported shader type in pipeline: " << desc.GetLabel();
       return {fml::Status(fml::StatusCode::kUnknown,
                           "Unsupported shader type in pipeline.")};
     }
@@ -443,7 +442,7 @@ fml::StatusOr<vk::UniquePipeline> MakePipeline(
   ///
   auto pipeline = pso_cache->CreatePipeline(pipeline_info);
   if (!pipeline) {
-    VALIDATION_LOG << "Could not create graphics pipeline: " << desc.GetLabel();
+    LOG(ERROR) << "Could not create graphics pipeline: " << desc.GetLabel();
     return {fml::Status(fml::StatusCode::kUnknown,
                         "Could not create graphics pipeline.")};
   }
@@ -492,7 +491,7 @@ std::unique_ptr<PipelineVK> PipelineVK::Create(
   vk::UniqueRenderPass render_pass =
       CreateCompatRenderPassForPipeline(device_holder->GetDevice(), desc);
   if (!render_pass) {
-    VALIDATION_LOG << "Could not create render pass for pipeline.";
+    LOG(ERROR) << "Could not create render pass for pipeline.";
     return nullptr;
   }
 
@@ -516,7 +515,7 @@ std::unique_ptr<PipelineVK> PipelineVK::Create(
       std::move(immutable_sampler)         //
       ));
   if (!pipeline_vk->IsValid()) {
-    VALIDATION_LOG << "Could not create a valid pipeline.";
+    LOG(ERROR) << "Could not create a valid pipeline.";
     return nullptr;
   }
   return pipeline_vk;

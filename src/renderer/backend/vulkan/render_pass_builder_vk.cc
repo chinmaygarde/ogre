@@ -234,7 +234,7 @@ vk::UniqueRenderPass RenderPassBuilder::Build(const vk::Device& device) const {
 
   auto [result, pass] = device.createRenderPassUnique(render_pass_desc);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Failed to create render pass: " << vk::to_string(result);
+    LOG(ERROR) << "Failed to create render pass: " << vk::to_string(result);
     return {};
   }
   return std::move(pass);

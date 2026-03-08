@@ -11,7 +11,6 @@
 #include <string>
 
 #include "fml/build_config.h"
-#include "fml/logging.h"
 
 #ifdef FML_OS_ANDROID
 #include "fml/platform/android/cpu_affinity.h"

@@ -10,7 +10,7 @@
 #include <utility>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/message_loop.h"
 #include "fml/message_loop_impl.h"
 #include "fml/message_loop_task_queues.h"

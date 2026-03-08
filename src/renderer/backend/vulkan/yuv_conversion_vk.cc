@@ -4,7 +4,6 @@
 
 #include "renderer/backend/vulkan/yuv_conversion_vk.h"
 
-#include "base/validation.h"
 #include "core/sampler_descriptor.h"
 #include "fml/hash_combine.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
@@ -17,8 +16,8 @@ YUVConversion::YUVConversion(const vk::Device& device,
     : chain_(chain) {
   auto conversion = device.createSamplerYcbcrConversionUnique(chain_.get());
   if (conversion.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create YUV conversion: "
-                   << vk::to_string(conversion.result);
+    LOG(ERROR) << "Could not create YUV conversion: "
+               << vk::to_string(conversion.result);
     return;
   }
   conversion_ = std::move(conversion.value);

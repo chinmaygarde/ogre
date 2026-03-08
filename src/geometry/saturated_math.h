@@ -8,7 +8,6 @@
 #include <limits>
 #include <type_traits>
 
-#include "fml/logging.h"
 #include "geometry/scalar.h"
 
 namespace ogre {

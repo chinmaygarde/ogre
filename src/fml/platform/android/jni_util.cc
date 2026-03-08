@@ -12,7 +12,7 @@
 #include <absl/log/log.h>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/string_conversion.h"
 
 namespace fml {

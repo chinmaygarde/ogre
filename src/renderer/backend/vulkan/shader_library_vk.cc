@@ -7,7 +7,7 @@
 #include <cstdint>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/shader_function_vk.h"
@@ -70,7 +70,7 @@ bool ShaderLibrary::RegisterFunction(
   }
 
   if (!IsMappingSPIRV(*code)) {
-    VALIDATION_LOG << "Shader is not valid SPIRV.";
+    LOG(ERROR) << "Shader is not valid SPIRV.";
     return false;
   }
 
@@ -89,8 +89,8 @@ bool ShaderLibrary::RegisterFunction(
       device_holder->GetDevice().createShaderModuleUnique(shader_module_info);
 
   if (module.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create shader module: "
-                   << vk::to_string(module.result);
+    LOG(ERROR) << "Could not create shader module: "
+               << vk::to_string(module.result);
     return false;
   }
 
@@ -117,8 +117,8 @@ void ShaderLibrary::UnregisterFunction(std::string name, ShaderStage stage) {
 
   auto found = functions_.find(key);
   if (found == functions_.end()) {
-    VALIDATION_LOG << "Library function named " << name
-                   << " was not found, so it couldn't be unregistered.";
+    LOG(ERROR) << "Library function named " << name
+               << " was not found, so it couldn't be unregistered.";
     return;
   }
 

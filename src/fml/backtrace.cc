@@ -10,7 +10,7 @@
 #include <absl/log/log.h>
 
 #include "fml/build_config.h"
-#include "fml/logging.h"
+
 #include "fml/paths.h"
 #include "third_party/abseil-cpp/absl/debugging/symbolize.h"
 

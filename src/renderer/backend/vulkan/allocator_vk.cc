@@ -10,7 +10,7 @@
 #include <absl/log/check.h>
 #include <absl/log/log.h>
 #include "base/allocation_size.h"
-#include "base/validation.h"
+
 #include "core/formats.h"
 #include "core/range.h"
 #include "fml/memory/ref_ptr.h"
@@ -158,7 +158,7 @@ Allocator::Allocator(std::weak_ptr<Context> context,
   VmaAllocator allocator = {};
   auto result = vk::Result{::vmaCreateAllocator(&allocator_info, &allocator)};
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create memory allocator";
+    LOG(ERROR) << "Could not create memory allocator";
     return;
   }
   staging_buffer_pool_.reset(CreateBufferPool(allocator));
@@ -184,14 +184,14 @@ std::shared_ptr<Texture> Allocator::CreateTexture(const TextureDescriptor& desc,
                                                   bool threadsafe) {
   const auto max_size = GetMaxTextureSizeSupported();
   if (desc.size.width > max_size.width || desc.size.height > max_size.height) {
-    VALIDATION_LOG << "Requested texture size " << desc.size
-                   << " exceeds maximum supported size of " << max_size;
+    LOG(ERROR) << "Requested texture size " << desc.size
+               << " exceeds maximum supported size of " << max_size;
     return nullptr;
   }
 
   if (desc.mip_count > desc.size.MipCount()) {
-    VALIDATION_LOG << "Requested mip_count " << desc.mip_count
-                   << " exceeds maximum supported for size " << desc.size;
+    LOG(ERROR) << "Requested mip_count " << desc.mip_count
+               << " exceeds maximum supported for size " << desc.size;
     TextureDescriptor corrected_desc = desc;
     corrected_desc.mip_count = desc.size.MipCount();
     return OnCreateTexture(corrected_desc, threadsafe);
@@ -413,17 +413,17 @@ class AllocatedTextureSource final : public TextureSource {
                                                 &allocation_info      //
                                                 )};
       if (result != vk::Result::eSuccess) {
-        VALIDATION_LOG << "Unable to allocate Vulkan Image: "
-                       << vk::to_string(result)
-                       << " Type: " << TextureTypeToString(desc.type)
-                       << " Mode: " << StorageModeToString(desc.storage_mode)
-                       << " Usage: " << TextureUsageMaskToString(desc.usage)
-                       << " [VK]Flags: " << vk::to_string(image_info.flags)
-                       << " [VK]Format: " << vk::to_string(image_info.format)
-                       << " [VK]Usage: " << vk::to_string(image_info.usage)
-                       << " [VK]Mem. Flags: "
-                       << vk::to_string(vk::MemoryPropertyFlags(
-                              alloc_nfo.preferredFlags));
+        LOG(ERROR) << "Unable to allocate Vulkan Image: "
+                   << vk::to_string(result)
+                   << " Type: " << TextureTypeToString(desc.type)
+                   << " Mode: " << StorageModeToString(desc.storage_mode)
+                   << " Usage: " << TextureUsageMaskToString(desc.usage)
+                   << " [VK]Flags: " << vk::to_string(image_info.flags)
+                   << " [VK]Format: " << vk::to_string(image_info.format)
+                   << " [VK]Usage: " << vk::to_string(image_info.usage)
+                   << " [VK]Mem. Flags: "
+                   << vk::to_string(
+                          vk::MemoryPropertyFlags(alloc_nfo.preferredFlags));
         return;
       }
     }
@@ -449,16 +449,16 @@ class AllocatedTextureSource final : public TextureSource {
 
     auto [result, image_view] = device.createImageViewUnique(view_info);
     if (result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Unable to create an image view for allocation: "
-                     << vk::to_string(result);
+      LOG(ERROR) << "Unable to create an image view for allocation: "
+                 << vk::to_string(result);
       return;
     }
     // Create a specialized view for render target attachments.
     view_info.subresourceRange.levelCount = 1u;
     auto [rt_result, rt_image_view] = device.createImageViewUnique(view_info);
     if (rt_result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Unable to create an image view for allocation: "
-                     << vk::to_string(rt_result);
+      LOG(ERROR) << "Unable to create an image view for allocation: "
+                 << vk::to_string(rt_result);
       return;
     }
 
@@ -588,8 +588,8 @@ std::shared_ptr<DeviceBuffer> Allocator::OnCreateBuffer(
       !!(type.propertyFlags & vk::MemoryPropertyFlagBits::eHostCoherent);
 
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Unable to allocate a device buffer: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Unable to allocate a device buffer: "
+               << vk::to_string(result);
     return {};
   }
 

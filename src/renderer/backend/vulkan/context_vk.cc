@@ -28,7 +28,6 @@
 #include <string>
 #include <vector>
 
-#include "base/validation.h"
 #include "fml/cpu_affinity.h"
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/allocator_vk.h"
@@ -148,7 +147,7 @@ void Context::Setup(Settings settings) {
   TRACE_EVENT0("ogre", "ContextVK::Setup");
 
   if (!settings.proc_address_callback) {
-    VALIDATION_LOG << "Missing proc address callback.";
+    LOG(ERROR) << "Missing proc address callback.";
     return;
   }
 
@@ -173,7 +172,7 @@ void Context::Setup(Settings settings) {
       ));
 
   if (!caps->IsValid()) {
-    VALIDATION_LOG << "Could not determine device capabilities.";
+    LOG(ERROR) << "Could not determine device capabilities.";
     return;
   }
 
@@ -183,7 +182,7 @@ void Context::Setup(Settings settings) {
   auto enabled_extensions = caps->GetEnabledInstanceExtensions();
 
   if (!enabled_layers.has_value() || !enabled_extensions.has_value()) {
-    VALIDATION_LOG << "Device has insufficient capabilities.";
+    LOG(ERROR) << "Device has insufficient capabilities.";
     return;
   }
 
@@ -248,8 +247,8 @@ void Context::Setup(Settings settings) {
   if (!settings.embedder_data.has_value()) {
     auto instance = vk::createInstanceUnique(instance_info);
     if (instance.result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Could not create Vulkan instance: "
-                     << vk::to_string(instance.result);
+      LOG(ERROR) << "Could not create Vulkan instance: "
+                 << vk::to_string(instance.result);
       return;
     }
     device_holder->instance = std::move(instance.value);
@@ -269,7 +268,7 @@ void Context::Setup(Settings settings) {
       std::make_unique<DebugReport>(*caps, device_holder->instance.get());
 
   if (!debug_report->IsValid()) {
-    VALIDATION_LOG << "Could not set up debug report.";
+    LOG(ERROR) << "Could not set up debug report.";
     return;
   }
 
@@ -280,7 +279,7 @@ void Context::Setup(Settings settings) {
     auto physical_device =
         PickPhysicalDevice(*caps, device_holder->instance.get());
     if (!physical_device.has_value()) {
-      VALIDATION_LOG << "No valid Vulkan device found.";
+      LOG(ERROR) << "No valid Vulkan device found.";
       return;
     }
     device_holder->physical_device = physical_device.value();
@@ -299,14 +298,14 @@ void Context::Setup(Settings settings) {
       PickQueue(device_holder->physical_device, vk::QueueFlagBits::eCompute);
 
   if (!graphics_queue.has_value()) {
-    VALIDATION_LOG << "Could not pick graphics queue.";
+    LOG(ERROR) << "Could not pick graphics queue.";
     return;
   }
   if (!transfer_queue.has_value()) {
     transfer_queue = graphics_queue.value();
   }
   if (!compute_queue.has_value()) {
-    VALIDATION_LOG << "Could not pick compute queue.";
+    LOG(ERROR) << "Could not pick compute queue.";
     return;
   }
 
@@ -348,7 +347,7 @@ void Context::Setup(Settings settings) {
     auto device_result =
         device_holder->physical_device.createDeviceUnique(device_info);
     if (device_result.result != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Could not create logical device.";
+      LOG(ERROR) << "Could not create logical device.";
       return;
     }
     device_holder->device = std::move(device_result.value);
@@ -358,7 +357,7 @@ void Context::Setup(Settings settings) {
 
   if (!caps->SetPhysicalDevice(device_holder->physical_device,
                                *enabled_features)) {
-    VALIDATION_LOG << "Capabilities could not be updated.";
+    LOG(ERROR) << "Capabilities could not be updated.";
     return;
   }
 
@@ -375,7 +374,7 @@ void Context::Setup(Settings settings) {
       ));
 
   if (!allocator->IsValid()) {
-    VALIDATION_LOG << "Could not create memory allocator.";
+    LOG(ERROR) << "Could not create memory allocator.";
     return;
   }
 
@@ -390,7 +389,7 @@ void Context::Setup(Settings settings) {
       ));
 
   if (!pipeline_library->IsValid()) {
-    VALIDATION_LOG << "Could not create pipeline library.";
+    LOG(ERROR) << "Could not create pipeline library.";
     return;
   }
 
@@ -403,7 +402,7 @@ void Context::Setup(Settings settings) {
   );
 
   // if (!shader_library->IsValid()) {
-  //   VALIDATION_LOG << "Could not create shader library.";
+  //   LOG(ERROR) << "Could not create shader library.";
   //   return;
   // }
 
@@ -418,21 +417,21 @@ void Context::Setup(Settings settings) {
   ///
   auto resource_manager = ResourceManager::Create();
   if (!resource_manager) {
-    VALIDATION_LOG << "Could not create resource manager.";
+    LOG(ERROR) << "Could not create resource manager.";
     return;
   }
 
   auto command_pool_recycler =
       std::make_shared<CommandPoolRecycler>(shared_from_this());
   if (!command_pool_recycler) {
-    VALIDATION_LOG << "Could not create command pool recycler.";
+    LOG(ERROR) << "Could not create command pool recycler.";
     return;
   }
 
   auto descriptor_pool_recycler =
       std::make_shared<DescriptorPoolRecycler>(weak_from_this());
   if (!descriptor_pool_recycler) {
-    VALIDATION_LOG << "Could not create descriptor pool recycler.";
+    LOG(ERROR) << "Could not create descriptor pool recycler.";
     return;
   }
 
@@ -452,7 +451,7 @@ void Context::Setup(Settings settings) {
                                     settings.embedder_data->queue_family_index);
   }
   if (!queues.IsValid()) {
-    VALIDATION_LOG << "Could not fetch device queues.";
+    LOG(ERROR) << "Could not fetch device queues.";
     return;
   }
 
@@ -571,7 +570,7 @@ std::shared_ptr<CommandBuffer> Context::CreateCommandBuffer() const {
   begin_info.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
   if (tracked_objects->GetCommandBuffer().begin(begin_info) !=
       vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not begin command buffer.";
+    LOG(ERROR) << "Could not begin command buffer.";
     return nullptr;
   }
 

@@ -12,7 +12,7 @@
 #include <absl/log/log.h>
 #include "base/mask.h"
 #include "fml/hash_combine.h"
-#include "fml/logging.h"
+
 #include "geometry/color.h"
 #include "geometry/rect.h"
 #include "geometry/scalar.h"

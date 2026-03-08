@@ -4,7 +4,6 @@
 
 #include "renderer/backend/vulkan/command_queue_vk.h"
 
-#include "base/validation.h"
 #include "fml/status.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/fence_waiter_vk.h"
@@ -47,12 +46,12 @@ fml::Status CommandQueue::Submit(
 
   auto context = context_.lock();
   if (!context) {
-    VALIDATION_LOG << "Device lost.";
+    LOG(ERROR) << "Device lost.";
     return fml::Status(fml::StatusCode::kCancelled, "Device lost.");
   }
   auto [fence_result, fence] = context->GetDevice().createFenceUnique({});
   if (fence_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Failed to create fence: " << vk::to_string(fence_result);
+    LOG(ERROR) << "Failed to create fence: " << vk::to_string(fence_result);
     return fml::Status(fml::StatusCode::kCancelled, "Failed to create fence.");
   }
 
@@ -60,7 +59,7 @@ fml::Status CommandQueue::Submit(
   submit_info.setCommandBuffers(vk_buffers);
   auto status = context->GetGraphicsQueue()->Submit(submit_info, *fence);
   if (status != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Failed to submit queue: " << vk::to_string(status);
+    LOG(ERROR) << "Failed to submit queue: " << vk::to_string(status);
     return fml::Status(fml::StatusCode::kCancelled, "Failed to submit queue: ");
   }
 

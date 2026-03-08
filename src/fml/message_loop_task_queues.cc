@@ -14,7 +14,7 @@
 #include <absl/log/log.h>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/make_copyable.h"
 #include "fml/task_source.h"
 

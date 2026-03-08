@@ -7,7 +7,6 @@
 #include <format>
 #include <sstream>
 
-#include "base/validation.h"
 #include "core/formats.h"
 #include "core/texture.h"
 #include "core/texture_descriptor.h"
@@ -24,8 +23,7 @@ RenderTarget::~RenderTarget() = default;
 bool RenderTarget::IsValid() const {
   // Validate that there is a color attachment at zero index.
   if (!HasColorAttachment(0u)) {
-    VALIDATION_LOG
-        << "Render target does not have color attachment at index 0.";
+    LOG(ERROR) << "Render target does not have color attachment at index 0.";
     return false;
   }
 
@@ -46,8 +44,7 @@ bool RenderTarget::IsValid() const {
     };
     IterateAllAttachments(iterator);
     if (!sizes_are_same) {
-      VALIDATION_LOG
-          << "Sizes of all render target attachments are not the same.";
+      LOG(ERROR) << "Sizes of all render target attachments are not the same.";
       return false;
     }
   }
@@ -65,19 +62,19 @@ bool RenderTarget::IsValid() const {
 
       if (texture_type != attachment.texture->GetTextureDescriptor().type) {
         passes_type_validation = false;
-        VALIDATION_LOG << "Render target has incompatible texture types: "
-                       << TextureTypeToString(texture_type.value()) << " != "
-                       << TextureTypeToString(
-                              attachment.texture->GetTextureDescriptor().type)
-                       << " on target " << ToString();
+        LOG(ERROR) << "Render target has incompatible texture types: "
+                   << TextureTypeToString(texture_type.value()) << " != "
+                   << TextureTypeToString(
+                          attachment.texture->GetTextureDescriptor().type)
+                   << " on target " << ToString();
         return false;
       }
 
       if (sample_count !=
           attachment.texture->GetTextureDescriptor().sample_count) {
         passes_type_validation = false;
-        VALIDATION_LOG << "Render target (" << ToString()
-                       << ") has incompatible sample counts.";
+        LOG(ERROR) << "Render target (" << ToString()
+                   << ") has incompatible sample counts.";
 
         return false;
       }
@@ -415,7 +412,7 @@ RenderTarget RenderTargetAllocator::CreateOffscreenMSAA(
     }
     color0_msaa_tex = allocator_->CreateTexture(color0_tex_desc);
     if (!color0_msaa_tex) {
-      VALIDATION_LOG << "Could not create multisample color texture.";
+      LOG(ERROR) << "Could not create multisample color texture.";
       return {};
     }
   }
@@ -437,7 +434,7 @@ RenderTarget RenderTargetAllocator::CreateOffscreenMSAA(
     color0_resolve_tex_desc.mip_count = mip_count;
     color0_resolve_tex = allocator_->CreateTexture(color0_resolve_tex_desc);
     if (!color0_resolve_tex) {
-      VALIDATION_LOG << "Could not create color texture.";
+      LOG(ERROR) << "Could not create color texture.";
       return {};
     }
   }

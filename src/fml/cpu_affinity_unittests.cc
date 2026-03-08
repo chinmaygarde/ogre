@@ -7,7 +7,6 @@
 #include "fml/file.h"
 #include "fml/mapping.h"
 #include "gtest/gtest.h"
-#include "logging.h"
 
 namespace fml {
 namespace testing {

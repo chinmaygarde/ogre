@@ -65,13 +65,13 @@ bool TextureVK::OnSetContents(const uint8_t* contents,
 
   // Out of bounds access.
   if (length != desc.GetByteSizeOfBaseMipLevel()) {
-    VALIDATION_LOG << "Illegal to set contents for invalid size.";
+    LOG(ERROR) << "Illegal to set contents for invalid size.";
     return false;
   }
 
   auto context = context_.lock();
   if (!context) {
-    VALIDATION_LOG << "Context died before setting contents on texture.";
+    LOG(ERROR) << "Context died before setting contents on texture.";
     return false;
   }
 
@@ -79,7 +79,7 @@ bool TextureVK::OnSetContents(const uint8_t* contents,
       context->GetResourceAllocator()->CreateBufferWithCopy(contents, length);
 
   if (!staging_buffer) {
-    VALIDATION_LOG << "Could not create staging buffer.";
+    LOG(ERROR) << "Could not create staging buffer.";
     return false;
   }
 

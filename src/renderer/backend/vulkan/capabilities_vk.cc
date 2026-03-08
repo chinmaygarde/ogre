@@ -9,7 +9,6 @@
 
 #include <absl/log/log.h>
 
-#include "base/validation.h"
 #include "core/formats.h"
 #include "renderer/backend/vulkan/vk.h"
 #include "renderer/backend/vulkan/workarounds_vk.h"
@@ -136,8 +135,8 @@ Capabilities::GetEnabledInstanceExtensions() const {
 
   if (validations_enabled_) {
     if (!HasExtension("VK_EXT_debug_utils")) {
-      VALIDATION_LOG << "Requested validations but could not find the "
-                        "VK_EXT_debug_utils extension.";
+      LOG(ERROR) << "Requested validations but could not find the "
+                    "VK_EXT_debug_utils extension.";
       return std::nullopt;
     }
     required.push_back("VK_EXT_debug_utils");
@@ -262,7 +261,7 @@ Capabilities::GetEnabledDeviceExtensions(
   auto for_each_common_extension = [&](RequiredCommonDeviceExtensionVK ext) {
     auto name = GetExtensionName(ext);
     if (exts.find(name) == exts.end()) {
-      VALIDATION_LOG << "Device does not support required extension: " << name;
+      LOG(ERROR) << "Device does not support required extension: " << name;
       return false;
     }
     enabled.push_back(name);
@@ -273,8 +272,8 @@ Capabilities::GetEnabledDeviceExtensions(
 #ifdef FML_OS_ANDROID
     auto name = GetExtensionName(ext);
     if (exts.find(name) == exts.end()) {
-      VALIDATION_LOG << "Device does not support required Android extension: "
-                     << name;
+      LOG(ERROR) << "Device does not support required Android extension: "
+                 << name;
       return false;
     }
     enabled.push_back(name);
@@ -312,8 +311,8 @@ Capabilities::GetEnabledDeviceExtensions(
           for_each_optional_android_extension);
 
   if (!iterate_extensions) {
-    VALIDATION_LOG << "Device not suitable since required extensions are not "
-                      "supported.";
+    LOG(ERROR) << "Device not suitable since required extensions are not "
+                  "supported.";
     return std::nullopt;
   }
 
@@ -378,23 +377,23 @@ static bool IsExtensionInList(const std::vector<std::string>& list,
 std::optional<Capabilities::PhysicalDeviceFeatures>
 Capabilities::GetEnabledDeviceFeatures(const vk::PhysicalDevice& device) const {
   if (!PhysicalDeviceSupportsRequiredFormats(device)) {
-    VALIDATION_LOG << "Device doesn't support the required formats.";
+    LOG(ERROR) << "Device doesn't support the required formats.";
     return std::nullopt;
   }
 
   if (!HasRequiredProperties(device)) {
-    VALIDATION_LOG << "Device doesn't support the required properties.";
+    LOG(ERROR) << "Device doesn't support the required properties.";
     return std::nullopt;
   }
 
   if (!HasRequiredQueues(device)) {
-    VALIDATION_LOG << "Device doesn't support the required queues.";
+    LOG(ERROR) << "Device doesn't support the required queues.";
     return std::nullopt;
   }
 
   const auto enabled_extensions = GetEnabledDeviceExtensions(device);
   if (!enabled_extensions.has_value()) {
-    VALIDATION_LOG << "Device doesn't support the required queues.";
+    LOG(ERROR) << "Device doesn't support the required queues.";
     return std::nullopt;
   }
 

@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <utility>
 
-#include "base/validation.h"
 #include "core/buffer_view.h"
 #include "core/device_buffer.h"
 #include "core/formats.h"
@@ -122,7 +121,7 @@ SharedHandleVK<vk::RenderPass> RenderPass::CreateVKRenderPass(
   auto pass = builder.Build(context.GetDevice());
 
   if (!pass) {
-    VALIDATION_LOG << "Failed to create render pass for framebuffer.";
+    LOG(ERROR) << "Failed to create render pass for framebuffer.";
     return {};
   }
 
@@ -174,7 +173,7 @@ RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
   render_pass_ = CreateVKRenderPass(vk_context, frame_data.render_pass,
                                     command_buffer_, is_swapchain);
   if (!render_pass_) {
-    VALIDATION_LOG << "Could not create renderpass.";
+    LOG(ERROR) << "Could not create renderpass.";
     is_valid_ = false;
     return;
   }
@@ -183,7 +182,7 @@ RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
                          ? CreateVKFramebuffer(vk_context, *render_pass_)
                          : frame_data.framebuffer;
   if (!framebuffer) {
-    VALIDATION_LOG << "Could not create framebuffer.";
+    LOG(ERROR) << "Could not create framebuffer.";
     is_valid_ = false;
     return;
   }
@@ -345,14 +344,14 @@ void RenderPass::SetPipeline(
 bool RenderPass::ValidateVertexBuffers(const BufferView vertex_buffers[],
                                        size_t vertex_buffer_count) {
   if (vertex_buffer_count > kMaxVertexBuffers) {
-    VALIDATION_LOG << "Attempted to bind " << vertex_buffer_count
-                   << " vertex buffers, but the maximum is "
-                   << kMaxVertexBuffers << ".";
+    LOG(ERROR) << "Attempted to bind " << vertex_buffer_count
+               << " vertex buffers, but the maximum is " << kMaxVertexBuffers
+               << ".";
     return false;
   }
   for (size_t i = 0; i < vertex_buffer_count; i++) {
     if (!vertex_buffers[i]) {
-      VALIDATION_LOG << "Attempted to bind an invalid vertex buffer.";
+      LOG(ERROR) << "Attempted to bind an invalid vertex buffer.";
       return false;
     }
   }
@@ -362,11 +361,11 @@ bool RenderPass::ValidateVertexBuffers(const BufferView vertex_buffers[],
 bool RenderPass::ValidateIndexBuffer(const BufferView& index_buffer,
                                      IndexType index_type) {
   if (index_type == IndexType::kUnknown) {
-    VALIDATION_LOG << "Cannot bind an index buffer with an unknown index type.";
+    LOG(ERROR) << "Cannot bind an index buffer with an unknown index type.";
     return false;
   }
   if (index_type != IndexType::kNone && !index_buffer) {
-    VALIDATION_LOG << "Attempted to bind an invalid index buffer.";
+    LOG(ERROR) << "Attempted to bind an invalid index buffer.";
     return false;
   }
   return true;
@@ -430,7 +429,7 @@ SharedHandleVK<vk::Framebuffer> RenderPass::CreateVKFramebuffer(
       context.GetDevice().createFramebufferUnique(fb_info);
 
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create framebuffer: " << vk::to_string(result);
+    LOG(ERROR) << "Could not create framebuffer: " << vk::to_string(result);
     return {};
   }
 
@@ -564,8 +563,8 @@ bool RenderPass::SetIndexBuffer(BufferView index_buffer, IndexType index_type) {
     }
 
     if (!index_buffer_view.GetBuffer()) {
-      VALIDATION_LOG << "Failed to acquire device buffer"
-                     << " for index buffer view";
+      LOG(ERROR) << "Failed to acquire device buffer"
+                 << " for index buffer view";
       return false;
     }
 

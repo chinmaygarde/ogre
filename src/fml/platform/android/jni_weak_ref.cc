@@ -6,7 +6,7 @@
 
 #include <absl/log/check.h>
 #include <absl/log/log.h>
-#include "fml/logging.h"
+
 #include "fml/platform/android/jni_util.h"
 
 namespace fml {

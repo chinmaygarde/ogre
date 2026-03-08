@@ -7,8 +7,6 @@
 #include <CoreFoundation/CFRunLoop.h>
 #include <Foundation/Foundation.h>
 
-#include "fml/logging.h"
-
 namespace fml {
 
 static constexpr CFTimeInterval kDistantFuture = 1.0e10;
@@ -18,7 +16,7 @@ CFStringRef MessageLoopDarwin::kMessageLoopCFRunLoopMode =
 
 MessageLoopDarwin::MessageLoopDarwin()
     : running_(false), loop_((CFRunLoopRef)CFRetain(CFRunLoopGetCurrent())) {
-  FML_DCHECK(loop_ != nullptr);
+  DCHECK(loop_ != nullptr);
 
   // Setup the delayed wake source.
   CFRunLoopTimerContext timer_context = {
@@ -30,7 +28,7 @@ MessageLoopDarwin::MessageLoopDarwin()
       reinterpret_cast<CFRunLoopTimerCallBack>(&MessageLoopDarwin::OnTimerFire)
       /* callout */,
       &timer_context /* context */));
-  FML_DCHECK(delayed_wake_timer_ != nullptr);
+  DCHECK(delayed_wake_timer_ != nullptr);
   CFRunLoopAddTimer(loop_, delayed_wake_timer_, kCFRunLoopCommonModes);
   // This mode will be used by FlutterKeyboardManager.
   CFRunLoopAddTimer(loop_, delayed_wake_timer_, kMessageLoopCFRunLoopMode);
@@ -43,7 +41,7 @@ MessageLoopDarwin::~MessageLoopDarwin() {
 }
 
 void MessageLoopDarwin::Run() {
-  FML_DCHECK(loop_ == CFRunLoopGetCurrent());
+  DCHECK(loop_ == CFRunLoopGetCurrent());
 
   running_ = true;
 

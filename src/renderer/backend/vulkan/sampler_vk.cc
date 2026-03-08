@@ -86,8 +86,7 @@ static vk::UniqueSampler CreateSampler(
 
   auto sampler = device.createSamplerUnique(sampler_chain.get());
   if (sampler.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create sampler: "
-                   << vk::to_string(sampler.result);
+    LOG(ERROR) << "Could not create sampler: " << vk::to_string(sampler.result);
     return {};
   }
 

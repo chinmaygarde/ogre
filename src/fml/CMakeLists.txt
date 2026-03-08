@@ -21,12 +21,6 @@ add_library(fml
   hash_combine.h
   hex_codec.cc
   hex_codec.h
-  log_level.h
-  log_settings.cc
-  log_settings.h
-  log_settings_state.cc
-  logging.cc
-  logging.h
   make_copyable.h
   mapping.cc
   mapping.h
@@ -147,7 +141,6 @@ add_library(fml_unittests OBJECT
   file_unittest.cc
   hash_combine_unittests.cc
   hex_codec_unittest.cc
-  logging_unittests.cc
   mapping_unittests.cc
   math_unittests.cc
   memory/ref_counted_unittest.cc

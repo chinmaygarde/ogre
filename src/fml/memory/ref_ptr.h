@@ -11,7 +11,7 @@
 #include <utility>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/macros.h"
 #include "fml/memory/ref_ptr_internal.h"
 

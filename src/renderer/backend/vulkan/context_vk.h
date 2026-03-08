@@ -10,7 +10,7 @@
 #include <absl/log/check.h>
 #include "base/flags.h"
 #include "base/thread_safety.h"
-#include "base/validation.h"
+
 #include "core/formats.h"
 #include "core/runtime_types.h"
 #include "fml/closure.h"
@@ -167,7 +167,7 @@ class Context final : public std::enable_shared_from_this<Context> {
     info.objectHandle = reinterpret_cast<decltype(info.objectHandle)>(c_handle);
 
     if (device.setDebugUtilsObjectNameEXT(info) != vk::Result::eSuccess) {
-      VALIDATION_LOG << "Unable to set debug name: " << label;
+      LOG(ERROR) << "Unable to set debug name: " << label;
       return false;
     }
 

@@ -5,7 +5,6 @@
 #include "fml/memory/weak_ptr_internal.h"
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
 
 namespace fml {
 namespace internal {

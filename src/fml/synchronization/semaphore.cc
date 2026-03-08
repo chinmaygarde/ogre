@@ -5,7 +5,6 @@
 #include "fml/synchronization/semaphore.h"
 
 #include "fml/build_config.h"
-#include "fml/logging.h"
 
 #if FML_OS_MACOSX
 #include <dispatch/dispatch.h>

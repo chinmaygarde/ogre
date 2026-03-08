@@ -6,7 +6,6 @@
 
 #include <format>
 
-#include "base/validation.h"
 #include "core/formats.h"
 #include "renderer/backend/vulkan/capabilities_vk.h"
 #include "renderer/backend/vulkan/context_vk.h"
@@ -72,11 +71,10 @@ struct PipelineBuilder {
           FragmentShader::kEntrypointName, ShaderStage::kFragment);
 
       if (!vertex_function || !fragment_function) {
-        VALIDATION_LOG << "Could not resolve pipeline entrypoint(s) '"
-                       << VertexShader::kEntrypointName << "' and '"
-                       << FragmentShader::kEntrypointName
-                       << "' for pipeline named '" << VertexShader::kLabel
-                       << "'.";
+        LOG(ERROR) << "Could not resolve pipeline entrypoint(s) '"
+                   << VertexShader::kEntrypointName << "' and '"
+                   << FragmentShader::kEntrypointName
+                   << "' for pipeline named '" << VertexShader::kLabel << "'.";
         return false;
       }
 

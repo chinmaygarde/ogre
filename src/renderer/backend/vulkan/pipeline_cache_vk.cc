@@ -11,7 +11,7 @@
 #include <absl/log/log.h>
 
 #include "base/allocation_size.h"
-#include "base/validation.h"
+
 #include "fml/mapping.h"
 #include "renderer/backend/vulkan/pipeline_cache_data_vk.h"
 
@@ -56,8 +56,8 @@ PipelineCache::PipelineCache(std::shared_ptr<const Capabilities> caps,
     if (result2 == vk::Result::eSuccess) {
       cache_ = std::move(new_cache);
     } else {
-      VALIDATION_LOG << "Could not create new pipeline cache: "
-                     << vk::to_string(result2);
+      LOG(ERROR) << "Could not create new pipeline cache: "
+                 << vk::to_string(result2);
     }
   }
 
@@ -87,8 +87,8 @@ vk::UniquePipeline PipelineCache::CreatePipeline(
   auto [result, pipeline] =
       strong_device->GetDevice().createGraphicsPipelineUnique(*cache_, info);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create graphics pipeline: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not create graphics pipeline: "
+               << vk::to_string(result);
   }
   return std::move(pipeline);
 }
@@ -103,8 +103,8 @@ vk::UniquePipeline PipelineCache::CreatePipeline(
   auto [result, pipeline] =
       strong_device->GetDevice().createComputePipelineUnique(*cache_, info);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create compute pipeline: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not create compute pipeline: "
+               << vk::to_string(result);
   }
   return std::move(pipeline);
 }

@@ -6,7 +6,6 @@
 
 #include <format>
 
-#include "base/validation.h"
 #include "core/formats.h"
 #include "renderer/backend/vulkan/barrier_vk.h"
 #include "renderer/backend/vulkan/command_buffer_vk.h"
@@ -69,17 +68,17 @@ bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
                        IPoint destination_origin,
                        std::string_view label) {
   if (!source) {
-    VALIDATION_LOG << "Attempted to add a texture blit with no source.";
+    LOG(ERROR) << "Attempted to add a texture blit with no source.";
     return false;
   }
   if (!destination) {
-    VALIDATION_LOG << "Attempted to add a texture blit with no destination.";
+    LOG(ERROR) << "Attempted to add a texture blit with no destination.";
     return false;
   }
 
   if (source->GetTextureDescriptor().sample_count !=
       destination->GetTextureDescriptor().sample_count) {
-    VALIDATION_LOG << std::format(
+    LOG(ERROR) << std::format(
         "The source sample count ({}) must match the destination sample count "
         "({}) for blits.",
         static_cast<int>(source->GetTextureDescriptor().sample_count),
@@ -88,7 +87,7 @@ bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
   }
   if (source->GetTextureDescriptor().format !=
       destination->GetTextureDescriptor().format) {
-    VALIDATION_LOG << std::format(
+    LOG(ERROR) << std::format(
         "The source pixel format ({}) must match the destination pixel format "
         "({}) "
         "for blits.",
@@ -118,11 +117,11 @@ bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
                        size_t destination_offset,
                        std::string_view label) {
   if (!source) {
-    VALIDATION_LOG << "Attempted to add a texture blit with no source.";
+    LOG(ERROR) << "Attempted to add a texture blit with no source.";
     return false;
   }
   if (!destination) {
-    VALIDATION_LOG << "Attempted to add a texture blit with no destination.";
+    LOG(ERROR) << "Attempted to add a texture blit with no destination.";
     return false;
   }
 
@@ -135,8 +134,7 @@ bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
   auto bytes_per_image = source_region->Area() * bytes_per_pixel;
   if (destination_offset + bytes_per_image >
       destination->GetDeviceBufferDescriptor().size) {
-    VALIDATION_LOG
-        << "Attempted to add a texture blit with out of bounds access.";
+    LOG(ERROR) << "Attempted to add a texture blit with out of bounds access.";
     return false;
   }
 
@@ -159,7 +157,7 @@ bool BlitPass::AddCopy(BufferView source,
                        uint32_t slice,
                        bool convert_to_read) {
   if (!destination) {
-    VALIDATION_LOG << "Attempted to add a texture blit with no destination.";
+    LOG(ERROR) << "Attempted to add a texture blit with no destination.";
     return false;
   }
   ISize destination_size = destination->GetSize();
@@ -169,7 +167,7 @@ bool BlitPass::AddCopy(BufferView source,
       destination_region_value.GetY() < 0 ||
       destination_region_value.GetRight() > destination_size.width ||
       destination_region_value.GetBottom() > destination_size.height) {
-    VALIDATION_LOG << "Blit region cannot be larger than destination texture.";
+    LOG(ERROR) << "Blit region cannot be larger than destination texture.";
     return false;
   }
 
@@ -178,18 +176,17 @@ bool BlitPass::AddCopy(BufferView source,
   auto bytes_per_region = destination_region_value.Area() * bytes_per_pixel;
 
   if (source.GetRange().length != bytes_per_region) {
-    VALIDATION_LOG
-        << "Attempted to add a texture blit with out of bounds access.";
+    LOG(ERROR) << "Attempted to add a texture blit with out of bounds access.";
     return false;
   }
   if (mip_level >= destination->GetMipCount()) {
-    VALIDATION_LOG << "Invalid value for mip_level: " << mip_level << ". "
-                   << "The destination texture has "
-                   << destination->GetMipCount() << " mip levels.";
+    LOG(ERROR) << "Invalid value for mip_level: " << mip_level << ". "
+               << "The destination texture has " << destination->GetMipCount()
+               << " mip levels.";
     return false;
   }
   if (slice > 5) {
-    VALIDATION_LOG << "Invalid value for slice: " << slice;
+    LOG(ERROR) << "Invalid value for slice: " << slice;
     return false;
   }
 
@@ -201,8 +198,8 @@ bool BlitPass::AddCopy(BufferView source,
 bool BlitPass::GenerateMipmap(std::shared_ptr<Texture> texture,
                               std::string_view label) {
   if (!texture) {
-    VALIDATION_LOG << "Attempted to add an invalid mipmap generation command "
-                      "with no texture.";
+    LOG(ERROR) << "Attempted to add an invalid mipmap generation command "
+                  "with no texture.";
     return false;
   }
   return OnGenerateMipmapCommand(std::move(texture), label);
@@ -254,7 +251,7 @@ bool BlitPass::OnCopyTextureToTextureCommand(
                           vk::PipelineStageFlagBits::eTransfer;
 
   if (!src.SetLayout(src_barrier) || !dst.SetLayout(dst_barrier)) {
-    VALIDATION_LOG << "Could not complete layout transitions.";
+    LOG(ERROR) << "Could not complete layout transitions.";
     return false;
   }
 
@@ -340,7 +337,7 @@ bool BlitPass::OnCopyTextureToBufferCommand(
       vk::Extent3D(source_region.GetWidth(), source_region.GetHeight(), 1));
 
   if (!src.SetLayout(barrier)) {
-    VALIDATION_LOG << "Could not encode layout transition.";
+    LOG(ERROR) << "Could not encode layout transition.";
     return false;
   }
 
@@ -434,7 +431,7 @@ bool BlitPass::OnCopyBufferToTextureCommand(
   // optimal state. This is important for performance of repeated blit pass
   // encoding.
   if (!dst.SetLayout(dst_barrier)) {
-    VALIDATION_LOG << "Could not encode layout transition.";
+    LOG(ERROR) << "Could not encode layout transition.";
     return false;
   }
 
@@ -497,7 +494,7 @@ bool BlitPass::ResizeTexture(const std::shared_ptr<Texture>& source,
                           vk::PipelineStageFlagBits::eTransfer;
 
   if (!src.SetLayout(src_barrier) || !dst.SetLayout(dst_barrier)) {
-    VALIDATION_LOG << "Could not complete layout transitions.";
+    LOG(ERROR) << "Could not complete layout transitions.";
     return false;
   }
 

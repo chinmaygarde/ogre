@@ -8,10 +8,10 @@
 #include <ostream>
 
 #include <absl/log/log.h>
-#include "base/validation.h"
+
 #include "core/formats.h"
 #include "core/shader_types.h"
-#include "fml/logging.h"
+
 #include "renderer/backend/vulkan/vk.h"
 #include "vulkan/vulkan_enums.hpp"
 
@@ -548,7 +548,7 @@ constexpr uint32_t ToArrayLayerCount(TextureType type) {
     case TextureType::kTextureCube:
       return 6u;
     case TextureType::kTextureExternalOES:
-      VALIDATION_LOG
+      LOG(ERROR)
           << "kTextureExternalOES can not be used with the Vulkan backend.";
   }
   LOG(FATAL) << "Reached unreachable code.";
@@ -562,7 +562,7 @@ constexpr vk::ImageViewType ToVKImageViewType(TextureType type) {
     case TextureType::kTextureCube:
       return vk::ImageViewType::eCube;
     case TextureType::kTextureExternalOES:
-      VALIDATION_LOG
+      LOG(ERROR)
           << "kTextureExternalOES can not be used with the Vulkan backend.";
   }
   LOG(FATAL) << "Reached unreachable code.";
@@ -576,7 +576,7 @@ constexpr vk::ImageCreateFlags ToVKImageCreateFlags(TextureType type) {
     case TextureType::kTextureCube:
       return vk::ImageCreateFlagBits::eCubeCompatible;
     case TextureType::kTextureExternalOES:
-      VALIDATION_LOG
+      LOG(ERROR)
           << "kTextureExternalOES can not be used with the Vulkan backend.";
   }
   LOG(FATAL) << "Reached unreachable code.";

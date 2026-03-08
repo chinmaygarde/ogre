@@ -9,7 +9,7 @@
 #include <absl/log/log.h>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/status.h"
 
 namespace fml {

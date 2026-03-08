@@ -8,7 +8,6 @@
 #include <utility>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
 
 namespace fml {
 

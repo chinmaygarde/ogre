@@ -6,7 +6,6 @@
 
 #include <format>
 
-#include "base/validation.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/shader_library_vk.h"
 #include "renderer/compute_pipeline_descriptor.h"
@@ -58,18 +57,17 @@ struct ComputePipelineBuilder {
           ComputeShader::kEntrypointName, ShaderStage::kCompute);
 
       if (!compute_function) {
-        VALIDATION_LOG << "Could not resolve compute pipeline entrypoint '"
-                       << ComputeShader::kEntrypointName
-                       << "' for pipeline named '" << ComputeShader::kLabel
-                       << "'.";
+        LOG(ERROR) << "Could not resolve compute pipeline entrypoint '"
+                   << ComputeShader::kEntrypointName << "' for pipeline named '"
+                   << ComputeShader::kLabel << "'.";
         return false;
       }
 
       if (!desc.RegisterDescriptorSetLayouts(
               ComputeShader::kDescriptorSetLayouts)) {
-        VALIDATION_LOG << "Could not configure compute descriptor set layout "
-                          "for pipeline named '"
-                       << ComputeShader::kLabel << "'.";
+        LOG(ERROR) << "Could not configure compute descriptor set layout "
+                      "for pipeline named '"
+                   << ComputeShader::kLabel << "'.";
         return false;
       }
 

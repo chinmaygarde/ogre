@@ -8,7 +8,7 @@
 #include <ctime>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/time/time_delta.h"
 #include "fml/time/time_point.h"
 

@@ -4,8 +4,6 @@
 
 #include "fml/synchronization/count_down_latch.h"
 
-#include "fml/logging.h"
-
 namespace fml {
 
 CountDownLatch::CountDownLatch(size_t count) : count_(count) {

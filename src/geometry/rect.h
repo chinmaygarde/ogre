@@ -10,7 +10,7 @@
 #include <vector>
 
 #include <absl/log/log.h>
-#include "fml/logging.h"
+
 #include "geometry/matrix.h"
 #include "geometry/point.h"
 #include "geometry/saturated_math.h"

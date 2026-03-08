@@ -49,7 +49,7 @@ vk::UniqueDeviceMemory ImportVKDeviceMemoryFromAndroidHarwareBuffer(
   int memory_type_index = Allocator::FindMemoryTypeIndex(
       ahb_props.get().memoryTypeBits, memory_properties);
   if (memory_type_index < 0) {
-    VALIDATION_LOG << "Could not find memory type of external image.";
+    LOG(ERROR) << "Could not find memory type of external image.";
     return {};
   }
 
@@ -74,8 +74,8 @@ vk::UniqueDeviceMemory ImportVKDeviceMemoryFromAndroidHarwareBuffer(
 
   auto device_memory = device.allocateMemoryUnique(memory_chain.get());
   if (device_memory.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not allocate device memory for external image : "
-                   << vk::to_string(device_memory.result);
+    LOG(ERROR) << "Could not allocate device memory for external image : "
+               << vk::to_string(device_memory.result);
     return {};
   }
 
@@ -206,8 +206,8 @@ AHBTextureSource::AHBTextureSource(const std::shared_ptr<Context>& p_context,
 
   if (device.getAndroidHardwareBufferPropertiesANDROID(ahb, &ahb_props.get()) !=
       vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not determine properties of the Android hardware "
-                      "buffer.";
+    LOG(ERROR) << "Could not determine properties of the Android hardware "
+                  "buffer.";
     return;
   }
 
@@ -231,8 +231,8 @@ AHBTextureSource::AHBTextureSource(const std::shared_ptr<Context>& p_context,
   // Bind the image to the image memory.
   if (auto result = device.bindImageMemory(image.get(), device_memory.get(), 0);
       result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not bind external device memory to image : "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not bind external device memory to image : "
+               << vk::to_string(result);
     return;
   }
 
@@ -255,8 +255,8 @@ AHBTextureSource::AHBTextureSource(const std::shared_ptr<Context>& p_context,
   );
   auto image_view = device.createImageViewUnique(image_info.get());
   if (image_view.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create external image view: "
-                   << vk::to_string(image_view.result);
+    LOG(ERROR) << "Could not create external image view: "
+               << vk::to_string(image_view.result);
     return;
   }
 
@@ -390,8 +390,8 @@ vk::UniqueImage AHBTextureSource::CreateVKImageWrapperForAndroidHarwareBuffer(
 
   auto image = device.createImageUnique(image_chain.get());
   if (image.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create image for external buffer: "
-                   << vk::to_string(image.result);
+    LOG(ERROR) << "Could not create image for external buffer: "
+               << vk::to_string(image.result);
     return {};
   }
 

@@ -10,7 +10,6 @@
 
 #include "fml/ascii_trie.h"
 #include "fml/build_config.h"
-#include "fml/logging.h"
 
 namespace fml {
 namespace tracing {

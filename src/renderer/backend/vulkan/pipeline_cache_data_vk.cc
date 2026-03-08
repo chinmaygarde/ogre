@@ -7,7 +7,7 @@
 #include <absl/log/log.h>
 
 #include "base/allocation.h"
-#include "base/validation.h"
+
 #include "fml/file.h"
 
 namespace ogre {
@@ -23,7 +23,7 @@ bool PipelineCacheDataPersist(const fml::UniqueFD& cache_directory,
   size_t data_size = 0u;
   if (cache.getOwner().getPipelineCacheData(*cache, &data_size, nullptr) !=
       vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not fetch pipeline cache size.";
+    LOG(ERROR) << "Could not fetch pipeline cache size.";
     return false;
   }
   if (data_size == 0u) {
@@ -32,7 +32,7 @@ bool PipelineCacheDataPersist(const fml::UniqueFD& cache_directory,
   auto allocation = std::make_shared<Allocation>();
   if (!allocation->Truncate(Bytes{sizeof(PipelineCacheHeaderVK) + data_size},
                             false)) {
-    VALIDATION_LOG << "Could not allocate pipeline cache data staging buffer.";
+    LOG(ERROR) << "Could not allocate pipeline cache data staging buffer.";
     return false;
   }
   // Read the cache data and obtain the actual data size (which may be smaller
@@ -46,7 +46,7 @@ bool PipelineCacheDataPersist(const fml::UniqueFD& cache_directory,
   // error condition as some/all data was still written.
   if (lookup_result != vk::Result::eSuccess &&
       lookup_result != vk::Result::eIncomplete) {
-    VALIDATION_LOG << "Could not copy pipeline cache data.";
+    LOG(ERROR) << "Could not copy pipeline cache data.";
     return false;
   }
 
@@ -57,7 +57,7 @@ bool PipelineCacheDataPersist(const fml::UniqueFD& cache_directory,
       allocation->GetBuffer(), sizeof(PipelineCacheHeaderVK) + data_size);
   if (!fml::WriteAtomically(cache_directory, kPipelineCacheFileName,
                             allocation_mapping)) {
-    VALIDATION_LOG << "Could not write cache file to disk.";
+    LOG(ERROR) << "Could not write cache file to disk.";
     return false;
   }
   return true;
@@ -75,7 +75,7 @@ std::unique_ptr<fml::Mapping> PipelineCacheDataRetrieve(
     return nullptr;
   }
   if (on_disk_data->GetSize() < sizeof(PipelineCacheHeaderVK)) {
-    VALIDATION_LOG << "Pipeline cache data size is too small.";
+    LOG(ERROR) << "Pipeline cache data size is too small.";
     return nullptr;
   }
   auto on_disk_header = PipelineCacheHeaderVK{};

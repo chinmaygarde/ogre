@@ -9,8 +9,6 @@
 
 #include <absl/log/log.h>
 
-#include "fml/logging.h"
-
 namespace fml {
 
 NativeLibrary::NativeLibrary(const char* path) {

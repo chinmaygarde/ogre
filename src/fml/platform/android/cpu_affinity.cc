@@ -12,7 +12,6 @@
 #include <mutex>
 #include <optional>
 #include <thread>
-#include "fml/logging.h"
 
 namespace fml {
 

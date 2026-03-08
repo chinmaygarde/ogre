@@ -4,12 +4,12 @@
 
 #include "renderer/backend/vulkan/fence_waiter_vk.h"
 
+#include <absl/log/check.h>
+#include <absl/log/log.h>
 #include <algorithm>
 #include <chrono>
 #include <utility>
 
-#include <absl/log/check.h>
-#include "base/validation.h"
 #include "fml/cpu_affinity.h"
 #include "fml/thread.h"
 #include "fml/trace_event.h"
@@ -162,8 +162,8 @@ bool FenceWaiter::Wait() {
       /*waitAll=*/false,
       /*timeout=*/std::chrono::nanoseconds{100ms}.count());
   if (!(result == vk::Result::eSuccess || result == vk::Result::eTimeout)) {
-    VALIDATION_LOG << "Fence waiter encountered an unexpected error. Tearing "
-                      "down the waiter thread.";
+    LOG(ERROR) << "Fence waiter encountered an unexpected error. Tearing "
+                  "down the waiter thread.";
     return false;
   }
 

@@ -6,7 +6,7 @@
 
 #include <absl/log/check.h>
 #include "fml/cpu_affinity.h"
-#include "fml/logging.h"
+
 #include "fml/thread.h"
 #include "fml/trace_event.h"
 

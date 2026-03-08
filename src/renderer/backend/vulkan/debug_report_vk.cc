@@ -6,7 +6,6 @@
 
 #include <absl/log/log.h>
 
-#include "base/validation.h"
 #include "renderer/backend/vulkan/capabilities_vk.h"
 
 namespace ogre {
@@ -190,7 +189,7 @@ DebugReport::Result DebugReport::OnDebugCallback(
   if (type == vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance) {
     LOG(INFO) << stream.str();
   } else {
-    VALIDATION_LOG << stream.str();
+    LOG(ERROR) << stream.str();
   }
 
   return Result::kContinue;

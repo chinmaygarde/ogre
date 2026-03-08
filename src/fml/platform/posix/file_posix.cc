@@ -16,7 +16,7 @@
 
 #include <absl/log/log.h>
 #include "fml/eintr_wrapper.h"
-#include "fml/logging.h"
+
 #include "fml/mapping.h"
 #include "fml/trace_event.h"
 #include "fml/unique_fd.h"

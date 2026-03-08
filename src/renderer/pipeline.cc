@@ -67,8 +67,8 @@ PipelineFuture<T> Pipeline<T>::CreateVariant(
 
   auto library = library_.lock();
   if (!library) {
-    VALIDATION_LOG << "The library from which this pipeline was created was "
-                      "already collected.";
+    LOG(ERROR) << "The library from which this pipeline was created was "
+                  "already collected.";
     return {desc_, RealizedFuture<std::shared_ptr<Pipeline<T>>>(nullptr)};
   }
 

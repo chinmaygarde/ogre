@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "fml/logging.h"
-
 namespace fml {
 
 /**

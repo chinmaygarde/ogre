@@ -18,8 +18,6 @@ add_library(base
   thread_safety.cc
   thread_safety.h
   timing.h
-  validation.cc
-  validation.h
   version.cc
   version.h
 )

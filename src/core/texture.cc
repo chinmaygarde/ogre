@@ -5,7 +5,6 @@
 #include "core/texture.h"
 
 #include <absl/log/log.h>
-#include "base/validation.h"
 
 namespace ogre {
 
@@ -18,7 +17,7 @@ bool Texture::SetContents(const uint8_t* contents,
                           size_t slice,
                           bool is_opaque) {
   if (!IsSliceValid(slice)) {
-    VALIDATION_LOG << "Invalid slice for texture.";
+    LOG(ERROR) << "Invalid slice for texture.";
     return false;
   }
   if (!OnSetContents(contents, length, slice)) {
@@ -33,7 +32,7 @@ bool Texture::SetContents(std::shared_ptr<const fml::Mapping> mapping,
                           size_t slice,
                           bool is_opaque) {
   if (!IsSliceValid(slice)) {
-    VALIDATION_LOG << "Invalid slice for texture.";
+    LOG(ERROR) << "Invalid slice for texture.";
     return false;
   }
   if (!mapping) {

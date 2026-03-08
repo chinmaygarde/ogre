@@ -8,7 +8,6 @@
 #include <timeapi.h>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
 
 constexpr uint32_t kHighResolutionTimer = 1;  // 1 ms
 constexpr uint32_t kLowResolutionTimer = 15;  // 15 ms

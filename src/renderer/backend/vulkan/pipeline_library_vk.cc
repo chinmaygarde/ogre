@@ -8,7 +8,7 @@
 
 #include <absl/log/check.h>
 #include "base/promise.h"
-#include "base/validation.h"
+
 #include "fml/container.h"
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/context_vk.h"
@@ -55,7 +55,7 @@ std::unique_ptr<ComputePipeline> PipelineLibrary::CreateComputePipeline(
   ///
   const auto entrypoint = desc.GetStageEntrypoint();
   if (!entrypoint) {
-    VALIDATION_LOG << "Compute shader is missing an entrypoint.";
+    LOG(ERROR) << "Compute shader is missing an entrypoint.";
     return nullptr;
   }
 
@@ -105,7 +105,7 @@ std::unique_ptr<ComputePipeline> PipelineLibrary::CreateComputePipeline(
       strong_device->GetDevice().createDescriptorSetLayoutUnique(
           descs_layout_info);
   if (descs_result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "unable to create uniform descriptors";
+    LOG(ERROR) << "unable to create uniform descriptors";
     return nullptr;
   }
 
@@ -120,9 +120,9 @@ std::unique_ptr<ComputePipeline> PipelineLibrary::CreateComputePipeline(
   auto pipeline_layout = strong_device->GetDevice().createPipelineLayoutUnique(
       pipeline_layout_info);
   if (pipeline_layout.result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create pipeline layout for pipeline "
-                   << desc.GetLabel() << ": "
-                   << vk::to_string(pipeline_layout.result);
+    LOG(ERROR) << "Could not create pipeline layout for pipeline "
+               << desc.GetLabel() << ": "
+               << vk::to_string(pipeline_layout.result);
     return nullptr;
   }
   pipeline_info.setLayout(pipeline_layout.value.get());
@@ -132,7 +132,7 @@ std::unique_ptr<ComputePipeline> PipelineLibrary::CreateComputePipeline(
   ///
   auto pipeline = pso_cache_->CreatePipeline(pipeline_info);
   if (!pipeline) {
-    VALIDATION_LOG << "Could not create graphics pipeline: " << desc.GetLabel();
+    LOG(ERROR) << "Could not create graphics pipeline: " << desc.GetLabel();
     return nullptr;
   }
 
@@ -231,15 +231,15 @@ PipelineFuture<ComputePipelineDescriptor> PipelineLibrary::GetPipeline(
     auto self = weak_this.lock();
     if (!self) {
       promise->set_value(nullptr);
-      VALIDATION_LOG << "Pipeline library was collected before the pipeline "
-                        "could be created.";
+      LOG(ERROR) << "Pipeline library was collected before the pipeline "
+                    "could be created.";
       return;
     }
 
     auto pipeline = self->CreateComputePipeline(descriptor, next_key);
     if (!pipeline) {
       promise->set_value(nullptr);
-      VALIDATION_LOG << "Could not create pipeline: " << descriptor.GetLabel();
+      LOG(ERROR) << "Could not create pipeline: " << descriptor.GetLabel();
       return;
     }
 

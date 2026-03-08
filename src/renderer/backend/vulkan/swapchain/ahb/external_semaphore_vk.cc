@@ -4,7 +4,6 @@
 
 #include "renderer/backend/vulkan/swapchain/ahb/external_semaphore_vk.h"
 
-#include "base/validation.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "vulkan/vulkan_handles.hpp"
 
@@ -24,8 +23,7 @@ ExternalSemaphore::ExternalSemaphore(const std::shared_ptr<Context>& context) {
   auto [result, semaphore] =
       context_vk.GetDevice().createSemaphoreUnique(info.get());
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not create external fence: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not create external fence: " << vk::to_string(result);
     return;
   }
 
@@ -50,8 +48,8 @@ fml::UniqueFD ExternalSemaphore::CreateFD() const {
   auto [result, fd] =
       semaphore_->GetUniqueWrapper().getOwner().getSemaphoreFdKHR(info);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not export external fence FD: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not export external fence FD: "
+               << vk::to_string(result);
     return {};
   }
   return fml::UniqueFD{fd};

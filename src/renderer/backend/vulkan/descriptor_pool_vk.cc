@@ -6,8 +6,6 @@
 
 #include <optional>
 
-#include "base/validation.h"
-
 namespace ogre {
 
 struct DescriptorPoolSize {
@@ -91,8 +89,8 @@ fml::StatusOr<vk::DescriptorSet> DescriptorPool::AllocateDescriptorSets(
   lookup_result.first->second.used.push_back(set);
 
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Could not allocate descriptor sets: "
-                   << vk::to_string(result);
+    LOG(ERROR) << "Could not allocate descriptor sets: "
+               << vk::to_string(result);
     return fml::Status(fml::StatusCode::kUnknown, "");
   }
   return set;
@@ -143,7 +141,7 @@ vk::UniqueDescriptorPool DescriptorPoolRecycler::Get() {
 vk::UniqueDescriptorPool DescriptorPoolRecycler::Create() {
   auto strong_context = context_.lock();
   if (!strong_context) {
-    VALIDATION_LOG << "Unable to create a descriptor pool";
+    LOG(ERROR) << "Unable to create a descriptor pool";
     return {};
   }
 
@@ -165,7 +163,7 @@ vk::UniqueDescriptorPool DescriptorPoolRecycler::Create() {
   auto [result, pool] =
       strong_context->GetDevice().createDescriptorPoolUnique(pool_info);
   if (result != vk::Result::eSuccess) {
-    VALIDATION_LOG << "Unable to create a descriptor pool";
+    LOG(ERROR) << "Unable to create a descriptor pool";
   }
   return std::move(pool);
 }

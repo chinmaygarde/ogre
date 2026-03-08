@@ -11,7 +11,6 @@
 #include <string>
 #include <type_traits>
 
-#include "fml/logging.h"
 #include "geometry/scalar.h"
 #include "geometry/size.h"
 #include "geometry/type_traits.h"

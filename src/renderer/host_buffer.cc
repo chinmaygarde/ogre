@@ -8,7 +8,7 @@
 #include <tuple>
 
 #include <absl/log/check.h>
-#include "base/validation.h"
+
 #include "core/buffer_view.h"
 #include "core/device_buffer.h"
 #include "core/device_buffer_descriptor.h"
@@ -106,7 +106,7 @@ bool HostBuffer::MaybeCreateNewBuffer() {
     desc.storage_mode = StorageMode::kHostVisible;
     std::shared_ptr<DeviceBuffer> buffer = allocator_->CreateBuffer(desc);
     if (!buffer) {
-      VALIDATION_LOG << "Failed to allocate host buffer of size " << desc.size;
+      LOG(ERROR) << "Failed to allocate host buffer of size " << desc.size;
       return false;
     }
     device_buffers_[frame_index_].push_back(std::move(buffer));

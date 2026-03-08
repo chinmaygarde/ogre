@@ -5,7 +5,6 @@
 #include "backtrace.h"
 
 #include "gtest/gtest.h"
-#include "logging.h"
 
 namespace fml {
 namespace testing {

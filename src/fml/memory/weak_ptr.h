@@ -10,7 +10,7 @@
 #include <utility>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/memory/ref_counted.h"
 #include "fml/memory/task_runner_checker.h"
 #include "fml/memory/thread_checker.h"

@@ -4,7 +4,6 @@
 
 #include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_vk.h"
 
-#include "base/validation.h"
 #include "fml/build_config.h"
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/swapchain/khr/khr_swapchain_impl_vk.h"
@@ -22,7 +21,7 @@ KHRSwapchain::KHRSwapchain(const std::shared_ptr<Context>& context,
                                        enable_msaa_         //
   );
   if (!impl || !impl->IsValid()) {
-    VALIDATION_LOG << "Failed to create Swapchain implementation.";
+    LOG(ERROR) << "Failed to create Swapchain implementation.";
     return;
   }
   impl_ = std::move(impl);
@@ -73,10 +72,10 @@ std::unique_ptr<Surface> KHRSwapchain::AcquireNextDrawable(
 #if !FML_OS_ANDROID
   constexpr const size_t kMaxResizeAttempts = 3u;
   if (resize_retry_count == kMaxResizeAttempts) {
-    VALIDATION_LOG << "Attempted to resize the swapchain" << kMaxResizeAttempts
-                   << " time unsuccessfully. This platform likely doesn't "
-                      "support returning the current swapchain extents and "
-                      "must recreate the swapchain using the actual size.";
+    LOG(ERROR) << "Attempted to resize the swapchain" << kMaxResizeAttempts
+               << " time unsuccessfully. This platform likely doesn't "
+                  "support returning the current swapchain extents and "
+                  "must recreate the swapchain using the actual size.";
     return nullptr;
   }
 
@@ -97,7 +96,7 @@ std::unique_ptr<Surface> KHRSwapchain::AcquireNextDrawable(
                                            *old_swapchain       //
   );
   if (!new_impl || !new_impl->IsValid()) {
-    VALIDATION_LOG << "Could not update swapchain.";
+    LOG(ERROR) << "Could not update swapchain.";
     // The old swapchain is dead because we took its surface. This is
     // unrecoverable.
     impl_.reset();

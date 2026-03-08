@@ -7,7 +7,7 @@
 #include <absl/log/log.h>
 
 #include <absl/log/check.h>
-#include "fml/logging.h"
+
 #include "fml/unique_fd.h"
 
 namespace fml {
