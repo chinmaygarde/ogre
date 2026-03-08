@@ -2,18 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "geometry/geometry_asserts.h"
-#include "gtest/gtest.h"
-
+#include <gtest/gtest.h>
 #include <limits>
 #include <map>
 #include <sstream>
 #include <type_traits>
 
-#include <gtest/gtest.h>
 #include "fml/build_config.h"
 #include "geometry/color.h"
 #include "geometry/constants.h"
+#include "geometry/geometry_asserts.h"
 #include "geometry/gradient.h"
 #include "geometry/half.h"
 #include "geometry/point.h"
