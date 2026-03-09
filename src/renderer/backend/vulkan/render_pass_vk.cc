@@ -10,7 +10,6 @@
 
 #include "core/buffer_view.h"
 #include "core/formats.h"
-#include "core/texture.h"
 #include "core/vertex_buffer.h"
 #include "fml/status.h"
 #include "renderer/backend/vulkan/barrier_vk.h"
@@ -86,19 +85,18 @@ SharedHandleVK<vk::RenderPass> RenderPass::CreateVKRenderPass(
   }
 
   RenderPassBuilder builder;
-  render_target_.IterateAllColorAttachments([&](size_t bind_point,
-                                                const ColorAttachment&
-                                                    attachment) -> bool {
-    builder.SetColorAttachment(
-        bind_point,                                                           //
-        attachment.texture->GetTextureDescriptor().format,                    //
-        attachment.texture->GetTextureDescriptor().sample_count,              //
-        attachment.load_action,                                               //
-        attachment.store_action,                                              //
-        /*current_layout=*/TextureVK::Cast(*attachment.texture).GetLayout(),  //
-        /*is_swapchain=*/is_swapchain);
-    return true;
-  });
+  render_target_.IterateAllColorAttachments(
+      [&](size_t bind_point, const ColorAttachment& attachment) -> bool {
+        builder.SetColorAttachment(
+            bind_point,                                               //
+            attachment.texture->GetTextureDescriptor().format,        //
+            attachment.texture->GetTextureDescriptor().sample_count,  //
+            attachment.load_action,                                   //
+            attachment.store_action,                                  //
+            /*current_layout=*/attachment.texture->GetLayout(),       //
+            /*is_swapchain=*/is_swapchain);
+        return true;
+      });
 
   if (auto depth = render_target_.GetDepthAttachment(); depth.has_value()) {
     builder.SetDepthStencilAttachment(
@@ -158,13 +156,11 @@ RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
   SampleCount sample_count =
       color_image_vk_->GetTextureDescriptor().sample_count;
   if (resolve_image_vk_) {
-    frame_data =
-        TextureVK::Cast(*resolve_image_vk_).GetCachedFrameData(sample_count);
-    is_swapchain = TextureVK::Cast(*resolve_image_vk_).IsSwapchainImage();
+    frame_data = resolve_image_vk_->GetCachedFrameData(sample_count);
+    is_swapchain = resolve_image_vk_->IsSwapchainImage();
   } else {
-    frame_data =
-        TextureVK::Cast(*color_image_vk_).GetCachedFrameData(sample_count);
-    is_swapchain = TextureVK::Cast(*color_image_vk_).IsSwapchainImage();
+    frame_data = color_image_vk_->GetCachedFrameData(sample_count);
+    is_swapchain = color_image_vk_->IsSwapchainImage();
   }
 
   const auto& target_size = render_target_.GetRenderTargetSize();
@@ -196,19 +192,16 @@ RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
   frame_data.render_pass = render_pass_;
 
   if (resolve_image_vk_) {
-    TextureVK::Cast(*resolve_image_vk_)
-        .SetCachedFrameData(frame_data, sample_count);
+    resolve_image_vk_->SetCachedFrameData(frame_data, sample_count);
   } else {
-    TextureVK::Cast(*color_image_vk_)
-        .SetCachedFrameData(frame_data, sample_count);
+    color_image_vk_->SetCachedFrameData(frame_data, sample_count);
   }
 
   // If the resolve image exists and has mipmaps, transition mip levels besides
   // the base to shader read only in preparation for mipmap generation.
   if (resolve_image_vk_ &&
       resolve_image_vk_->GetTextureDescriptor().mip_count > 1) {
-    if (TextureVK::Cast(*resolve_image_vk_).GetLayout() ==
-        vk::ImageLayout::eUndefined) {
+    if (resolve_image_vk_->GetLayout() == vk::ImageLayout::eUndefined) {
       Barrier barrier;
       barrier.new_layout = vk::ImageLayout::eShaderReadOnlyOptimal;
       barrier.cmd_buffer = command_buffer_->GetCommandBuffer();
@@ -217,7 +210,7 @@ RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
       barrier.dst_stage = vk::PipelineStageFlagBits::eFragmentShader;
       barrier.dst_access = vk::AccessFlagBits::eShaderRead;
       barrier.base_mip_level = 1;
-      TextureVK::Cast(*resolve_image_vk_).SetLayout(barrier);
+      resolve_image_vk_->SetLayout(barrier);
     }
   }
 
@@ -236,14 +229,12 @@ RenderPass::RenderPass(const std::shared_ptr<const Context>& context,
   command_buffer_vk_.beginRenderPass(pass_info, vk::SubpassContents::eInline);
 
   if (resolve_image_vk_) {
-    TextureVK::Cast(*resolve_image_vk_)
-        .SetLayoutWithoutEncoding(
-            is_swapchain ? vk::ImageLayout::eGeneral
-                         : vk::ImageLayout::eShaderReadOnlyOptimal);
+    resolve_image_vk_->SetLayoutWithoutEncoding(
+        is_swapchain ? vk::ImageLayout::eGeneral
+                     : vk::ImageLayout::eShaderReadOnlyOptimal);
   }
   if (color_image_vk_) {
-    TextureVK::Cast(*color_image_vk_)
-        .SetLayoutWithoutEncoding(vk::ImageLayout::eGeneral);
+    color_image_vk_->SetLayoutWithoutEncoding(vk::ImageLayout::eGeneral);
   }
 
   // Set the initial viewport.
@@ -403,22 +394,19 @@ SharedHandleVK<vk::Framebuffer> RenderPass::CreateVKFramebuffer(
                              const ColorAttachment& attachment) -> bool {
         // The bind point doesn't matter here since that information is present
         // in the render pass.
-        attachments[count++] =
-            TextureVK::Cast(*attachment.texture).GetRenderTargetView();
+        attachments[count++] = attachment.texture->GetRenderTargetView();
         if (attachment.resolve_texture) {
-          attachments[count++] = TextureVK::Cast(*attachment.resolve_texture)
-                                     .GetRenderTargetView();
+          attachments[count++] =
+              attachment.resolve_texture->GetRenderTargetView();
         }
         return true;
       });
 
   if (auto depth = render_target_.GetDepthAttachment(); depth.has_value()) {
-    attachments[count++] =
-        TextureVK::Cast(*depth->texture).GetRenderTargetView();
+    attachments[count++] = depth->texture->GetRenderTargetView();
   } else if (auto stencil = render_target_.GetStencilAttachment();
              stencil.has_value()) {
-    attachments[count++] =
-        TextureVK::Cast(*stencil->texture).GetRenderTargetView();
+    attachments[count++] = stencil->texture->GetRenderTargetView();
   }
 
   fb_info.setPAttachments(attachments.data());
@@ -454,7 +442,7 @@ void RenderPass::SetPipeline(PipelineRef pipeline) {
     vk::DescriptorImageInfo image_info;
     image_info.imageLayout = vk::ImageLayout::eGeneral;
     image_info.sampler = VK_NULL_HANDLE;
-    image_info.imageView = TextureVK::Cast(*color_image_vk_).GetImageView();
+    image_info.imageView = color_image_vk_->GetImageView();
     image_workspace_[bound_image_offset_++] = image_info;
 
     vk::WriteDescriptorSet write_set;
@@ -652,8 +640,8 @@ fml::Status RenderPass::Draw() {
   );
 
   if (pipeline_uses_input_attachments_) {
-    InsertBarrierForInputAttachmentRead(
-        command_buffer_vk_, TextureVK::Cast(*color_image_vk_).GetImage());
+    InsertBarrierForInputAttachmentRead(command_buffer_vk_,
+                                        color_image_vk_->GetImage());
   }
 
   if (has_index_buffer_) {
@@ -747,7 +735,7 @@ bool RenderPass::BindDynamicResource(ShaderStage stage,
                                      DescriptorType type,
                                      const SampledImageSlot& slot,
                                      std::unique_ptr<ShaderMetadata> metadata,
-                                     std::shared_ptr<const Texture> texture,
+                                     std::shared_ptr<const TextureVK> texture,
                                      raw_ptr<const Sampler> sampler) {
   return BindResource(stage, type, slot, nullptr, texture, sampler);
 }
@@ -756,7 +744,7 @@ bool RenderPass::BindResource(ShaderStage stage,
                               DescriptorType type,
                               const SampledImageSlot& slot,
                               const ShaderMetadata* metadata,
-                              std::shared_ptr<const Texture> texture,
+                              std::shared_ptr<const TextureVK> texture,
                               raw_ptr<const Sampler> sampler) {
   if (bound_buffer_offset_ >= kMaxBindings) {
     return false;
@@ -764,7 +752,7 @@ bool RenderPass::BindResource(ShaderStage stage,
   if (!texture || !texture->IsValid() || !sampler) {
     return false;
   }
-  const TextureVK& texture_vk = TextureVK::Cast(*texture);
+  const TextureVK& texture_vk = *texture;
   const Sampler& sampler_vk = *sampler;
 
   if (!command_buffer_->Track(texture)) {

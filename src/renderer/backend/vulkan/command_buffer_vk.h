@@ -23,8 +23,8 @@ class DeviceBufferVK;
 class RenderPass;
 class RenderTarget;
 class SharedObject;
-class Texture;
 class TextureSource;
+class TextureVK;
 class TrackedObjects;
 
 class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
@@ -66,7 +66,7 @@ class CommandBuffer final : public std::enable_shared_from_this<CommandBuffer> {
 
   /// @brief Ensure that [texture] is kept alive until this command buffer
   ///       completes execution.
-  bool Track(const std::shared_ptr<const Texture>& texture);
+  bool Track(const std::shared_ptr<const TextureVK>& texture);
 
   /// @brief Ensure that [texture] is kept alive until this command buffer
   ///        completes execution.

@@ -12,9 +12,9 @@
 #include "core/buffer_view.h"
 #include "core/formats.h"
 #include "core/shader_types.h"
-#include "core/texture.h"
 #include "geometry/rect.h"
 #include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "renderer/pipeline.h"
 
 namespace ogre {
@@ -52,7 +52,7 @@ class Resource {
 };
 
 using BufferResource = Resource<BufferView>;
-using TextureResource = Resource<std::shared_ptr<const Texture>>;
+using TextureResource = Resource<std::shared_ptr<const TextureVK>>;
 
 /// @brief combines the texture, sampler and sampler slot information.
 struct TextureAndSampler {

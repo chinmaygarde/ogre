@@ -4,15 +4,15 @@
 
 #pragma once
 
-#include "core/texture.h"
 #include "fml/status.h"
 #include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace ogre {
 
 class CommandBuffer;
 
-std::shared_ptr<Texture> CreateTexture(
+std::shared_ptr<TextureVK> CreateTexture(
     const TextureDescriptor& texture_descriptor,
     const std::vector<uint8_t>& data,
     const std::shared_ptr<ogre::Context>& context,
@@ -22,6 +22,6 @@ std::shared_ptr<Texture> CreateTexture(
 [[nodiscard]] fml::Status AddMipmapGeneration(
     const std::shared_ptr<CommandBuffer>& command_buffer,
     const std::shared_ptr<Context>& context,
-    const std::shared_ptr<Texture>& texture);
+    const std::shared_ptr<TextureVK>& texture);
 
 }  // namespace ogre

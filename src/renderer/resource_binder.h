@@ -10,8 +10,8 @@
 #include "core/formats.h"
 #include "core/raw_ptr.h"
 #include "core/shader_types.h"
-#include "core/texture.h"
 #include "renderer/backend/vulkan/sampler_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace ogre {
 
@@ -33,7 +33,7 @@ struct ResourceBinder {
                             DescriptorType type,
                             const SampledImageSlot& slot,
                             const ShaderMetadata* metadata,
-                            std::shared_ptr<const Texture> texture,
+                            std::shared_ptr<const TextureVK> texture,
                             raw_ptr<const Sampler>) = 0;
 };
 

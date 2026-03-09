@@ -180,8 +180,9 @@ std::shared_ptr<DeviceBufferVK> Allocator::CreateBuffer(
   return OnCreateBuffer(desc);
 }
 
-std::shared_ptr<Texture> Allocator::CreateTexture(const TextureDescriptor& desc,
-                                                  bool threadsafe) {
+std::shared_ptr<TextureVK> Allocator::CreateTexture(
+    const TextureDescriptor& desc,
+    bool threadsafe) {
   const auto max_size = GetMaxTextureSizeSupported();
   if (desc.size.width > max_size.width || desc.size.height > max_size.height) {
     LOG(ERROR) << "Requested texture size " << desc.size
@@ -521,7 +522,7 @@ class AllocatedTextureSource final : public TextureSource {
   AllocatedTextureSource& operator=(const AllocatedTextureSource&) = delete;
 };
 
-std::shared_ptr<Texture> Allocator::OnCreateTexture(
+std::shared_ptr<TextureVK> Allocator::OnCreateTexture(
     const TextureDescriptor& desc,
     bool threadsafe) {
   if (!IsValid()) {

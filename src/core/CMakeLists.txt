@@ -15,8 +15,6 @@ add_library(core
   sampler_descriptor.h
   shader_types.cc
   shader_types.h
-  texture.cc
-  texture.h
   texture_descriptor.cc
   texture_descriptor.h
   vertex_buffer.cc

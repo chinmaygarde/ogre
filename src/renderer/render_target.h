@@ -16,6 +16,7 @@ namespace ogre {
 
 class Allocator;
 class Context;
+class TextureVK;
 
 struct RenderTargetConfig {
   ISize size = ISize{0, 0};
@@ -84,7 +85,7 @@ class RenderTarget final {
       std::string_view label = "Offscreen",
       RenderTarget::AttachmentConfig stencil_attachment_config =
           RenderTarget::kDefaultStencilAttachmentConfig,
-      const std::shared_ptr<Texture>& depth_stencil_texture = nullptr);
+      const std::shared_ptr<TextureVK>& depth_stencil_texture = nullptr);
 
   SampleCount GetSampleCount() const;
 
@@ -92,7 +93,7 @@ class RenderTarget final {
 
   ISize GetRenderTargetSize() const;
 
-  std::shared_ptr<Texture> GetRenderTargetTexture() const;
+  std::shared_ptr<TextureVK> GetRenderTargetTexture() const;
 
   PixelFormat GetRenderTargetPixelFormat() const;
 
@@ -160,8 +161,9 @@ class RenderTargetAllocator {
           RenderTarget::kDefaultColorAttachmentConfig,
       std::optional<RenderTarget::AttachmentConfig> stencil_attachment_config =
           RenderTarget::kDefaultStencilAttachmentConfig,
-      const std::shared_ptr<Texture>& existing_color_texture = nullptr,
-      const std::shared_ptr<Texture>& existing_depth_stencil_texture = nullptr,
+      const std::shared_ptr<TextureVK>& existing_color_texture = nullptr,
+      const std::shared_ptr<TextureVK>& existing_depth_stencil_texture =
+          nullptr,
       std::optional<PixelFormat> target_pixel_format = std::nullopt);
 
   virtual RenderTarget CreateOffscreenMSAA(
@@ -173,9 +175,11 @@ class RenderTargetAllocator {
           RenderTarget::kDefaultColorAttachmentConfigMSAA,
       std::optional<RenderTarget::AttachmentConfig> stencil_attachment_config =
           RenderTarget::kDefaultStencilAttachmentConfig,
-      const std::shared_ptr<Texture>& existing_color_msaa_texture = nullptr,
-      const std::shared_ptr<Texture>& existing_color_resolve_texture = nullptr,
-      const std::shared_ptr<Texture>& existing_depth_stencil_texture = nullptr,
+      const std::shared_ptr<TextureVK>& existing_color_msaa_texture = nullptr,
+      const std::shared_ptr<TextureVK>& existing_color_resolve_texture =
+          nullptr,
+      const std::shared_ptr<TextureVK>& existing_depth_stencil_texture =
+          nullptr,
       std::optional<PixelFormat> target_pixel_format = std::nullopt);
 
   /// @brief Disable any caching until the next call to `EnabledCache`.

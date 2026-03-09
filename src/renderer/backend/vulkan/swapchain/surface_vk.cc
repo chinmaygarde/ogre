@@ -34,7 +34,7 @@ std::unique_ptr<Surface> Surface::WrapSwapchainImage(
   resolve_tex_desc.sample_count = SampleCount::kCount1;
   resolve_tex_desc.storage_mode = StorageMode::kDevicePrivate;
 
-  std::shared_ptr<Texture> resolve_tex =
+  std::shared_ptr<TextureVK> resolve_tex =
       std::make_shared<TextureVK>(context,         //
                                   swapchain_image  //
       );

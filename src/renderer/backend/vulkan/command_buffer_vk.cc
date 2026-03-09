@@ -145,14 +145,14 @@ bool CommandBuffer::Track(const std::shared_ptr<const TextureSource>& texture) {
   return true;
 }
 
-bool CommandBuffer::Track(const std::shared_ptr<const Texture>& texture) {
+bool CommandBuffer::Track(const std::shared_ptr<const TextureVK>& texture) {
   if (!IsValid()) {
     return false;
   }
   if (!texture) {
     return true;
   }
-  return Track(TextureVK::Cast(*texture).GetTextureSource());
+  return Track(texture->GetTextureSource());
 }
 
 fml::StatusOr<vk::DescriptorSet> CommandBuffer::AllocateDescriptorSets(

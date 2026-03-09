@@ -6,12 +6,12 @@
 
 #include "base/allocation_size.h"
 #include "core/device_buffer_descriptor.h"
-#include "core/texture.h"
 #include "core/texture_descriptor.h"
 #include "fml/mapping.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/device_buffer_vk.h"
 #include "renderer/backend/vulkan/device_holder_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "renderer/backend/vulkan/vk.h"
 
 #include <cstdint>
@@ -29,8 +29,8 @@ class Allocator final {
   std::shared_ptr<DeviceBufferVK> CreateBuffer(
       const DeviceBufferDescriptor& desc);
 
-  std::shared_ptr<Texture> CreateTexture(const TextureDescriptor& desc,
-                                         bool threadsafe = false);
+  std::shared_ptr<TextureVK> CreateTexture(const TextureDescriptor& desc,
+                                           bool threadsafe = false);
 
   std::shared_ptr<DeviceBufferVK> CreateBufferWithCopy(const uint8_t* buffer,
                                                        size_t length);
@@ -85,8 +85,8 @@ class Allocator final {
   std::shared_ptr<DeviceBufferVK> OnCreateBuffer(
       const DeviceBufferDescriptor& desc);
 
-  std::shared_ptr<Texture> OnCreateTexture(const TextureDescriptor& desc,
-                                           bool threadsafe);
+  std::shared_ptr<TextureVK> OnCreateTexture(const TextureDescriptor& desc,
+                                             bool threadsafe);
 
   Allocator(const Allocator&) = delete;
 

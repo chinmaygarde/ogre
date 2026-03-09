@@ -152,7 +152,7 @@ bool ComputePass::BindResource(ShaderStage stage,
                                DescriptorType type,
                                const SampledImageSlot& slot,
                                const ShaderMetadata* metadata,
-                               std::shared_ptr<const Texture> texture,
+                               std::shared_ptr<const TextureVK> texture,
                                raw_ptr<const Sampler> sampler) {
   if (bound_image_offset_ >= kMaxBindings) {
     return false;
@@ -160,7 +160,7 @@ bool ComputePass::BindResource(ShaderStage stage,
   if (!texture->IsValid() || !sampler) {
     return false;
   }
-  const TextureVK& texture_vk = TextureVK::Cast(*texture);
+  const TextureVK& texture_vk = *texture;
   const Sampler& sampler_vk = *sampler;
 
   if (!command_buffer_->Track(texture)) {

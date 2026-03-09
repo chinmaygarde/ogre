@@ -62,8 +62,8 @@ void BlitPass::SetLabel(std::string_view label) {
   OnSetLabel(label);
 }
 
-bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
-                       std::shared_ptr<Texture> destination,
+bool BlitPass::AddCopy(std::shared_ptr<TextureVK> source,
+                       std::shared_ptr<TextureVK> destination,
                        std::optional<IRect> source_region,
                        IPoint destination_origin,
                        std::string_view label) {
@@ -111,7 +111,7 @@ bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
       destination_origin, label);
 }
 
-bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
+bool BlitPass::AddCopy(std::shared_ptr<TextureVK> source,
                        std::shared_ptr<DeviceBufferVK> destination,
                        std::optional<IRect> source_region,
                        size_t destination_offset,
@@ -150,7 +150,7 @@ bool BlitPass::AddCopy(std::shared_ptr<Texture> source,
 }
 
 bool BlitPass::AddCopy(BufferView source,
-                       std::shared_ptr<Texture> destination,
+                       std::shared_ptr<TextureVK> destination,
                        std::optional<IRect> destination_region,
                        std::string_view label,
                        uint32_t mip_level,
@@ -195,7 +195,7 @@ bool BlitPass::AddCopy(BufferView source,
                                       mip_level, slice, convert_to_read);
 }
 
-bool BlitPass::GenerateMipmap(std::shared_ptr<Texture> texture,
+bool BlitPass::GenerateMipmap(std::shared_ptr<TextureVK> texture,
                               std::string_view label) {
   if (!texture) {
     LOG(ERROR) << "Attempted to add an invalid mipmap generation command "
@@ -214,15 +214,15 @@ bool BlitPass::EncodeCommands() const {
 }
 
 bool BlitPass::OnCopyTextureToTextureCommand(
-    std::shared_ptr<Texture> source,
-    std::shared_ptr<Texture> destination,
+    std::shared_ptr<TextureVK> source,
+    std::shared_ptr<TextureVK> destination,
     IRect source_region,
     IPoint destination_origin,
     std::string_view label) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
-  const auto& src = TextureVK::Cast(*source);
-  const auto& dst = TextureVK::Cast(*destination);
+  const auto& src = *source;
+  const auto& dst = *destination;
 
   if (!command_buffer_->Track(source) || !command_buffer_->Track(destination)) {
     return false;
@@ -296,15 +296,14 @@ bool BlitPass::OnCopyTextureToTextureCommand(
 }
 
 bool BlitPass::OnCopyTextureToBufferCommand(
-    std::shared_ptr<Texture> source,
+    std::shared_ptr<TextureVK> source,
     std::shared_ptr<DeviceBufferVK> destination,
     IRect source_region,
     size_t destination_offset,
     std::string_view label) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
-  // cast source and destination to TextureVK
-  const auto& src = TextureVK::Cast(*source);
+  const auto& src = *source;
 
   if (!command_buffer_->Track(source) || !command_buffer_->Track(destination)) {
     return false;
@@ -363,7 +362,7 @@ bool BlitPass::OnCopyTextureToBufferCommand(
 }
 
 bool BlitPass::ConvertTextureToShaderRead(
-    const std::shared_ptr<Texture>& texture) {
+    const std::shared_ptr<TextureVK>& texture) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
   Barrier barrier;
@@ -375,18 +374,16 @@ bool BlitPass::ConvertTextureToShaderRead(
 
   barrier.new_layout = vk::ImageLayout::eShaderReadOnlyOptimal;
 
-  const auto& texture_vk = TextureVK::Cast(*texture);
-
   if (!command_buffer_->Track(texture)) {
     return false;
   }
 
-  return texture_vk.SetLayout(barrier);
+  return texture->SetLayout(barrier);
 }
 
 bool BlitPass::OnCopyBufferToTextureCommand(
     BufferView source,
-    std::shared_ptr<Texture> destination,
+    std::shared_ptr<TextureVK> destination,
     IRect destination_region,
     std::string_view label,
     uint32_t mip_level,
@@ -394,8 +391,7 @@ bool BlitPass::OnCopyBufferToTextureCommand(
     bool convert_to_read) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
-  // cast destination to TextureVK
-  const auto& dst = TextureVK::Cast(*destination);
+  const auto& dst = *destination;
   const DeviceBufferVK& src = *source.GetBuffer();
 
   std::shared_ptr<const DeviceBufferVK> source_buffer = source.TakeBuffer();
@@ -460,12 +456,12 @@ bool BlitPass::OnCopyBufferToTextureCommand(
   return true;
 }
 
-bool BlitPass::ResizeTexture(const std::shared_ptr<Texture>& source,
-                             const std::shared_ptr<Texture>& destination) {
+bool BlitPass::ResizeTexture(const std::shared_ptr<TextureVK>& source,
+                             const std::shared_ptr<TextureVK>& destination) {
   const auto& cmd_buffer = command_buffer_->GetCommandBuffer();
 
-  const auto& src = TextureVK::Cast(*source);
-  const auto& dst = TextureVK::Cast(*destination);
+  const auto& src = *source;
+  const auto& dst = *destination;
 
   if (!command_buffer_->Track(source) || !command_buffer_->Track(destination)) {
     return false;
@@ -542,9 +538,9 @@ bool BlitPass::ResizeTexture(const std::shared_ptr<Texture>& source,
   return dst.SetLayout(barrier);
 }
 
-bool BlitPass::OnGenerateMipmapCommand(std::shared_ptr<Texture> texture,
+bool BlitPass::OnGenerateMipmapCommand(std::shared_ptr<TextureVK> texture,
                                        std::string_view label) {
-  auto& src = TextureVK::Cast(*texture);
+  auto& src = *texture;
 
   const auto size = src.GetTextureDescriptor().size;
   uint32_t mip_count = src.GetTextureDescriptor().mip_count;

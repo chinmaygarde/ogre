@@ -5,9 +5,9 @@
 #pragma once
 
 #include <cstdint>
-#include "core/texture.h"
 #include "geometry/rect.h"
 #include "renderer/backend/vulkan/device_buffer_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace ogre {
 
@@ -16,19 +16,19 @@ struct BlitCommand {
 };
 
 struct BlitCopyTextureToTextureCommand : public BlitCommand {
-  std::shared_ptr<Texture> source;
-  std::shared_ptr<Texture> destination;
+  std::shared_ptr<TextureVK> source;
+  std::shared_ptr<TextureVK> destination;
   IRect source_region;
   IPoint destination_origin;
 };
 
 struct BlitResizeTextureCommand : public BlitCommand {
-  std::shared_ptr<Texture> source;
-  std::shared_ptr<Texture> destination;
+  std::shared_ptr<TextureVK> source;
+  std::shared_ptr<TextureVK> destination;
 };
 
 struct BlitCopyTextureToBufferCommand : public BlitCommand {
-  std::shared_ptr<Texture> source;
+  std::shared_ptr<TextureVK> source;
   std::shared_ptr<DeviceBufferVK> destination;
   IRect source_region;
   size_t destination_offset;
@@ -36,14 +36,14 @@ struct BlitCopyTextureToBufferCommand : public BlitCommand {
 
 struct BlitCopyBufferToTextureCommand : public BlitCommand {
   BufferView source;
-  std::shared_ptr<Texture> destination;
+  std::shared_ptr<TextureVK> destination;
   IRect destination_region;
   uint32_t mip_level = 0;
   uint32_t slice = 0;
 };
 
 struct BlitGenerateMipmapCommand : public BlitCommand {
-  std::shared_ptr<Texture> texture;
+  std::shared_ptr<TextureVK> texture;
 };
 
 }  // namespace ogre

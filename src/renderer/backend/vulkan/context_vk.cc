@@ -750,7 +750,8 @@ bool Context::UpdateOffscreenLayerPixelFormat(PixelFormat format) {
   return false;
 }
 
-bool Context::AddTrackingFence(const std::shared_ptr<Texture>& texture) const {
+bool Context::AddTrackingFence(
+    const std::shared_ptr<TextureVK>& texture) const {
   return false;
 }
 

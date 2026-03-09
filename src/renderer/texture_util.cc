@@ -10,12 +10,12 @@
 
 namespace ogre {
 
-std::shared_ptr<Texture> CreateTexture(
+std::shared_ptr<TextureVK> CreateTexture(
     const TextureDescriptor& texture_descriptor,
     const std::vector<uint8_t>& data,
     const std::shared_ptr<ogre::Context>& context,
     std::string_view debug_label) {
-  std::shared_ptr<Texture> texture =
+  std::shared_ptr<TextureVK> texture =
       context->GetResourceAllocator()->CreateTexture(texture_descriptor);
 
   auto data_mapping =
@@ -39,7 +39,7 @@ std::shared_ptr<Texture> CreateTexture(
 fml::Status AddMipmapGeneration(
     const std::shared_ptr<CommandBuffer>& command_buffer,
     const std::shared_ptr<Context>& context,
-    const std::shared_ptr<Texture>& texture) {
+    const std::shared_ptr<TextureVK>& texture) {
   std::shared_ptr<BlitPass> blit_pass = command_buffer->CreateBlitPass();
   bool success = blit_pass->GenerateMipmap(texture);
   if (!success) {

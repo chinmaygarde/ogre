@@ -4,6 +4,8 @@
 
 #include "renderer/backend/vulkan/texture_vk.h"
 
+#include <absl/log/log.h>
+
 #include "core/formats.h"
 #include "core/texture_descriptor.h"
 #include "renderer/backend/vulkan/allocator_vk.h"
@@ -16,8 +18,8 @@ namespace ogre {
 
 TextureVK::TextureVK(std::weak_ptr<Context> context,
                      std::shared_ptr<TextureSource> source)
-    : Texture(source->GetTextureDescriptor()),
-      context_(std::move(context)),
+    : context_(std::move(context)),
+      desc_(source ? source->GetTextureDescriptor() : TextureDescriptor{}),
       source_(std::move(source)) {
 #ifdef OGRE_DEBUG
   has_validation_layers_ = HasValidationLayers();
@@ -52,6 +54,80 @@ void TextureVK::SetLabel(std::string_view label, std::string_view trailing) {
   (*context).SetDebugName(GetImage(), label, trailing);
   (*context).SetDebugName(GetImageView(), label, trailing);
 #endif  // OGRE_DEBUG
+}
+
+bool TextureVK::IsSliceValid(size_t slice) const {
+  switch (desc_.type) {
+    case TextureType::kTexture2D:
+    case TextureType::kTexture2DMultisample:
+    case TextureType::kTextureExternalOES:
+      return slice == 0;
+    case TextureType::kTextureCube:
+      return slice <= 5;
+  }
+  LOG(FATAL) << "Reached unreachable code.";
+}
+
+bool TextureVK::SetContents(const uint8_t* contents,
+                            size_t length,
+                            size_t slice,
+                            bool is_opaque) {
+  if (!IsSliceValid(slice)) {
+    LOG(ERROR) << "Invalid slice for texture.";
+    return false;
+  }
+  if (!OnSetContents(contents, length, slice)) {
+    return false;
+  }
+  coordinate_system_ = TextureCoordinateSystem::kUploadFromHost;
+  is_opaque_ = is_opaque;
+  return true;
+}
+
+bool TextureVK::SetContents(std::shared_ptr<const fml::Mapping> mapping,
+                            size_t slice,
+                            bool is_opaque) {
+  if (!IsSliceValid(slice)) {
+    LOG(ERROR) << "Invalid slice for texture.";
+    return false;
+  }
+  if (!mapping) {
+    return false;
+  }
+  if (!OnSetContents(std::move(mapping), slice)) {
+    return false;
+  }
+  coordinate_system_ = TextureCoordinateSystem::kUploadFromHost;
+  is_opaque_ = is_opaque;
+  return true;
+}
+
+const TextureDescriptor& TextureVK::GetTextureDescriptor() const {
+  return desc_;
+}
+
+bool TextureVK::IsOpaque() const {
+  return is_opaque_;
+}
+
+size_t TextureVK::GetMipCount() const {
+  return GetTextureDescriptor().mip_count;
+}
+
+void TextureVK::SetCoordinateSystem(TextureCoordinateSystem coordinate_system) {
+  coordinate_system_ = coordinate_system;
+}
+
+TextureCoordinateSystem TextureVK::GetCoordinateSystem() const {
+  return coordinate_system_;
+}
+
+Scalar TextureVK::GetYCoordScale() const {
+  return 1.0;
+}
+
+bool TextureVK::NeedsMipmapGeneration() const {
+  return !mipmap_generated_ && desc_.mip_count > 1;
 }
 
 bool TextureVK::OnSetContents(const uint8_t* contents,
@@ -123,12 +199,11 @@ bool TextureVK::OnSetContents(const uint8_t* contents,
   copy.imageSubresource.baseArrayLayer = slice;
   copy.imageSubresource.layerCount = 1u;
 
-  vk_cmd_buffer.copyBufferToImage(
-      staging_buffer->GetBuffer(),  // src buffer
-      GetImage(),                                         // dst image
-      barrier.new_layout,                                 // dst image layout
-      1u,                                                 // region count
-      &copy                                               // regions
+  vk_cmd_buffer.copyBufferToImage(staging_buffer->GetBuffer(),  // src buffer
+                                  GetImage(),                   // dst image
+                                  barrier.new_layout,  // dst image layout
+                                  1u,                  // region count
+                                  &copy                // regions
   );
 
   // Transition to shader-read.

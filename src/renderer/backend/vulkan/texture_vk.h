@@ -4,9 +4,12 @@
 
 #pragma once
 
-#include "base/backend_cast.h"
+#include <string_view>
+
 #include "core/formats.h"
-#include "core/texture.h"
+#include "core/texture_descriptor.h"
+#include "fml/mapping.h"
+#include "geometry/size.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/device_buffer_vk.h"
 #include "renderer/backend/vulkan/formats_vk.h"
@@ -16,13 +19,52 @@
 
 namespace ogre {
 
-class TextureVK final : public Texture, public BackendCast<TextureVK, Texture> {
+class TextureVK final {
  public:
   TextureVK(std::weak_ptr<Context> context,
             std::shared_ptr<TextureSource> source);
 
-  // |Texture|
-  ~TextureVK() override;
+  ~TextureVK();
+
+  /// @brief Label this resource for inspection in GPU debugging tools.
+  ///
+  /// This functionality may be disabled in release builds.
+  void SetLabel(std::string_view label);
+
+  /// @brief Label this resource for inspection in GPU debugging tools, with
+  ///        label and trailing will be concatenated together.
+  ///
+  /// This functionality may be disabled in release builds.
+  void SetLabel(std::string_view label, std::string_view trailing);
+
+  bool IsValid() const;
+
+  ISize GetSize() const;
+
+  const TextureDescriptor& GetTextureDescriptor() const;
+
+  bool IsOpaque() const;
+
+  size_t GetMipCount() const;
+
+  void SetCoordinateSystem(TextureCoordinateSystem coordinate_system);
+
+  TextureCoordinateSystem GetCoordinateSystem() const;
+
+  Scalar GetYCoordScale() const;
+
+  bool NeedsMipmapGeneration() const;
+
+  // Deprecated: use BlitPass::AddCopy instead.
+  [[nodiscard]] bool SetContents(const uint8_t* contents,
+                                 size_t length,
+                                 size_t slice = 0,
+                                 bool is_opaque = false);
+
+  // Deprecated: use BlitPass::AddCopy instead.
+  [[nodiscard]] bool SetContents(std::shared_ptr<const fml::Mapping> mapping,
+                                 size_t slice = 0,
+                                 bool is_opaque = false);
 
   vk::Image GetImage() const;
 
@@ -37,9 +79,6 @@ class TextureVK final : public Texture, public BackendCast<TextureVK, Texture> {
   vk::ImageLayout GetLayout() const;
 
   std::shared_ptr<const TextureSource> GetTextureSource() const;
-
-  // |Texture|
-  ISize GetSize() const override;
 
   void SetMipMapGenerated();
 
@@ -66,26 +105,19 @@ class TextureVK final : public Texture, public BackendCast<TextureVK, Texture> {
 
  private:
   std::weak_ptr<Context> context_;
+  const TextureDescriptor desc_;
   std::shared_ptr<TextureSource> source_;
   bool has_validation_layers_ = false;
+  TextureCoordinateSystem coordinate_system_ =
+      TextureCoordinateSystem::kRenderToTexture;
+  bool is_opaque_ = false;
+  bool mipmap_generated_ = false;
 
-  // |Texture|
-  void SetLabel(std::string_view label) override;
+  bool OnSetContents(const uint8_t* contents, size_t length, size_t slice);
 
-  // |Texture|
-  void SetLabel(std::string_view label, std::string_view trailing) override;
+  bool OnSetContents(std::shared_ptr<const fml::Mapping> mapping, size_t slice);
 
-  // |Texture|
-  bool OnSetContents(const uint8_t* contents,
-                     size_t length,
-                     size_t slice) override;
-
-  // |Texture|
-  bool OnSetContents(std::shared_ptr<const fml::Mapping> mapping,
-                     size_t slice) override;
-
-  // |Texture|
-  bool IsValid() const override;
+  bool IsSliceValid(size_t slice) const;
 
   TextureVK(const TextureVK&) = delete;
 

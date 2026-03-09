@@ -46,7 +46,7 @@ class PipelineLibrary;
 class ResourceManager;
 class SamplerLibrary;
 class ShaderLibrary;
-class Texture;
+class TextureVK;
 class YUVConversionLibrary;
 
 class Context final : public std::enable_shared_from_this<Context> {
@@ -223,7 +223,7 @@ class Context final : public std::enable_shared_from_this<Context> {
     CHECK(false && "not supported in this context");
   }
 
-  bool AddTrackingFence(const std::shared_ptr<Texture>& texture) const;
+  bool AddTrackingFence(const std::shared_ptr<TextureVK>& texture) const;
 
   void ResetThreadLocalState() const;
 

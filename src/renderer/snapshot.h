@@ -10,9 +10,9 @@
 
 #include "core/formats.h"
 #include "core/sampler_descriptor.h"
-#include "core/texture.h"
 #include "geometry/matrix.h"
 #include "geometry/rect.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace ogre {
 
@@ -21,7 +21,7 @@ class Entity;
 
 /// Represents a texture and its intended draw transform/sampler configuration.
 struct Snapshot {
-  std::shared_ptr<Texture> texture;
+  std::shared_ptr<TextureVK> texture;
   /// The transform that should be applied to this texture for rendering.
   Matrix transform;
 

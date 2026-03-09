@@ -10,6 +10,7 @@
 #include "fml/status.h"
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/pipeline_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "renderer/backend/vulkan/vk.h"
 #include "renderer/resource_binder.h"
 
@@ -52,7 +53,7 @@ class ComputePass final : public ResourceBinder {
                     DescriptorType type,
                     const SampledImageSlot& slot,
                     const ShaderMetadata* metadata,
-                    std::shared_ptr<const Texture> texture,
+                    std::shared_ptr<const TextureVK> texture,
                     raw_ptr<const Sampler> sampler) override;
 
   bool BindResource(size_t binding, DescriptorType type, BufferView view);

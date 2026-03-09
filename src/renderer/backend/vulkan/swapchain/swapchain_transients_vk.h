@@ -4,12 +4,14 @@
 
 #pragma once
 
-#include "core/texture.h"
+#include <memory>
+
 #include "core/texture_descriptor.h"
 
 namespace ogre {
 
 class Context;
+class TextureVK;
 
 //------------------------------------------------------------------------------
 /// @brief      Resources, meant to be memoized by the texture descriptor of the
@@ -36,20 +38,20 @@ class SwapchainTransients {
 
   bool IsMSAAEnabled() const;
 
-  const std::shared_ptr<Texture>& GetMSAATexture();
+  const std::shared_ptr<TextureVK>& GetMSAATexture();
 
-  const std::shared_ptr<Texture>& GetDepthStencilTexture();
+  const std::shared_ptr<TextureVK>& GetDepthStencilTexture();
 
  private:
   std::weak_ptr<Context> context_;
   const TextureDescriptor desc_;
   const bool enable_msaa_;
-  std::shared_ptr<Texture> cached_msaa_texture_;
-  std::shared_ptr<Texture> cached_depth_stencil_;
+  std::shared_ptr<TextureVK> cached_msaa_texture_;
+  std::shared_ptr<TextureVK> cached_depth_stencil_;
 
-  std::shared_ptr<Texture> CreateMSAATexture() const;
+  std::shared_ptr<TextureVK> CreateMSAATexture() const;
 
-  std::shared_ptr<Texture> CreateDepthStencilTexture() const;
+  std::shared_ptr<TextureVK> CreateDepthStencilTexture() const;
 };
 
 }  // namespace ogre

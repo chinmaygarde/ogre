@@ -8,13 +8,126 @@
 #include <sstream>
 
 #include "core/formats.h"
-#include "core/texture.h"
 #include "core/texture_descriptor.h"
 #include "renderer/backend/vulkan/allocator_vk.h"
 #include "renderer/backend/vulkan/capabilities_vk.h"
 #include "renderer/backend/vulkan/context_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace ogre {
+
+// ---------------------------------------------------------------------------
+// Attachment string helpers (moved from core/formats.cc because they need
+// the full TextureVK definition).
+// ---------------------------------------------------------------------------
+
+static constexpr bool StoreActionNeedsResolveTexture(StoreAction action) {
+  switch (action) {
+    case StoreAction::kDontCare:
+    case StoreAction::kStore:
+      return false;
+    case StoreAction::kMultisampleResolve:
+    case StoreAction::kStoreAndMultisampleResolve:
+      return true;
+  }
+  LOG(FATAL) << "Reached unreachable code.";
+}
+
+bool Attachment::IsValid() const {
+  if (!texture || !texture->IsValid()) {
+    LOG(ERROR) << "Attachment has no texture.";
+    return false;
+  }
+
+  if (StoreActionNeedsResolveTexture(store_action)) {
+    if (!resolve_texture || !resolve_texture->IsValid()) {
+      LOG(ERROR) << "Store action needs resolve but no valid resolve "
+                    "texture specified.";
+      return false;
+    }
+  }
+
+  if (resolve_texture) {
+    if (store_action != StoreAction::kMultisampleResolve &&
+        store_action != StoreAction::kStoreAndMultisampleResolve) {
+      LOG(ERROR) << "A resolve texture was specified, but the store action "
+                    "doesn't include multisample resolve.";
+      return false;
+    }
+
+    if (texture->GetTextureDescriptor().storage_mode ==
+            StorageMode::kDeviceTransient &&
+        store_action == StoreAction::kStoreAndMultisampleResolve) {
+      LOG(ERROR) << "The multisample texture cannot be transient when "
+                    "specifying the StoreAndMultisampleResolve StoreAction.";
+    }
+  }
+
+  auto storage_mode = resolve_texture
+                          ? resolve_texture->GetTextureDescriptor().storage_mode
+                          : texture->GetTextureDescriptor().storage_mode;
+
+  if (storage_mode == StorageMode::kDeviceTransient) {
+    if (load_action == LoadAction::kLoad) {
+      LOG(ERROR) << "The LoadAction cannot be Load when attaching a device "
+                    "transient " +
+                        std::string(resolve_texture ? "resolve texture."
+                                                    : "texture.");
+      return false;
+    }
+    if (store_action != StoreAction::kDontCare) {
+      LOG(ERROR) << "The StoreAction must be DontCare when attaching a "
+                    "device transient " +
+                        std::string(resolve_texture ? "resolve texture."
+                                                    : "texture.");
+      return false;
+    }
+  }
+
+  return true;
+}
+
+std::string AttachmentToString(const Attachment& attachment) {
+  std::stringstream stream;
+  if (attachment.texture) {
+    stream << "Texture=("
+           << TextureDescriptorToString(
+                  attachment.texture->GetTextureDescriptor())
+           << "),";
+  }
+  if (attachment.resolve_texture) {
+    stream << "ResolveTexture=("
+           << TextureDescriptorToString(
+                  attachment.resolve_texture->GetTextureDescriptor())
+           << "),";
+  }
+  stream << "LoadAction=" << LoadActionToString(attachment.load_action) << ",";
+  stream << "StoreAction=" << StoreActionToString(attachment.store_action);
+  return stream.str();
+}
+
+std::string ColorAttachmentToString(const ColorAttachment& color) {
+  std::stringstream stream;
+  stream << AttachmentToString(color) << ",";
+  stream << "ClearColor=(" << ColorToString(color.clear_color) << ")";
+  return stream.str();
+}
+
+std::string DepthAttachmentToString(const DepthAttachment& depth) {
+  std::stringstream stream;
+  stream << AttachmentToString(depth) << ",";
+  stream << std::format("ClearDepth={:.2f}", depth.clear_depth);
+  return stream.str();
+}
+
+std::string StencilAttachmentToString(const StencilAttachment& stencil) {
+  std::stringstream stream;
+  stream << AttachmentToString(stencil) << ",";
+  stream << std::format("ClearStencil={}", stencil.clear_stencil);
+  return stream.str();
+}
+
+// ---------------------------------------------------------------------------
 
 RenderTarget::RenderTarget() = default;
 
@@ -171,7 +284,7 @@ ISize RenderTarget::GetRenderTargetSize() const {
   return size.has_value() ? size.value() : ISize{};
 }
 
-std::shared_ptr<Texture> RenderTarget::GetRenderTargetTexture() const {
+std::shared_ptr<TextureVK> RenderTarget::GetRenderTargetTexture() const {
   if (!color0_.has_value()) {
     return nullptr;
   }
@@ -324,8 +437,8 @@ RenderTarget RenderTargetAllocator::CreateOffscreen(
     std::string_view label,
     RenderTarget::AttachmentConfig color_attachment_config,
     std::optional<RenderTarget::AttachmentConfig> stencil_attachment_config,
-    const std::shared_ptr<Texture>& existing_color_texture,
-    const std::shared_ptr<Texture>& existing_depth_stencil_texture,
+    const std::shared_ptr<TextureVK>& existing_color_texture,
+    const std::shared_ptr<TextureVK>& existing_depth_stencil_texture,
     std::optional<PixelFormat> target_pixel_format) {
   if (size.IsEmpty()) {
     return {};
@@ -333,7 +446,7 @@ RenderTarget RenderTargetAllocator::CreateOffscreen(
 
   RenderTarget target;
 
-  std::shared_ptr<Texture> color0_tex;
+  std::shared_ptr<TextureVK> color0_tex;
   if (existing_color_texture) {
     color0_tex = existing_color_texture;
   } else {
@@ -380,9 +493,9 @@ RenderTarget RenderTargetAllocator::CreateOffscreenMSAA(
     std::string_view label,
     RenderTarget::AttachmentConfigMSAA color_attachment_config,
     std::optional<RenderTarget::AttachmentConfig> stencil_attachment_config,
-    const std::shared_ptr<Texture>& existing_color_msaa_texture,
-    const std::shared_ptr<Texture>& existing_color_resolve_texture,
-    const std::shared_ptr<Texture>& existing_depth_stencil_texture,
+    const std::shared_ptr<TextureVK>& existing_color_msaa_texture,
+    const std::shared_ptr<TextureVK>& existing_color_resolve_texture,
+    const std::shared_ptr<TextureVK>& existing_depth_stencil_texture,
     std::optional<PixelFormat> target_pixel_format) {
   if (size.IsEmpty()) {
     return {};
@@ -395,7 +508,7 @@ RenderTarget RenderTargetAllocator::CreateOffscreenMSAA(
           : context.GetCapabilities()->GetDefaultColorFormat();
 
   // Create MSAA color texture.
-  std::shared_ptr<Texture> color0_msaa_tex;
+  std::shared_ptr<TextureVK> color0_msaa_tex;
   if (existing_color_msaa_texture) {
     color0_msaa_tex = existing_color_msaa_texture;
   } else {
@@ -419,7 +532,7 @@ RenderTarget RenderTargetAllocator::CreateOffscreenMSAA(
   color0_msaa_tex->SetLabel(label, "Color Texture (Multisample)");
 
   // Create color resolve texture.
-  std::shared_ptr<Texture> color0_resolve_tex;
+  std::shared_ptr<TextureVK> color0_resolve_tex;
   if (existing_color_resolve_texture) {
     color0_resolve_tex = existing_color_resolve_texture;
   } else {
@@ -483,8 +596,8 @@ void RenderTarget::SetupDepthStencilAttachments(
     bool msaa,
     std::string_view label,
     RenderTarget::AttachmentConfig stencil_attachment_config,
-    const std::shared_ptr<Texture>& existing_depth_stencil_texture) {
-  std::shared_ptr<Texture> depth_stencil_texture;
+    const std::shared_ptr<TextureVK>& existing_depth_stencil_texture) {
+  std::shared_ptr<TextureVK> depth_stencil_texture;
   if (existing_depth_stencil_texture) {
     depth_stencil_texture = existing_depth_stencil_texture;
   } else {

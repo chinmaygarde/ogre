@@ -4,80 +4,11 @@
 
 #include "core/formats.h"
 
-#include <format>
 #include <sstream>
 
 #include <absl/log/log.h>
 
-#include "core/texture.h"
-
 namespace ogre {
-
-constexpr bool StoreActionNeedsResolveTexture(StoreAction action) {
-  switch (action) {
-    case StoreAction::kDontCare:
-    case StoreAction::kStore:
-      return false;
-    case StoreAction::kMultisampleResolve:
-    case StoreAction::kStoreAndMultisampleResolve:
-      return true;
-  }
-  LOG(FATAL) << "Reached unreachable code.";
-}
-
-bool Attachment::IsValid() const {
-  if (!texture || !texture->IsValid()) {
-    LOG(ERROR) << "Attachment has no texture.";
-    return false;
-  }
-
-  if (StoreActionNeedsResolveTexture(store_action)) {
-    if (!resolve_texture || !resolve_texture->IsValid()) {
-      LOG(ERROR) << "Store action needs resolve but no valid resolve "
-                    "texture specified.";
-      return false;
-    }
-  }
-
-  if (resolve_texture) {
-    if (store_action != StoreAction::kMultisampleResolve &&
-        store_action != StoreAction::kStoreAndMultisampleResolve) {
-      LOG(ERROR) << "A resolve texture was specified, but the store action "
-                    "doesn't include multisample resolve.";
-      return false;
-    }
-
-    if (texture->GetTextureDescriptor().storage_mode ==
-            StorageMode::kDeviceTransient &&
-        store_action == StoreAction::kStoreAndMultisampleResolve) {
-      LOG(ERROR) << "The multisample texture cannot be transient when "
-                    "specifying the StoreAndMultisampleResolve StoreAction.";
-    }
-  }
-
-  auto storage_mode = resolve_texture
-                          ? resolve_texture->GetTextureDescriptor().storage_mode
-                          : texture->GetTextureDescriptor().storage_mode;
-
-  if (storage_mode == StorageMode::kDeviceTransient) {
-    if (load_action == LoadAction::kLoad) {
-      LOG(ERROR) << "The LoadAction cannot be Load when attaching a device "
-                    "transient " +
-                        std::string(resolve_texture ? "resolve texture."
-                                                    : "texture.");
-      return false;
-    }
-    if (store_action != StoreAction::kDontCare) {
-      LOG(ERROR) << "The StoreAction must be DontCare when attaching a "
-                    "device transient " +
-                        std::string(resolve_texture ? "resolve texture."
-                                                    : "texture.");
-      return false;
-    }
-  }
-
-  return true;
-}
 
 std::string TextureUsageMaskToString(TextureUsageMask mask) {
   std::vector<TextureUsage> usages;
@@ -99,46 +30,6 @@ std::string TextureUsageMaskToString(TextureUsageMask mask) {
     }
   }
   stream << " }";
-  return stream.str();
-}
-
-std::string AttachmentToString(const Attachment& attachment) {
-  std::stringstream stream;
-  if (attachment.texture) {
-    stream << "Texture=("
-           << TextureDescriptorToString(
-                  attachment.texture->GetTextureDescriptor())
-           << "),";
-  }
-  if (attachment.resolve_texture) {
-    stream << "ResolveTexture=("
-           << TextureDescriptorToString(
-                  attachment.resolve_texture->GetTextureDescriptor())
-           << "),";
-  }
-  stream << "LoadAction=" << LoadActionToString(attachment.load_action) << ",";
-  stream << "StoreAction=" << StoreActionToString(attachment.store_action);
-  return stream.str();
-}
-
-std::string ColorAttachmentToString(const ColorAttachment& color) {
-  std::stringstream stream;
-  stream << AttachmentToString(color) << ",";
-  stream << "ClearColor=(" << ColorToString(color.clear_color) << ")";
-  return stream.str();
-}
-
-std::string DepthAttachmentToString(const DepthAttachment& depth) {
-  std::stringstream stream;
-  stream << AttachmentToString(depth) << ",";
-  stream << std::format("ClearDepth={:.2f}", depth.clear_depth);
-  return stream.str();
-}
-
-std::string StencilAttachmentToString(const StencilAttachment& stencil) {
-  std::stringstream stream;
-  stream << AttachmentToString(stencil) << ",";
-  stream << std::format("ClearStencil={}", stencil.clear_stencil);
   return stream.str();
 }
 

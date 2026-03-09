@@ -7,6 +7,7 @@
 #include "fml/trace_event.h"
 #include "renderer/backend/vulkan/allocator_vk.h"
 #include "renderer/backend/vulkan/capabilities_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 
 namespace ogre {
 
@@ -17,7 +18,7 @@ SwapchainTransients::SwapchainTransients(std::weak_ptr<Context> context,
 
 SwapchainTransients::~SwapchainTransients() = default;
 
-const std::shared_ptr<Texture>& SwapchainTransients::GetMSAATexture() {
+const std::shared_ptr<TextureVK>& SwapchainTransients::GetMSAATexture() {
   if (cached_msaa_texture_) {
     return cached_msaa_texture_;
   }
@@ -25,7 +26,8 @@ const std::shared_ptr<Texture>& SwapchainTransients::GetMSAATexture() {
   return cached_msaa_texture_;
 }
 
-const std::shared_ptr<Texture>& SwapchainTransients::GetDepthStencilTexture() {
+const std::shared_ptr<TextureVK>&
+SwapchainTransients::GetDepthStencilTexture() {
   if (cached_depth_stencil_) {
     return cached_depth_stencil_;
   }
@@ -33,7 +35,7 @@ const std::shared_ptr<Texture>& SwapchainTransients::GetDepthStencilTexture() {
   return cached_depth_stencil_;
 }
 
-std::shared_ptr<Texture> SwapchainTransients::CreateMSAATexture() const {
+std::shared_ptr<TextureVK> SwapchainTransients::CreateMSAATexture() const {
   TRACE_EVENT0("ogre", __FUNCTION__);
   if (!enable_msaa_) {
     return nullptr;
@@ -58,7 +60,7 @@ std::shared_ptr<Texture> SwapchainTransients::CreateMSAATexture() const {
   return texture;
 }
 
-std::shared_ptr<Texture> SwapchainTransients::CreateDepthStencilTexture()
+std::shared_ptr<TextureVK> SwapchainTransients::CreateDepthStencilTexture()
     const {
   TRACE_EVENT0("ogre", __FUNCTION__);
   auto context = context_.lock();

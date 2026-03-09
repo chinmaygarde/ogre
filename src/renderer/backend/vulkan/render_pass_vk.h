@@ -20,6 +20,7 @@
 #include "renderer/backend/vulkan/context_vk.h"
 #include "renderer/backend/vulkan/pipeline_vk.h"
 #include "renderer/backend/vulkan/shared_object_vk.h"
+#include "renderer/backend/vulkan/texture_vk.h"
 #include "renderer/command.h"
 #include "renderer/render_target.h"
 #include "renderer/resource_binder.h"
@@ -89,14 +90,14 @@ class RenderPass final : public ResourceBinder {
                     DescriptorType type,
                     const SampledImageSlot& slot,
                     const ShaderMetadata* metadata,
-                    std::shared_ptr<const Texture> texture,
+                    std::shared_ptr<const TextureVK> texture,
                     raw_ptr<const Sampler>) override;
 
   bool BindDynamicResource(ShaderStage stage,
                            DescriptorType type,
                            const SampledImageSlot& slot,
                            std::unique_ptr<ShaderMetadata> metadata,
-                           std::shared_ptr<const Texture> texture,
+                           std::shared_ptr<const TextureVK> texture,
                            raw_ptr<const Sampler>);
 
   bool BindDynamicResource(ShaderStage stage,
@@ -132,8 +133,8 @@ class RenderPass final : public ResourceBinder {
   bool is_valid_ = false;
 
   vk::CommandBuffer command_buffer_vk_;
-  std::shared_ptr<Texture> color_image_vk_;
-  std::shared_ptr<Texture> resolve_image_vk_;
+  std::shared_ptr<TextureVK> color_image_vk_;
+  std::shared_ptr<TextureVK> resolve_image_vk_;
   uint32_t current_stencil_ = 0;
 
   // Per-command state.

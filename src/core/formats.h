@@ -24,7 +24,7 @@ enum class WindingOrder {
   kCounterClockwise,
 };
 
-class Texture;
+class TextureVK;
 
 //------------------------------------------------------------------------------
 /// @brief      Specified where the allocation resides and how it is used.
@@ -660,8 +660,8 @@ struct StencilAttachmentDescriptor {
 };
 
 struct Attachment {
-  std::shared_ptr<Texture> texture;
-  std::shared_ptr<Texture> resolve_texture;
+  std::shared_ptr<TextureVK> texture;
+  std::shared_ptr<TextureVK> resolve_texture;
   LoadAction load_action = LoadAction::kDontCare;
   StoreAction store_action = StoreAction::kStore;
 
