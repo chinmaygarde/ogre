@@ -11,7 +11,7 @@ SetCAndCXXStandard(11 20)
 
 EnableCCache()
 
-project(onnx_sandbox)
+project(ogre)
 
 AddRecommendedWarningFlags()
 

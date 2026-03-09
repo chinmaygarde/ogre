@@ -1,7 +1,7 @@
 {
   "build_systems": [
     {
-      "name": "ONNX Build All",
+      "name": "Ogre Build All",
       "shell_cmd": "just build && just test",
       "working_dir": "${project_path}",
       "file_regex": "(.*):(\\d+):(\\d+)(.*)",
@@ -11,7 +11,7 @@
   "folders": [
     {
       "path": ".",
-      "name": "ONNX Sandbox",
+      "name": "Ogre",
     }
   ],
   "settings":

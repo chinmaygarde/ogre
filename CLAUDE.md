@@ -1,4 +1,4 @@
-# ONNX Sandbox
+# Ogre
 
 A sandbox project for exploring ONNX Runtime and authoring a Vulkan Execution Provider.
 

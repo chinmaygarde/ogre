@@ -15,7 +15,7 @@ Clone and initialize submodules:
 
 ```sh
 git clone <repo>
-cd onnxsandbox
+cd ogre
 just sync
 ```
 

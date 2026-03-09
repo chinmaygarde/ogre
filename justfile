@@ -10,7 +10,7 @@
 alias gen := setup
 
 @test preset='debug':
-	./build/src/ep/onnx_sandbox_tests
+	./build/src/ep/ogre_tests
 
 @setup preset='debug':
 	cmake --preset {{preset}}
